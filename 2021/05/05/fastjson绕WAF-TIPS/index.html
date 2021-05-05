@@ -23,7 +23,7 @@ var _hmt = _hmt || [];
     <meta name="description" content="" />
     
     <title>
-      归档 - 白帽酱の博客
+      fastjson绕过WAF TIPS - 白帽酱の博客
     </title>
     <link rel="manifest" href="/manifest.json" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
@@ -34,6 +34,11 @@ var _hmt = _hmt || [];
 </head>
   <body>
     <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#fastjson%E7%BB%95WAF-TIPS"><span class="toc-text">fastjson绕WAF TIPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fastjson%E5%AF%B9%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E4%B9%89%E5%A4%84%E7%90%86%E3%81%AE%E7%89%B9%E6%80%A7"><span class="toc-text">fastjson对字符串转义处理の特性</span></a></li></ol></li></ol></li></ol>
+    </div>
     
     <div id="fixed-menu-wrap">
       <span class="iconfont icon-sousuo search-box menu-reset"></span>
@@ -68,7 +73,7 @@ var _hmt = _hmt || [];
           首页
         </a>
         
-        <a href="/archives" class="current">
+        <a href="/archives" class="">
           归档
         </a>
         
@@ -122,7 +127,7 @@ var _hmt = _hmt || [];
             首页
           </a>
           
-          <a href="/archives" class="current">
+          <a href="/archives" class="">
             归档
           </a>
           
@@ -171,101 +176,86 @@ var _hmt = _hmt || [];
     </div>
     <div id="container">
       <div class="main animated bounceInRight delay-0.7s">
-        <div id="archives">
-    
-        <div class="title">
-            归档 
-            
-        </div>
-    
-
-
-
-
-    
-    
-    <section class="wrap">
-        <div class="meta">
-            <a href="/archives/2021" >
-                2021
-            </a>
-        </div>
-        <div class="year">
-            
-            <article class="item">
-            <a href="/2021/05/05/fastjson%E7%BB%95WAF-TIPS/" title="fastjson绕过WAF TIPS">
-                <span>2021/05/05</span>
-                <span>fastjson绕过WAF TIPS</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2021/05/03/%E5%B8%86%E8%BD%AF-v9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-%E4%B8%8D%E8%A6%86%E7%9B%96%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/" title="帆软 v9任意文件上传漏洞漏洞分析(不覆盖上传文件)">
-                <span>2021/05/03</span>
-                <span>帆软 v9任意文件上传漏洞漏洞分析(不覆盖上传文件)</span>
-            </a>
-            </article>
-            
-
-
-    
-    </div>
-    </section>
-    
-    
-    <section class="wrap">
-        <div class="meta">
-            <a href="/archives/2020" >
-                2020
-            </a>
-        </div>
-        <div class="year">
-            
-            <article class="item">
-            <a href="/2020/08/25/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-writeup/" title="2020安恒DASCTF八月浪漫七夕战 ezrce Writeup">
-                <span>2020/08/25</span>
-                <span>2020安恒DASCTF八月浪漫七夕战 ezrce Writeup</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2020/08/15/%E8%AE%B0%E4%B8%80%E6%AC%A1mysql%E7%9B%B2%E6%B3%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" title="记一次mysql盲注遇到的问题">
-                <span>2020/08/15</span>
-                <span>记一次mysql盲注遇到的问题</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2020/07/14/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-witeup/" title="GeekPwn 2020 云上挑战赛 cosplay! writeup">
-                <span>2020/07/14</span>
-                <span>GeekPwn 2020 云上挑战赛 cosplay! writeup</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2020/04/12/hello-world/" title="Hello World">
-                <span>2020/04/12</span>
-                <span>Hello World</span>
-            </a>
-            </article>
-            
-    
-        </div>
-    </section>
+        <article class="post-entry">
+    <div class="header">
       
-<div class="paginator">
-    <span class="page-number current">1</span>
-</div>
-</div>
+      <div class="title">fastjson绕过WAF TIPS</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2021/05/05</span>
+        </span>
 
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/笔记">笔记</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/笔记">笔记</a>
+                  
+                
+                  
+                    <a href="/tags/fastjson">fastjson</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="fastjson绕WAF-TIPS">fastjson绕WAF TIPS<a class="post-anchor" href="#fastjson绕WAF-TIPS"></a></h1><h3 id="fastjson对字符串转义处理の特性">fastjson对字符串转义处理の特性<a class="post-anchor" href="#fastjson对字符串转义处理の特性"></a></h3><p>fast解析字符串支持\u Unicode转义和 \x HEX转义的字符串解码 (一般json仅支持Unicode转义 fastjson多了对十六进制转义的支持)<br>例如 字符串 driverClassLoader</p>
+<p>Unicode转义 编码 \uxxxx(json通用)<br><code>\u0064\u0072\u0069\u0076\u0065\u0072\u0043\u006C\u0061\u0073\u0073\u004C\u006F\u0061\u0064\u0065\u0072</code><br>HEX转义编码 \x** (fastjson only)<br><code>\x64\x72\x69\x76\x65\x72\x43\x6C\x61\x73\x73\x4C\x6F\x61\x64\x65\x72</code><br>fastjson中两者可以混合使用<br>例:<br><code>\x64\u0072\x0069\u0076\x65\u0072\x43\x6C\u0061\u0073\x73\x4C\x006F\x61\x64\x65\u0072</code><br>使用CyberChef进行方便的编解码<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/05/utBrMP3bcCsSfeT.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/05/utBrMP3bcCsSfeT.png" alt=""></a><br>这种方法可以绕过一些字符串规则匹配的waf 除此之外playload也可以加入%08%09这种空白字符扰乱waf对json匹配解析</p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2021/05/03/%E5%B8%86%E8%BD%AF-v9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-%E4%B8%8D%E8%A6%86%E7%9B%96%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">帆软 v9任意文件上传漏洞漏洞分析(不覆盖上传文件)</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2021/05/05/fastjson%E7%BB%95WAF-TIPS/">https://rce.moe/2021/05/05/fastjson%E7%BB%95WAF-TIPS/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
         <footer>
           <div class="copyright">
             ©2021
