@@ -23,7 +23,7 @@ var _hmt = _hmt || [];
     <meta name="description" content="" />
     
     <title>
-      fastjson绕过WAF TIPS - 白帽酱の博客
+      fastjson绕过WAF的TIPS - 白帽酱の博客
     </title>
     <link rel="manifest" href="/manifest.json" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
@@ -37,7 +37,7 @@ var _hmt = _hmt || [];
     
     <div id="post-toc" class="animated hiddenToc hide">
       <span class="title">Toc</span>
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#fastjson%E7%BB%95WAF-TIPS"><span class="toc-text">fastjson绕WAF TIPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fastjson%E5%AF%B9%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E4%B9%89%E5%A4%84%E7%90%86%E3%81%AE%E7%89%B9%E6%80%A7"><span class="toc-text">fastjson对字符串转义处理の特性</span></a></li></ol></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#fastjson%E7%BB%95WAF%E3%81%AETIPS"><span class="toc-text">fastjson绕WAFのTIPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fastjson%E5%AF%B9%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E4%B9%89%E5%A4%84%E7%90%86%E3%81%AE%E7%89%B9%E6%80%A7"><span class="toc-text">fastjson对字符串转义处理の特性</span></a></li></ol></li></ol></li></ol>
     </div>
     
     <div id="fixed-menu-wrap">
@@ -179,7 +179,7 @@ var _hmt = _hmt || [];
         <article class="post-entry">
     <div class="header">
       
-      <div class="title">fastjson绕过WAF TIPS</div>
+      <div class="title">fastjson绕过WAF的TIPS</div>
       <div class="meta">
         <span class="item">
           <span class="iconfont icon-time-circle"></span>
@@ -221,7 +221,7 @@ var _hmt = _hmt || [];
       <div>
       </div>
     </div>
-    <html><head></head><body><h1 id="fastjson绕WAF-TIPS">fastjson绕WAF TIPS<a class="post-anchor" href="#fastjson绕WAF-TIPS"></a></h1><h3 id="fastjson对字符串转义处理の特性">fastjson对字符串转义处理の特性<a class="post-anchor" href="#fastjson对字符串转义处理の特性"></a></h3><p>fast解析字符串支持\u Unicode转义和 \x HEX转义的字符串解码 (一般json仅支持Unicode转义 fastjson多了对十六进制转义的支持)<br>例如 字符串 driverClassLoader</p>
+    <html><head></head><body><h1 id="fastjson绕WAFのTIPS">fastjson绕WAFのTIPS<a class="post-anchor" href="#fastjson绕WAFのTIPS"></a></h1><h3 id="fastjson对字符串转义处理の特性">fastjson对字符串转义处理の特性<a class="post-anchor" href="#fastjson对字符串转义处理の特性"></a></h3><p>fast解析字符串支持\u Unicode转义和 \x HEX转义的字符串解码 (一般json仅支持Unicode转义 fastjson多了对十六进制转义的支持)<br>例如 字符串 driverClassLoader</p>
 <p>Unicode转义 编码 \uxxxx(json通用)<br><code>\u0064\u0072\u0069\u0076\u0065\u0072\u0043\u006C\u0061\u0073\u0073\u004C\u006F\u0061\u0064\u0065\u0072</code><br>HEX转义编码 \x** (fastjson only)<br><code>\x64\x72\x69\x76\x65\x72\x43\x6C\x61\x73\x73\x4C\x6F\x61\x64\x65\x72</code><br>fastjson中两者可以混合使用<br>例:<br><code>\x64\u0072\x0069\u0076\x65\u0072\x43\x6C\u0061\u0073\x73\x4C\x006F\x61\x64\x65\u0072</code><br>使用CyberChef进行方便的编解码<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/05/utBrMP3bcCsSfeT.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/05/utBrMP3bcCsSfeT.png" alt=""></a><br>这种方法可以绕过一些字符串规则匹配的waf 除此之外playload也可以加入%08%09这种空白字符扰乱waf对json匹配解析</p>
 </body></html>
 
