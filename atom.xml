@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2021-05-05T09:06:54.874Z</updated>
+  <updated>2021-06-09T10:07:45.360Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2021年春秋杯网络安全联赛春季赛-CTF-GameContract-WriteUp</title>
+    <link href="https://rce.moe/2021/06/08/2021%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E6%98%A5%E5%AD%A3%E8%B5%9B-CTF-GameContract-WriteUp/"/>
+    <id>https://rce.moe/2021/06/08/2021%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E6%98%A5%E5%AD%A3%E8%B5%9B-CTF-GameContract-WriteUp/</id>
+    <published>2021-06-08T03:35:19.000Z</published>
+    <updated>2021-06-09T10:07:45.360Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;今年春秋杯春秋杯出了一道智能合约杂项 从来没接触过ETH合约的CTF题 网上找了一堆文章做出来了这道题 这里详细写出解题过程以便学习ETH智能合约的调用&lt;/p&gt;
+&lt;h1 id=&quot;GameContract&quot;&gt;GameContr</summary>
+      
+    
+    
+    
+    
+    <category term="CTF" scheme="https://rce.moe/tags/CTF/"/>
+    
+    <category term="WRITEUP" scheme="https://rce.moe/tags/WRITEUP/"/>
+    
+  </entry>
   
   <entry>
     <title>chrome 浏览器cookies&amp;登陆凭据解密&amp;Windows系统下DPAPI中的MasterKey获取</title>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      2021年春秋杯网络安全联赛春季赛-CTF-GameContract-WriteUp - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GameContract"><span class="toc-text">GameContract</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-text">题目分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%88%E7%BA%A6%E7%9A%84%E8%B0%83%E7%94%A8"><span class="toc-text">合约的调用</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%9C%AC%E6%96%87%E9%A6%96%E5%8F%91%E4%BA%8E%E5%AE%89%E5%85%A8%E5%AE%A2-%E8%BD%AC%E8%BD%BD%E8%AF%B7%E6%B3%A8%E6%98%8E%E6%9D%A5%E6%BA%90"><span class="toc-text">本文首发于安全客 转载请注明来源</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">2021年春秋杯网络安全联赛春季赛-CTF-GameContract-WriteUp</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2021/06/08</span>
+        </span>
+
+        
+
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/CTF">CTF</a>
+                  
+                
+                  
+                    <a href="/tags/WRITEUP">WRITEUP</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><p>今年春秋杯春秋杯出了一道智能合约杂项 从来没接触过ETH合约的CTF题 网上找了一堆文章做出来了这道题 这里详细写出解题过程以便学习ETH智能合约的调用</p>
+<h1 id="GameContract">GameContract<a class="post-anchor" href="#GameContract"></a></h1><h4 id="题目分析">题目分析<a class="post-anchor" href="#题目分析"></a></h4><p><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/ZEunOhKxYRtMzma.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/ZEunOhKxYRtMzma.png" alt=""></a><br>访问题目网站 要求使用ETH钱包地址注册 使用浏览器扩展metamask注册之(这也是为了方便后续对合约函数的调用)<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/A2JvdazW39MT8Zt.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/A2JvdazW39MT8Zt.png" alt=""></a><br>准备好 Rinkeby 测试网络的 ETH 用作手续费转入所注册后给的 ETH 地址中 (这是专门去问了下主办方才知道的 网页上没有写是什么测试网络 (ETH比较大的测试网络有4个) 注册后居然还看不到自己的ETH地址)<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/MNdPIs9b5FUwGE7.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/MNdPIs9b5FUwGE7.png" alt=""></a><br>看到如此大的价格波动 肯定是利用价格波动赚差价了<br>到这里还不知道GETFLAG的条件 这是一个ETH合约题 所以我们转向ETH合约去看看合约代码写了什么<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/1CTZKOgjqPvxBeN.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/1CTZKOgjqPvxBeN.png" alt=""></a><br>使用测试网络区块链浏览器查看交易列表 发现了合约地址<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/TWkeMs83cNV9v42.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/TWkeMs83cNV9v42.png" alt=""></a><br>区块链浏览器自带的反编译工具 反编译合约代码<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/Lle8Q7W3xivaF1h.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/Lle8Q7W3xivaF1h.png" alt=""></a><br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/gUeCaG3PW9n8Oqr.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/gUeCaG3PW9n8Oqr.png" alt=""></a><br>审计源码发现一个疑似getflag的函数 (这里面还有一个坑 getflag函数名没有公开 询问主办方才给了函数名 在最后放出了合约的部分源码)<br>需要使用 10*10^6 个币(1000W)兑换flag  初始有1W币<br>之后就进行股票交易操作来满足题目要求了<br>通过利用股票价格波动进行频繁买卖操作最终得到了1000W币</p>
+<h3 id="合约的调用">合约的调用<a class="post-anchor" href="#合约的调用"></a></h3><p>下面是对合约函数的调用操作 (看到排行榜有个大佬几亿个币却不会兑换flag太可惜了)<br>这里用到的工具是<a target="_blank" rel="noopener" href="http://remix.ethereum.org/">http://remix.ethereum.org/</a><br>这是一个ETH合约开发调试工具 这里用来调用现有的链上合约<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/rVkXvBZoSgmzwyM.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/rVkXvBZoSgmzwyM.png" alt=""></a><br>打开网站右键新建一个文件 命名为*.sol 例如test.sol</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">// SPDX-License-Identifier: GPL-3.0<br><br>pragma solidity &gt;=0.7.0 &lt;0.9.0;<br><br>/**<br> * @title Storage<br> * @dev Store &amp; retrieve value in a variable<br> */<br>contract TEST {<br><br>    function payForFlag() public{<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+<p>这里只用写出要调用的函数里面不需要写功能 比较像c语言的函数声明 但还有很大的区别  写完一定要ctrl+s保存并编译</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">function TEST123(uint256 TEST) public view returns (uint256){<br><br> }<br></code></pre></td></tr></tbody></table></figure>
+<p>这个是带传参和返回值的写法<br>写完函数声明点击左侧Deploy &amp; run transactions<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/jrzQZ2vAnxFYqTu.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/jrzQZ2vAnxFYqTu.png" alt=""></a><br>环境选择 Injected Web3<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/qudSwiNhCHtnXM4.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/qudSwiNhCHtnXM4.png" alt=""></a><br>此时metamask扩展会弹出授权窗口 输入密码 授权要操作的ETH账号(这里是股票平台注册时填写的ETH地址所属的钱包账号 )<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/JUyogwxEtkzh9pb.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/JUyogwxEtkzh9pb.png" alt=""></a><br>授权成功后会显示钱包地址和ETH余额 (在发起合约交易一定要保证账户有充足的ETH用作手续费)<br>这里不使用本地调试 而是调用链上合约所以只需要在At Address右侧填入合约地址<br>0xec36a74b9d08e796662c032d61530d94061679ea<br>点击At Address按钮 (如果按钮灰色 根据下面的报错提示 请检查合约地址是否正确 上面的步骤是否正确完成)<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/yxJ6qgTFkdYIXN5.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/yxJ6qgTFkdYIXN5.png" alt=""></a><br>最后一步展开点击操作按钮 在浏览器钱包弹出的窗口授权 即可调用合约<br>通过钱包查看交易地址 在区块链浏览器查看交易状态 Status为Success即为调用成功<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/30/feR4JYb7zHdhvQc.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/30/feR4JYb7zHdhvQc.png" alt=""></a><br>在注册邮箱收取flag</p>
+<h6 id="本文首发于安全客-转载请注明来源">本文首发于<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/242639">安全客</a> 转载请注明来源<a class="post-anchor" href="#本文首发于安全客-转载请注明来源"></a></h6></body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2021/05/05/chrome-%E6%B5%8F%E8%A7%88%E5%99%A8cookies-%E7%99%BB%E9%99%86%E5%87%AD%E6%8D%AE%E8%A7%A3%E5%AF%86-Windows%E7%B3%BB%E7%BB%9F%E4%B8%8BDPAPI%E4%B8%AD%E7%9A%84MasterKey%E8%8E%B7%E5%8F%96/">chrome 浏览器cookies&登陆凭据解密&Windows系统下DPAPI中的MasterKey获取</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2021/06/08/2021%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E6%98%A5%E5%AD%A3%E8%B5%9B-CTF-GameContract-WriteUp/">https://rce.moe/2021/06/08/2021%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E6%98%A5%E5%AD%A3%E8%B5%9B-CTF-GameContract-WriteUp/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+        <footer>
+          <div class="copyright">
+            ©2021
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
