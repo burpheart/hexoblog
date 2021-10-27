@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2021-06-14T06:38:25.231Z</updated>
+  <updated>2021-10-27T13:43:22.340Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PHP代码审计入门基础-PHP敏感函数速查表</title>
+    <link href="https://rce.moe/2021/10/27/PHPsuchabiao/"/>
+    <id>https://rce.moe/2021/10/27/PHPsuchabiao/</id>
+    <published>2021-10-27T13:20:47.000Z</published>
+    <updated>2021-10-27T13:43:22.340Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;PHP敏感函数速查表&quot;&gt;PHP敏感函数速查表&lt;a class=&quot;post-anchor&quot; href=&quot;#PHP敏感函数速查表&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;最近正在写一个PHP代码审计的入门指南文档. 如果表格内出现遗</summary>
+      
+    
+    
+    
+    <category term="笔记" scheme="https://rce.moe/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="笔记" scheme="https://rce.moe/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="PHP" scheme="https://rce.moe/tags/PHP/"/>
+    
+  </entry>
   
   <entry>
     <title>第五届强网杯全国网络安全挑战赛WEB-部分writeup-强网杯2021</title>

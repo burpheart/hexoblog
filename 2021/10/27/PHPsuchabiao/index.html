@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      PHP代码审计入门基础-PHP敏感函数速查表 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PHP%E6%95%8F%E6%84%9F%E5%87%BD%E6%95%B0%E9%80%9F%E6%9F%A5%E8%A1%A8"><span class="toc-text">PHP敏感函数速查表</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#PHP%E4%B8%80%E4%BA%9B%E5%AE%B9%E6%98%93%E5%87%BA%E7%8E%B0%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%E7%9A%84%E5%87%BD%E6%95%B0%E6%96%B9%E6%B3%95"><span class="toc-text">PHP一些容易出现安全问题的函数方法</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-text">命令执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-text">代码注入&#x2F;文件包含</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL-LDAP%E6%B3%A8%E5%85%A5"><span class="toc-text">SQL&#x2F;LDAP注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96-SSRF"><span class="toc-text">文件读取&#x2F;SSRF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E5%86%99%E5%85%A5-%E5%85%B6%E4%BB%96"><span class="toc-text">文件上传&#x2F;写入&#x2F;其他</span></a></li></ol></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">PHP代码审计入门基础-PHP敏感函数速查表</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2021/10/27</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/笔记">笔记</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/笔记">笔记</a>
+                  
+                
+                  
+                    <a href="/tags/PHP">PHP</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="PHP敏感函数速查表">PHP敏感函数速查表<a class="post-anchor" href="#PHP敏感函数速查表"></a></h1><p>最近正在写一个PHP代码审计的入门指南文档. 如果表格内出现遗漏或错误,欢迎大家私信反馈.</p>
+<h6 id="PHP一些容易出现安全问题的函数方法">PHP一些容易出现安全问题的函数方法<a class="post-anchor" href="#PHP一些容易出现安全问题的函数方法"></a></h6><h2 id="命令执行">命令执行<a class="post-anchor" href="#命令执行"></a></h2><p>一些常见的可以执行系统命令的函数/语法</p>
+<table>
+<thead>
+<tr>
+<th>函数/语法</th>
+<th>描述</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>system</td>
+<td>执行命令并输出结果</td>
+<td>system(‘id’);</td>
+</tr>
+<tr>
+<td>exec</td>
+<td>执行命令 只可获取最后一行结果</td>
+<td>exec(‘id’,$a); print_r($a);</td>
+</tr>
+<tr>
+<td>passthru</td>
+<td>同 system</td>
+<td>passthru(‘id’);</td>
+</tr>
+<tr>
+<td>shell_exec ` (反引号)</td>
+<td>执行命令并返回结果</td>
+<td>$a=shell_exec(‘id’);print_r($a); $a=`id`;print_r($a);</td>
+</tr>
+<tr>
+<td>popen</td>
+<td>执行命令并建立管道 返回一个指针 使用fread等函数操作指针进行读写</td>
+<td>$a=popen(“id”, “r”); echo fread($a, 2096);</td>
+</tr>
+<tr>
+<td>proc_open</td>
+<td>同 popen (进程控制功能更强大)</td>
+<td><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.proc-open">见PHP手册</a></td>
+</tr>
+<tr>
+<td>pcntl_exec</td>
+<td>执行命令 只返回是否发生错误</td>
+<td>pcntl_exec(‘id’);</td>
+</tr>
+</tbody></table>
+<h2 id="代码注入-文件包含">代码注入/文件包含<a class="post-anchor" href="#代码注入-文件包含"></a></h2><table>
+<thead>
+<tr>
+<th>函数/语法结构</th>
+<th>描述</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>eval</td>
+<td>将传入的参数内容作为PHP代码执行 eval 不是函数 是一种语法结构 不能当做函数动态调用</td>
+<td>eval(‘phpinfo();’);</td>
+</tr>
+<tr>
+<td>assert</td>
+<td>将传入的参数内容作为PHP代码执行 版本在PHP7以下是函数 PHP7及以上为语法结构</td>
+<td>assert(‘phpinfo();’);</td>
+</tr>
+<tr>
+<td>preg_replace</td>
+<td>当preg_replace使用/e修饰符且原字符串可控时时 有可能执行php代码</td>
+<td>echo preg_replace(“/e”,”{${PHPINFO()}}”,”123”);</td>
+</tr>
+<tr>
+<td>call_user_func</td>
+<td>把第一个参数作为回调函数调用 需要两个参数都完全可控才可利用 只能传入一个参数调用</td>
+<td>call_user_func(‘assert’, ‘phpinfo();’);</td>
+</tr>
+<tr>
+<td>call_user_func_array</td>
+<td>同call_user_func 可传入一个数组带入多个参数调用函数</td>
+<td>call_user_func_array (‘file_put_contents’, [‘1.txt’,’6666’]);</td>
+</tr>
+<tr>
+<td>create_function</td>
+<td>根据传递的参数创建匿名函数，并为其返回唯一名称 利用需要第二个参数可控 且创建的函数被执行</td>
+<td>$f = create_function(‘’,’system($_GET[123]);’); $f();</td>
+</tr>
+<tr>
+<td>include</td>
+<td>包含并运行指定文件 执行出错会抛出错误</td>
+<td>include ‘vars.php’; (括号可有可无)</td>
+</tr>
+<tr>
+<td>require</td>
+<td>同include 执行出错会抛出警告</td>
+<td>require(‘somefile.php’); (括号可有可无)</td>
+</tr>
+<tr>
+<td>require_once</td>
+<td>同require 但会检查之前是否已经包含该文件 确保不重复包含</td>
+<td></td>
+</tr>
+<tr>
+<td>include_once</td>
+<td>同include 但会检查之前是否已经包含该文件 确保不重复包含</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="SQL-LDAP注入">SQL/LDAP注入<a class="post-anchor" href="#SQL-LDAP注入"></a></h2><table>
+<thead>
+<tr>
+<th>函数/方法</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mysql_query</td>
+<td></td>
+</tr>
+<tr>
+<td>odbc_exec</td>
+<td></td>
+</tr>
+<tr>
+<td>mysqli_query</td>
+<td></td>
+</tr>
+<tr>
+<td>mysql_db_query</td>
+<td></td>
+</tr>
+<tr>
+<td>mysql_unbuffered_query</td>
+<td></td>
+</tr>
+<tr>
+<td><p>mysqli::query</p><p>用法</p><p>$mysqli = new mysqli(“localhost”, “my_user”, “my_password”, “world”);</p><p>$mysqli-&gt;query();</p></td>
+<td></td>
+</tr>
+<tr>
+<td>pg_query</td>
+<td></td>
+</tr>
+<tr>
+<td>pg_query_params</td>
+<td></td>
+</tr>
+<tr>
+<td>pg_send_query</td>
+<td></td>
+</tr>
+<tr>
+<td>pg_send_query_params</td>
+<td></td>
+</tr>
+<tr>
+<td>sqlsrv_query</td>
+<td></td>
+</tr>
+<tr>
+<td><p>pdo::query</p><p>$pdo=new PDO(“mysql:host=localhost;dbname=phpdemo”,”root”,”1234”); $pdo-&gt;query($sql);;</p></td>
+<td>PDO</td>
+</tr>
+<tr>
+<td><p>SQLite3::query</p><p>SQLite3::exec</p><p>$db = new SQLite3(‘mysqlitedb.db’); $db-&gt;query(‘SELECT bar FROM foo’); $db-&gt;exec(‘CREATE TABLE bar (bar STRING)’);</p></td>
+<td></td>
+</tr>
+<tr>
+<td>$mongo = new mongoclient(); $data = $coll-&gt;find($data);</td>
+<td><a target="_blank" rel="noopener" href="https://wooyun.js.org/drops/Mongodb%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB.html">https://wooyun.js.org/drops/Mongodb%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB.html</a></td>
+</tr>
+<tr>
+<td>$ld = ldap_connect(“localhost”);…. $lb = @ldap_bind($ld, “cn=test,dc=test,dc=com”, “test”);</td>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/0nc3/p/12063436.html">https://www.cnblogs.com/0nc3/p/12063436.html</a></td>
+</tr>
+<tr>
+<td>Db::query</td>
+<td>Thinkphp</td>
+</tr>
+<tr>
+<td>Db::execute</td>
+<td>Thinkphp</td>
+</tr>
+</tbody></table>
+<h2 id="文件读取-SSRF">文件读取/SSRF<a class="post-anchor" href="#文件读取-SSRF"></a></h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>描述</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>file_get_contents</td>
+<td>读入文件返回字符串</td>
+<td>echo file_get_contents(“flag.txt”); echo file_get_contents(“<a target="_blank" rel="noopener" href="https://www.bilibili.com/&quot;">https://www.bilibili.com/"</a>);</td>
+</tr>
+<tr>
+<td>curl_setopt curl_exec</td>
+<td>Curl访问url获取信息</td>
+<td>function curl($url){ $ch = curl_init(); curl_setopt($ch, CURLOPT_URL, $url); curl_exec($ch); curl_close($ch); } $url = $_GET[‘url’]; curl($url); <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.curl-exec.php">https://www.php.net/manual/zh/function.curl-exec.php</a></td>
+</tr>
+<tr>
+<td>fsockopen</td>
+<td>打开一个套接字连接(远程 tcp/udp raw)</td>
+<td><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.fsockopen.php">https://www.php.net/manual/zh/function.fsockopen.php</a></td>
+</tr>
+<tr>
+<td>readfile</td>
+<td>读取一个文件，并写入到输出缓冲</td>
+<td>同file_get_contents</td>
+</tr>
+<tr>
+<td>fopen/fread/fgets/fgetss /fgetc/fgetcsv/fpassthru/fscanf</td>
+<td>打开文件或者 URL 读取文件流</td>
+<td>$file = fopen(“test.txt”,”r”); echo fread($file,”1234”); fclose($file);</td>
+</tr>
+<tr>
+<td>file</td>
+<td>把整个文件读入一个数组中</td>
+<td>echo implode(‘’, file(‘<a target="_blank" rel="noopener" href="https://www.bilibili.com/'">https://www.bilibili.com/'</a>));</td>
+</tr>
+<tr>
+<td>highlight_file/show_source</td>
+<td>语法高亮一个文件</td>
+<td>highlight_file(“1.php”);</td>
+</tr>
+<tr>
+<td>parse_ini_file</td>
+<td>读取并解析一个ini配置文件</td>
+<td>print_r(parse_ini_file(‘1.ini’));</td>
+</tr>
+<tr>
+<td>simplexml_load_file</td>
+<td>读取文件作为XML文档解析</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="文件上传-写入-其他">文件上传/写入/其他<a class="post-anchor" href="#文件上传-写入-其他"></a></h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>描述</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>file_put_contents</td>
+<td>将一个字符串写入文件</td>
+<td>file_put_contents(“1.txt”,”6666”);</td>
+</tr>
+<tr>
+<td>move_uploaded_file</td>
+<td>将上传的临时文件移动到新的位置</td>
+<td>move_uploaded_file($_FILES[“pictures”][“tmp_name”],”1.php”)</td>
+</tr>
+<tr>
+<td>rename</td>
+<td>重命名文件/目录</td>
+<td>rename($oldname, $newname);</td>
+</tr>
+<tr>
+<td>rmdir</td>
+<td>删除目录</td>
+<td></td>
+</tr>
+<tr>
+<td>mkdir</td>
+<td>创建目录</td>
+<td></td>
+</tr>
+<tr>
+<td>unlink</td>
+<td>删除文件</td>
+<td></td>
+</tr>
+<tr>
+<td>copy</td>
+<td>复制文件</td>
+<td>copy($file, $newfile);</td>
+</tr>
+<tr>
+<td>fopen/fputs/fwrite</td>
+<td>打开文件或者 URL</td>
+<td><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.fwrite.php">https://www.php.net/manual/zh/function.fwrite.php</a></td>
+</tr>
+<tr>
+<td>link</td>
+<td>创建文件硬链接</td>
+<td>link($target, $link);</td>
+</tr>
+<tr>
+<td>symlink</td>
+<td>创建符号链接(软链接)</td>
+<td>symlink($target, $link);</td>
+</tr>
+<tr>
+<td>tmpfile</td>
+<td>创建一个临时文件 (在临时目录存放 随机文件名 返回句柄)</td>
+<td>$temp = tmpfile(); fwrite($temp, “123456”); fclose($temp);</td>
+</tr>
+<tr>
+<td><p>request()-&gt;file()-&gt;move()</p><p>request()-&gt;file()-&gt;file()</p></td>
+<td><a target="_blank" rel="noopener" href="https://www.kancloud.cn/manual/thinkphp5/155159"><strong>Thinkphp 文件上传</strong></a></td>
+<td><p>$file = request()-&gt;file($name);</p><p>$file-&gt;move($filepath);</p></td>
+</tr>
+<tr>
+<td>extractTo</td>
+<td>解压ZIP到目录</td>
+<td></td>
+</tr>
+<tr>
+<td>DOMDocument loadXML simplexml_import_dom</td>
+<td>加载解析XML 有可能存在XXEE 漏洞 file_get_contents获取客户端输入内容 new DOMDocument()初始化XML解析器 loadXML($xmlfile)加载客户端输入的XML内容 simplexml_import_dom($dom)获取XML文档节点，如果成功则返回SimpleXMLElement对象，如果失败则返回FALSE。</td>
+<td>&lt;?php $xmlfile=file_get_contents(‘php://input’); $dom=new DOMDocument(); $dom-&gt;loadXML($xmlfile); $xml=simplexml_import_dom($dom); $xxe=$xml-&gt;xxe; $str=”$xxe \n”; echo $str; ?&gt; <em>来自 &lt;_<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6887"><em>https://xz.aliyun.com/t/6887</em></a>_&gt;</em></td>
+</tr>
+<tr>
+<td>simplexml_load_string</td>
+<td>加载解析XML字符串 有可能存在XXE 漏洞</td>
+<td>$xml=simplexml_load_string($_REQUEST[‘xml’]); print_r($xml);</td>
+</tr>
+<tr>
+<td>simplexml_load_file</td>
+<td>读取文件作为XML文档解析 有可能存在XXE 漏洞</td>
+<td></td>
+</tr>
+<tr>
+<td>unserialize</td>
+<td>反序列化</td>
+<td></td>
+</tr>
+</tbody></table>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2021/06/14/QWB-2021-WEB-WP/">第五届强网杯全国网络安全挑战赛WEB-部分writeup-强网杯2021</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2021/10/27/PHPsuchabiao/">https://rce.moe/2021/10/27/PHPsuchabiao/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+        <footer>
+          <div class="copyright">
+            ©2021
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
