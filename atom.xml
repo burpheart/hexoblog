@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2021-12-02T07:12:28.424Z</updated>
+  <updated>2021-12-28T09:07:00.234Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,47 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>浅谈PHP源代码保护方案&amp;受保护PHP代码の解密还原</title>
+    <link href="https://rce.moe/2021/12/28/phpydmbh/"/>
+    <id>https://rce.moe/2021/12/28/phpydmbh/</id>
+    <published>2021-12-28T09:05:57.000Z</published>
+    <updated>2021-12-28T09:07:00.234Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;php是一种解释型脚本语言.&lt;br&gt;与编译型语言不同,php源代码不是直接翻译成机器语言.而是翻译成中间代码(</summary>
+      
+    
+    
+    
+    <category term="PHP" scheme="https://rce.moe/categories/PHP/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>记一次审计时遇到的加密分区解密</title>
+    <link href="https://rce.moe/2021/12/28/jycjmfqjm/"/>
+    <id>https://rce.moe/2021/12/28/jycjmfqjm/</id>
+    <published>2021-12-28T09:03:40.000Z</published>
+    <updated>2021-12-28T09:05:37.081Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h2 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;​&lt;/p&gt;
+&lt;p&gt;最近拿到了一个商业产品的qcow2 镜像 准备试一试代码审计&lt;br&gt;首先用qemu-img </summary>
+      
+    
+    
+    
+    <category term="笔记" scheme="https://rce.moe/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>《PHP代码审计入门指南》</title>

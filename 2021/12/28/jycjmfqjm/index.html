@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      记一次审计时遇到的加密分区解密 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90"><span class="toc-text">文件系统分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%A7%A3%E5%AF%86"><span class="toc-text">文件系统解密</span></a></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">记一次审计时遇到的加密分区解密</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2021/12/28</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/笔记">笔记</a>
+                
+              
+          </span>
+        </span>
+        
+        
+        
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h2 id="前言">前言<a class="post-anchor" href="#前言"></a></h2><p>​</p>
+<p>最近拿到了一个商业产品的qcow2 镜像 准备试一试代码审计<br>首先用qemu-img 转换成vmdk 镜像 </p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">qemu-img convert -f qcow2 123.qcow2 vmdk 123.vmdk<br></code></pre></td></tr></tbody></table></figure>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605980043-744183b4-7855-4f05-975b-7022a74ee567.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=46&amp;id=u4a0541fe&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=91&amp;originWidth=1190&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9996&amp;status=done&amp;style=none&amp;taskId=u5bca7c69-2dc3-484f-8b5d-b1d8e9298ea&amp;title=&amp;width=595" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605980043-744183b4-7855-4f05-975b-7022a74ee567.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=46&amp;id=u4a0541fe&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=91&amp;originWidth=1190&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9996&amp;status=done&amp;style=none&amp;taskId=u5bca7c69-2dc3-484f-8b5d-b1d8e9298ea&amp;title=&amp;width=595" alt="图片.png"></a><br>转换遇到错误 网上搜索只有一个其他项目的issue 没有解决方案<br>阅读qemu源代码 发现是在2017-02-15版本引入了这个特性<br><a target="_blank" rel="noopener" href="https://lists.gnu.org/archive/html/qemu-devel/2017-02/msg03173.html">https://lists.gnu.org/archive/html/qemu-devel/2017-02/msg03173.html</a></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">bitmaps_ext: Invalid extension length: Unknown error<br></code></pre></td></tr></tbody></table></figure>
+<p> 发现可以使用2016年的旧版qemu完成转换<br><a target="_blank" rel="noopener" href="https://qemu.weilnetz.de/w64/2016/">https://qemu.weilnetz.de/w64/2016/</a><br>转换完成使用vm启动 准备进入grub修改root密码<br>发现grub使用密码验证<br>​</p>
+<p>准备使用diskgenius载入镜像删除grub密码<br>载入镜像后如下图所示<br>除引导分区外 其他分区的文件系统不能正常识别<br>​<a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605613073-3d1ad4b2-e46d-490b-b2df-52782a885012.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=436&amp;id=u7a05e024&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=872&amp;originWidth=1900&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=149483&amp;status=done&amp;style=none&amp;taskId=ua7a110d3-46da-4339-be6c-b8c5ca12694&amp;title=&amp;width=950" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605613073-3d1ad4b2-e46d-490b-b2df-52782a885012.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=436&amp;id=u7a05e024&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=872&amp;originWidth=1900&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=149483&amp;status=done&amp;style=none&amp;taskId=ua7a110d3-46da-4339-be6c-b8c5ca12694&amp;title=&amp;width=950" alt="图片.png"></a></p>
+<h2 id=""><a class="post-anchor" href="#"></a></h2><h2 id="文件系统分析">文件系统分析<a class="post-anchor" href="#文件系统分析"></a></h2><p>ci 是一个 LINUX LVM的卷组<br>通过前缀魔数判断root卷文件系统为 XFS<br>diskgenius 不支持XFS文件系统 所以只能使用其他方法挂载读写里面的内容<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605290577-b1dfe63d-1e7e-4ea3-8de2-848d739cb6a6.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=u64eecd0a&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=454&amp;originWidth=1231&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=61722&amp;status=done&amp;style=none&amp;taskId=u9030648a-bd8d-46bc-b68a-b7b4f31d35b&amp;title=" data-caption="image.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605290577-b1dfe63d-1e7e-4ea3-8de2-848d739cb6a6.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=u64eecd0a&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=454&amp;originWidth=1231&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=61722&amp;status=done&amp;style=none&amp;taskId=u9030648a-bd8d-46bc-b68a-b7b4f31d35b&amp;title=" alt="image.png"></a>继续看其他分区 发现app home 分区与其他分区文件系统不一样<br>有着LUKS的标记<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640606831156-687d2b49-b625-49c6-8a36-08e750e8562e.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=285&amp;id=ua3d655d4&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=570&amp;originWidth=1241&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=51526&amp;status=done&amp;style=none&amp;taskId=u3b202858-a09b-477c-b36a-a56e5d4a691&amp;title=&amp;width=620.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640606831156-687d2b49-b625-49c6-8a36-08e750e8562e.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=285&amp;id=ua3d655d4&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=570&amp;originWidth=1241&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=51526&amp;status=done&amp;style=none&amp;taskId=u3b202858-a09b-477c-b36a-a56e5d4a691&amp;title=&amp;width=620.5" alt="图片.png"></a><br>经过搜索发现这是一种LINUX上的硬盘加密方案 Linux Unified Key Setup<br>使用了AES加密 需要秘钥才能解密<br>既然可以正常进入系统,那就说明秘钥是储存在本地的.<br>我们只要寻找系统分区的挂载配置就有可能找到秘钥.</p>
+<h2 id="文件系统解密">文件系统解密<a class="post-anchor" href="#文件系统解密"></a></h2><p>准备一台可以正常使用的linux虚拟机. 这里使用了一台 kali<br>将要挂载的硬盘添加到虚拟机中<a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605290669-3ee2da0a-c732-4d1c-bf76-75709d7a0889.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=u23eda72c&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1002&amp;originWidth=860&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=42092&amp;status=done&amp;style=none&amp;taskId=u369217ad-3718-4f12-94f8-6ac27d1cfac&amp;title=" data-caption="image.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605290669-3ee2da0a-c732-4d1c-bf76-75709d7a0889.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=u23eda72c&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1002&amp;originWidth=860&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=42092&amp;status=done&amp;style=none&amp;taskId=u369217ad-3718-4f12-94f8-6ac27d1cfac&amp;title=" alt="image.png"></a><br>首先挂载 LINUX LVM卷组<br>vgscan 扫描卷组<br>vgchange -ay  卷标签 (激活卷组)<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640607726022-e4ce33f9-e3ae-4090-9718-1c73978e5773.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=269&amp;id=uc42e60b7&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=537&amp;originWidth=804&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=109291&amp;status=done&amp;style=none&amp;taskId=u23734941-7c26-4697-b8f1-001e7e50111&amp;title=&amp;width=402" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640607726022-e4ce33f9-e3ae-4090-9718-1c73978e5773.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=269&amp;id=uc42e60b7&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=537&amp;originWidth=804&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=109291&amp;status=done&amp;style=none&amp;taskId=u23734941-7c26-4697-b8f1-001e7e50111&amp;title=&amp;width=402" alt="图片.png"></a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640607963096-efe09a06-17de-4ca0-8747-f96b16eee97a.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=212&amp;id=u1170aced&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=423&amp;originWidth=411&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=95210&amp;status=done&amp;style=none&amp;taskId=u9b6eed9f-dd65-40de-853e-86cfd283ef1&amp;title=&amp;width=205.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640607963096-efe09a06-17de-4ca0-8747-f96b16eee97a.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=212&amp;id=u1170aced&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=423&amp;originWidth=411&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=95210&amp;status=done&amp;style=none&amp;taskId=u9b6eed9f-dd65-40de-853e-86cfd283ef1&amp;title=&amp;width=205.5" alt="图片.png"></a><br>成功挂载卷<br>因为root分区没有加密所以直接挂载他<br>新建一个目录 挂载root分区<br>mount -t xfs /dev/mapper/cl-root /tmp/temfs/<a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605291892-8ad7cde3-a3b9-4d2b-85b9-98e342030894.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=ua60a46ea&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=496&amp;originWidth=892&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=204592&amp;status=done&amp;style=none&amp;taskId=u4d75a265-02ae-4f29-9521-851e71cc967&amp;title=" data-caption="image.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605291892-8ad7cde3-a3b9-4d2b-85b9-98e342030894.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=ua60a46ea&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=496&amp;originWidth=892&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=204592&amp;status=done&amp;style=none&amp;taskId=u4d75a265-02ae-4f29-9521-851e71cc967&amp;title=" alt="image.png"></a>成功挂载root分区<br>现在可以直接对root分区进行读写操作了 可以修改密码直接进入系统读取解密后分区的文件<br>但是不能止步于此 既然遇到了这种特殊情况 就要学习下解密luks分区<br>在查了一些资料后 发现解密方法非常简单<br>第一步先在root分区寻找分区挂载的配置文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">/etc/fstab  启动分区挂载<br>/etc/crypttab 分区解密<br></code></pre></td></tr></tbody></table></figure>
+<p>可以在/etc/crypttab 文件中找到用于分区解密的key文件位置</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605292079-34141e84-ec56-4658-8b92-ceedf07056da.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=u4b43bd95&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=176&amp;originWidth=678&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=19605&amp;status=done&amp;style=none&amp;taskId=u30773ee9-e50d-4962-9649-42c9f414aec&amp;title=" data-caption="image.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605292079-34141e84-ec56-4658-8b92-ceedf07056da.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=u4b43bd95&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=176&amp;originWidth=678&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=19605&amp;status=done&amp;style=none&amp;taskId=u30773ee9-e50d-4962-9649-42c9f414aec&amp;title=" alt="image.png"></a><br>安装luks命令工具<br>使用命令行解密分区</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">cryptsetup luksOpen 被加密的分区 --key-file 秘钥文件<br>cryptsetup luksOpen /dev/mapper/cl-app --key-file /tmp/temfs/etc/.appconf/.abcde app<br></code></pre></td></tr></tbody></table></figure>
+<p>成功解密分区<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605292412-fc987ea2-5332-4b68-b2cc-bb1e220f9e98.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=uf8251dd3&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=102&amp;originWidth=669&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=12733&amp;status=done&amp;style=none&amp;taskId=u630e8d5f-26b1-42af-b69a-f51ccff855e&amp;title=" data-caption="image.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605292412-fc987ea2-5332-4b68-b2cc-bb1e220f9e98.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=uf8251dd3&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=102&amp;originWidth=669&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=12733&amp;status=done&amp;style=none&amp;taskId=u630e8d5f-26b1-42af-b69a-f51ccff855e&amp;title=" alt="image.png"></a><br>将这个mapper挂载到一个目录<br>mkdir /tmp/atrustapp/<br>mount  -t xfs /dev/mapper/app /tmp/atrustapp/<a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605293869-14d379bd-73a0-4a68-b90a-fb07270dd458.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=u641de3b0&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=538&amp;originWidth=1065&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=155769&amp;status=done&amp;style=none&amp;taskId=u61c683eb-d45c-4959-ae39-72dfb2b98cb&amp;title=" data-caption="image.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605293869-14d379bd-73a0-4a68-b90a-fb07270dd458.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=u641de3b0&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=538&amp;originWidth=1065&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=155769&amp;status=done&amp;style=none&amp;taskId=u61c683eb-d45c-4959-ae39-72dfb2b98cb&amp;title=" alt="image.png"></a>到这一步就完成了解密<br>其他分区可按照这种方法使用对应秘钥单独解密</p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+          <a href="/2021/12/28/phpydmbh/">浅谈PHP源代码保护方案&受保护PHP代码の解密还原</a>
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2021/12/02/shenjizhinan/">《PHP代码审计入门指南》</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2021/12/28/jycjmfqjm/">https://rce.moe/2021/12/28/jycjmfqjm/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+        <footer>
+          <div class="copyright">
+            ©2021
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 

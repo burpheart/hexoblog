@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      浅谈PHP源代码保护方案&amp;受保护PHP代码の解密还原 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PHP-%E5%8A%A0%E5%AF%86%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90"><span class="toc-text">PHP 加密方案分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E6%89%A9%E5%B1%95%E6%96%B9%E6%A1%88"><span class="toc-text">无扩展方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BA%90%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86"><span class="toc-text">源代码混淆</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E8%A7%A3%E5%AF%86"><span class="toc-text">手工解密</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E9%80%9A%E7%94%A8%E8%A7%A3%E5%AF%86"><span class="toc-text">自动化通用解密</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP%E6%89%A9%E5%B1%95%E6%96%B9%E6%A1%88"><span class="toc-text">PHP扩展方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BA%90%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86-1"><span class="toc-text">源代码混淆</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%8B%E5%B7%A5%E8%A7%A3%E5%AF%86-1"><span class="toc-text">手工解密</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E9%80%9A%E7%94%A8%E8%A7%A3%E5%AF%86-1"><span class="toc-text">自动化通用解密</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#opcode"><span class="toc-text">opcode</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%98%E5%8E%9F%E4%BB%A3%E7%A0%81"><span class="toc-text">还原代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95"><span class="toc-text">附录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP%E6%89%A9%E5%B1%95%E7%BC%96%E8%AF%91"><span class="toc-text">PHP扩展编译</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">浅谈PHP源代码保护方案&受保护PHP代码の解密还原</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2021/12/28</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/PHP">PHP</a>
+                
+              
+          </span>
+        </span>
+        
+        
+        
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="前言">前言<a class="post-anchor" href="#前言"></a></h1><p>php是一种解释型脚本语言.<br>与编译型语言不同,php源代码不是直接翻译成机器语言.而是翻译成中间代码(OPCODE) ,再由解释器(ZEND引擎)对中间代码进行解释运行 .<br>​</p>
+<p>在php源代码的保护在原理可以分为3大类.</p>
+<ul>
+<li>源代码混淆(编码)</li>
+<li>OPCODE混淆(编码)</li>
+<li>修改解释引擎(虚拟机)</li>
+</ul>
+<p>在部署上可以分为2大类.</p>
+<ul>
+<li>无扩展</li>
+<li>有扩展</li>
+</ul>
+<p>下面分析下各种加密方案的实现方法</p>
+<h1 id="PHP-加密方案分析">PHP 加密方案分析<a class="post-anchor" href="#PHP-加密方案分析"></a></h1><h2 id="无扩展方案">无扩展方案<a class="post-anchor" href="#无扩展方案"></a></h2><h3 id="源代码混淆">源代码混淆<a class="post-anchor" href="#源代码混淆"></a></h3><p>无扩展的加密在一些小开发者比较常见。<br>这种源代码保护方式侵入性小，无需对服务器做额外的配置，兼容性较强。<br>​</p>
+<p>这种情况混淆后的源代码还原非常简单，可完全还原出源代码。  <del>有时连注释都会保留</del>  (x 我觉得这种混淆都不能称之为加密<br>基本流程 压缩代码-&gt;混淆变量函数类名-&gt;使用简单函数和方法进行编码加密 例:base64 异或<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1639984142801-e5c44111-ff1d-4974-b8f2-3f1127237914.png#clientId=u026f8c22-4dd4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=258&amp;id=uaa0ad773&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=516&amp;originWidth=1507&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=74507&amp;status=done&amp;style=none&amp;taskId=u47cd95f0-94e1-4395-b5c7-a740644a74a&amp;title=&amp;width=753.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1639984142801-e5c44111-ff1d-4974-b8f2-3f1127237914.png#clientId=u026f8c22-4dd4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=258&amp;id=uaa0ad773&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=516&amp;originWidth=1507&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=74507&amp;status=done&amp;style=none&amp;taskId=u47cd95f0-94e1-4395-b5c7-a740644a74a&amp;title=&amp;width=753.5" alt="图片.png"></a></p>
+<h4 id="手工解密">手工解密<a class="post-anchor" href="#手工解密"></a></h4><p>看到这种的php不要慌  这种处理后的文件 解密流程的变量和函数名使用了大量的非打印字符 按照正常的流程就可以<br>ctrl+alt+l 快捷键 格式化代码 (这里使用的PhpStorm 其他IDE 格式化遇到特殊符号可能出问题  这里提前调整好了文件编码)<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1639984689214-e5a8ad0c-422c-40d1-84f0-727c3974eea1.png#clientId=u026f8c22-4dd4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=446&amp;id=u21be7827&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=891&amp;originWidth=1487&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=153989&amp;status=done&amp;style=none&amp;taskId=uea481db5-f9d2-4aec-82b3-c0e249031bf&amp;title=&amp;width=743.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1639984689214-e5a8ad0c-422c-40d1-84f0-727c3974eea1.png#clientId=u026f8c22-4dd4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=446&amp;id=u21be7827&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=891&amp;originWidth=1487&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=153989&amp;status=done&amp;style=none&amp;taskId=uea481db5-f9d2-4aec-82b3-c0e249031bf&amp;title=&amp;width=743.5" alt="图片.png"></a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1639984912243-392b73e7-494e-4318-9dff-930b7fe3f900.png#clientId=u026f8c22-4dd4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=445&amp;id=u565acd1c&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=889&amp;originWidth=1551&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=189524&amp;status=done&amp;style=none&amp;taskId=uf2d7d099-5d7f-4bb7-9265-8d83f0e4e9d&amp;title=&amp;width=775.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1639984912243-392b73e7-494e-4318-9dff-930b7fe3f900.png#clientId=u026f8c22-4dd4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=445&amp;id=u565acd1c&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=889&amp;originWidth=1551&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=189524&amp;status=done&amp;style=none&amp;taskId=uf2d7d099-5d7f-4bb7-9265-8d83f0e4e9d&amp;title=&amp;width=775.5" alt="图片.png"></a><br>这里有一个php的特性 php中的base64遇到非base64表中字符会直接忽略 不会影响解码<br>注: PHP7 遇到空字符可能会抛出error 可以使用php5.6执行 (这里有一个兼容性问题 )<br>遇到这种加密最简单的方法就是找文件中最后一步执行的函数 直接把内容打印出来<br>这种编码方法最后一步肯定要使用eval执行还原后的php代码 所以打印最后一个函数基本上php代码就会全部出来 (x 前面操作一大顿毫无卵用<br>注: 有保护方案也使用了call_user_func或call_user_func_array间接调用eval<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1639986299403-94bf5ca7-c911-4370-97ba-da07b5efd32a.png#clientId=u026f8c22-4dd4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=495&amp;id=ue693a50d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=989&amp;originWidth=1337&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=110380&amp;status=done&amp;style=none&amp;taskId=ub4fce217-ddab-4046-8b32-617ac3e518b&amp;title=&amp;width=668.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1639986299403-94bf5ca7-c911-4370-97ba-da07b5efd32a.png#clientId=u026f8c22-4dd4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=495&amp;id=ue693a50d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=989&amp;originWidth=1337&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=110380&amp;status=done&amp;style=none&amp;taskId=ub4fce217-ddab-4046-8b32-617ac3e518b&amp;title=&amp;width=668.5" alt="图片.png"></a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1639986722015-dc161164-e6e6-4dd6-828e-76dbbaa471dd.png#clientId=u026f8c22-4dd4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=297&amp;id=ube6d6e3d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=594&amp;originWidth=1495&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=47380&amp;status=done&amp;style=none&amp;taskId=ub2bb9c85-5272-475e-9980-43ae439a4ce&amp;title=&amp;width=747.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1639986722015-dc161164-e6e6-4dd6-828e-76dbbaa471dd.png#clientId=u026f8c22-4dd4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=297&amp;id=ube6d6e3d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=594&amp;originWidth=1495&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=47380&amp;status=done&amp;style=none&amp;taskId=ub2bb9c85-5272-475e-9980-43ae439a4ce&amp;title=&amp;width=747.5" alt="图片.png"></a><br>成功还原源代码 <!--?php phpinfo();?--></p>
+<h4 id="自动化通用解密">自动化通用解密<a class="post-anchor" href="#自动化通用解密"></a></h4><p>PHP提供了强大的扩展功能  可以直接通过编写php扩展hook eval相关函数 获取执行的源代码<br>HOOK  php zend引擎的  zend_compile_string   zend_include_or_eval 函数达到目的<br>这里演示的是 hook zend_compile_string 函数</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* $Id$ */</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"php.h"</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"ext/standard/info.h"</span></span><br><br><br><br><br><span class="hljs-keyword">static</span> zend_op_array* (*old_compile_string)(zval *source_string, <span class="hljs-keyword">char</span> *filename TSRMLS_DC);<br><br><br><span class="hljs-function"><span class="hljs-keyword">static</span> zend_op_array* <span class="hljs-title">evalhook_compile_string</span><span class="hljs-params">(zval *source_string, <span class="hljs-keyword">char</span> *filename TSRMLS_DC)</span></span><br><span class="hljs-function"></span>{<br><br>	<span class="hljs-keyword">if</span>(<span class="hljs-built_in">strstr</span>(filename, <span class="hljs-string">"eval()'d code"</span>)) {<br>		<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n------eval-------\n%s\n------eval-------\n"</span>,Z_STRVAL_P(source_string));<br>	}<br>		<span class="hljs-keyword">return</span> old_compile_string(source_string, filename TSRMLS_CC);<br>}<br><br><br>PHP_MINIT_FUNCTION(evalhook)<br>{<br>	<span class="hljs-keyword">return</span> SUCCESS;<br>}<br><br>PHP_MSHUTDOWN_FUNCTION(evalhook)<br>{<br>	<span class="hljs-keyword">return</span> SUCCESS;<br>}<br><br>PHP_RINIT_FUNCTION(evalhook)<br>{<br>	old_compile_string = zend_compile_string;<br>	zend_compile_string = evalhook_compile_string;<br>	<span class="hljs-keyword">return</span> SUCCESS;<br>}<br><br>PHP_RSHUTDOWN_FUNCTION(evalhook)<br>{<br>	zend_compile_string = old_compile_string;<br>	<span class="hljs-keyword">return</span> SUCCESS;<br>}<br><br>PHP_MINFO_FUNCTION(evalhook)<br>{<br>	php_info_print_table_start();<br>	php_info_print_table_row(<span class="hljs-number">2</span>, <span class="hljs-string">"eval hooking"</span>, <span class="hljs-string">"enabled"</span>);<br>	php_info_print_table_end();<br>}<br><br><br>zend_function_entry evalhook_functions[] = {<br>	ZEND_FE_END<br>};<br><br>zend_module_entry evalhook_module_entry = {<br>	STANDARD_MODULE_HEADER,<br>	<span class="hljs-string">"evalhook"</span>,<br>	evalhook_functions,<br>	PHP_MINIT(evalhook),<br>	PHP_MSHUTDOWN(evalhook),<br>	PHP_RINIT(evalhook),	<br>	PHP_RSHUTDOWN(evalhook),<br>	PHP_MINFO(evalhook),<br>	<span class="hljs-string">"0.0.1-dev"</span>,<br>	STANDARD_MODULE_PROPERTIES<br>};<br><br>ZEND_GET_MODULE(evalhook)<br><br></code></pre></td></tr></tbody></table></figure>
+<h3 id=""><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640663731385-16f58151-709e-4062-bd5b-97b1ed4e829f.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=278&amp;id=SZEMD&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=556&amp;originWidth=1069&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=286045&amp;status=done&amp;style=none&amp;taskId=u8ec961d4-baf6-49d7-993b-d2168e65084&amp;title=&amp;width=534.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640663731385-16f58151-709e-4062-bd5b-97b1ed4e829f.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=278&amp;id=SZEMD&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=556&amp;originWidth=1069&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=286045&amp;status=done&amp;style=none&amp;taskId=u8ec961d4-baf6-49d7-993b-d2168e65084&amp;title=&amp;width=534.5" alt="图片.png"></a><a class="post-anchor" href="#"></a></h3><p>成功还原源代码</p>
+<h2 id="PHP扩展方案">PHP扩展方案<a class="post-anchor" href="#PHP扩展方案"></a></h2><h3 id="源代码混淆-1">源代码混淆<a class="post-anchor" href="#源代码混淆-1"></a></h3><p>使用php扩展的代码混淆和无扩展代码混淆比较相似，只不过是把代码还原过程从php代码转到了php扩展。<br>同样是使用aes des 异或等加密方法直接加密php代码，HOOK翻译php的函数在翻译PHP文件前对文件进行解密操作。这种方案也可以完全还原出源代码。在无其他混淆和压缩时甚至还会保留注释。<br>典型开源项目：<a target="_blank" rel="noopener" href="https://github.com/liexusong/php-beast">php-beast</a> <a target="_blank" rel="noopener" href="https://github.com/lihancong/tonyenc">tonyenc</a>  <a target="_blank" rel="noopener" href="https://github.com/del-xiong/screw-plus">screw-plus</a><br>​</p>
+<h4 id="手工解密-1">手工解密<a class="post-anchor" href="#手工解密-1"></a></h4><p>这里以beast为例.<br>首先在php的扩展目录下找到beast.so<br>beast的加密方案会把加密key编译进扩展中. 我们只需要寻找key就可以完成解密<br>beast由于是开源项目.有现成的符号表和源码这使得反编译寻找key变得非常简单.<br>但这样有点太简单了. 所以这里演示的是在没有源码的情况下使用IDA分析解密流程.<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640667792004-795befe5-1a25-4873-a788-f5066713b0e1.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=425&amp;id=ua50ed106&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=850&amp;originWidth=1679&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=41416&amp;status=done&amp;style=none&amp;taskId=ufd1adc94-7cbc-4615-90d1-078d7104ffd&amp;title=&amp;width=839.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640667792004-795befe5-1a25-4873-a788-f5066713b0e1.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=425&amp;id=ua50ed106&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=850&amp;originWidth=1679&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=41416&amp;status=done&amp;style=none&amp;taskId=ufd1adc94-7cbc-4615-90d1-078d7104ffd&amp;title=&amp;width=839.5" alt="图片.png"></a><br>首先在导入表找到zend_compile_file<br>这个函数会将php文件翻译成opcode<br>因此大部分php加密扩展都需要hook这个函数达到拦截php文件载入和替换php文件的功能<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640667933124-c12b2d30-6da7-42c5-96b0-d0170fcde706.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=192&amp;id=u49498a37&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=383&amp;originWidth=1066&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=32662&amp;status=done&amp;style=none&amp;taskId=u8cbb957c-ed3c-4904-8188-2700cdfd2bf&amp;title=&amp;width=533" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640667933124-c12b2d30-6da7-42c5-96b0-d0170fcde706.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=192&amp;id=u49498a37&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=383&amp;originWidth=1066&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=32662&amp;status=done&amp;style=none&amp;taskId=u8cbb957c-ed3c-4904-8188-2700cdfd2bf&amp;title=&amp;width=533" alt="图片.png"></a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640667947048-09203618-c93b-48df-a4d7-ac322640826e.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=173&amp;id=uba606fe0&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=346&amp;originWidth=1084&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=29406&amp;status=done&amp;style=none&amp;taskId=u6d540317-a2e6-4d13-b348-83bb65af9e1&amp;title=&amp;width=542" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640667947048-09203618-c93b-48df-a4d7-ac322640826e.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=173&amp;id=uba606fe0&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=346&amp;originWidth=1084&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=29406&amp;status=done&amp;style=none&amp;taskId=u6d540317-a2e6-4d13-b348-83bb65af9e1&amp;title=&amp;width=542" alt="图片.png"></a><br>继续跟入<br>发现有两个函数<br>一般在这种php加密扩展设计时会对这个函数有两次操作：<br>一个是在启动时hook 这个函数，一个是在停止时恢复这个函数。<br>继续跟入启动hook<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640668259252-e7b787e7-417c-4e6b-acb2-40e86b07438e.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=229&amp;id=ue0315944&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=457&amp;originWidth=1199&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=45315&amp;status=done&amp;style=none&amp;taskId=u01e6b7f2-08c5-4326-9e26-ec50c58a925&amp;title=&amp;width=599.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640668259252-e7b787e7-417c-4e6b-acb2-40e86b07438e.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=229&amp;id=ue0315944&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=457&amp;originWidth=1199&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=45315&amp;status=done&amp;style=none&amp;taskId=u01e6b7f2-08c5-4326-9e26-ec50c58a925&amp;title=&amp;width=599.5" alt="图片.png"></a><br>显然文件处理逻辑在cgi_compile_file内<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640668343586-04145b02-b0ed-4d1e-9d61-36e51a1442dd.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=320&amp;id=u66ed470d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=639&amp;originWidth=854&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=30817&amp;status=done&amp;style=none&amp;taskId=uc3a15938-f8f5-48a8-b08c-f01339a7526&amp;title=&amp;width=427" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640668343586-04145b02-b0ed-4d1e-9d61-36e51a1442dd.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=320&amp;id=u66ed470d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=639&amp;originWidth=854&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=30817&amp;status=done&amp;style=none&amp;taskId=uc3a15938-f8f5-48a8-b08c-f01339a7526&amp;title=&amp;width=427" alt="图片.png"></a><br>跟踪文件句柄<br>decrypt_file函数的参数存在文件句柄 所以这个函数应该就是文件解密函数<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669226754-9b7f62ab-7f9e-4bf9-8675-3786ac8b5560.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=376&amp;id=uee5b6613&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=752&amp;originWidth=1104&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=61583&amp;status=done&amp;style=none&amp;taskId=u2672803c-364b-4ddd-bb92-38417211266&amp;title=&amp;width=552" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669226754-9b7f62ab-7f9e-4bf9-8675-3786ac8b5560.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=376&amp;id=uee5b6613&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=752&amp;originWidth=1104&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=61583&amp;status=done&amp;style=none&amp;taskId=u2672803c-364b-4ddd-bb92-38417211266&amp;title=&amp;width=552" alt="图片.png"></a><br>根据代码可以看出beast 加密文件的结构<br>| encrypt_file_header_sign 文件头标记（不固定 可修改）| reallen文件长度 int 4字节 | expire  到期时间 int 4字节| entype  加密方式 int 4字节| 加密后文件|<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669438637-f6eee98e-6630-4349-83dd-14f9f3ee1b6f.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=58&amp;id=u6846ceec&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=115&amp;originWidth=802&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=14844&amp;status=done&amp;style=none&amp;taskId=u94a5b2db-e334-4c4c-aa8b-fe59aa52d14&amp;title=&amp;width=401" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669438637-f6eee98e-6630-4349-83dd-14f9f3ee1b6f.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=58&amp;id=u6846ceec&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=115&amp;originWidth=802&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=14844&amp;status=done&amp;style=none&amp;taskId=u94a5b2db-e334-4c4c-aa8b-fe59aa52d14&amp;title=&amp;width=401" alt="图片.png"></a><br>分析文件头发现该文件加密方式为 02<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669486813-93fd53d9-1297-4128-8050-04a82b0466cc.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=242&amp;id=u0c0c7ba0&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=483&amp;originWidth=734&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=21816&amp;status=done&amp;style=none&amp;taskId=uf8597c31-7bc7-41a5-b122-08b230bb185&amp;title=&amp;width=367" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669486813-93fd53d9-1297-4128-8050-04a82b0466cc.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=242&amp;id=u0c0c7ba0&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=483&amp;originWidth=734&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=21816&amp;status=done&amp;style=none&amp;taskId=uf8597c31-7bc7-41a5-b122-08b230bb185&amp;title=&amp;width=367" alt="图片.png"></a><br>跟入beast_get_encrypt_algo<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669565989-5465bc80-43c5-4e21-9eb9-48c48355d8d0.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=132&amp;id=u51072849&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=263&amp;originWidth=580&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=10699&amp;status=done&amp;style=none&amp;taskId=ua13b0649-7f8a-4bb0-8cc2-75d66c8623c&amp;title=&amp;width=290" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669565989-5465bc80-43c5-4e21-9eb9-48c48355d8d0.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=132&amp;id=u51072849&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=263&amp;originWidth=580&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=10699&amp;status=done&amp;style=none&amp;taskId=ua13b0649-7f8a-4bb0-8cc2-75d66c8623c&amp;title=&amp;width=290" alt="图片.png"></a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669587040-3e95adf2-04b5-4e8c-8da1-981ccd2fd23b.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=60&amp;id=uc6eb478b&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=120&amp;originWidth=1234&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=11578&amp;status=done&amp;style=none&amp;taskId=u3f306834-9c2e-4cc7-9786-7947a78fe39&amp;title=&amp;width=617" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669587040-3e95adf2-04b5-4e8c-8da1-981ccd2fd23b.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=60&amp;id=uc6eb478b&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=120&amp;originWidth=1234&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=11578&amp;status=done&amp;style=none&amp;taskId=u3f306834-9c2e-4cc7-9786-7947a78fe39&amp;title=&amp;width=617" alt="图片.png"></a><br>2对应的是 aes_handler_ops<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669759262-78b8ecde-6a03-43ac-911e-4cb5f5c4e7c0.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=46&amp;id=u320f4ebe&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=92&amp;originWidth=907&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=7738&amp;status=done&amp;style=none&amp;taskId=u82cd49ba-ec27-45fb-aefe-1a4c7b9f5ad&amp;title=&amp;width=453.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669759262-78b8ecde-6a03-43ac-911e-4cb5f5c4e7c0.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=46&amp;id=u320f4ebe&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=92&amp;originWidth=907&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=7738&amp;status=done&amp;style=none&amp;taskId=u82cd49ba-ec27-45fb-aefe-1a4c7b9f5ad&amp;title=&amp;width=453.5" alt="图片.png"></a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669799297-351483dd-c84b-4546-bf04-d9331710bfee.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=333&amp;id=u9a63cc74&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=666&amp;originWidth=995&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=30149&amp;status=done&amp;style=none&amp;taskId=ucc2f9d9f-74d4-46ad-abcf-dc17701c539&amp;title=&amp;width=497.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669799297-351483dd-c84b-4546-bf04-d9331710bfee.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=333&amp;id=u9a63cc74&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=666&amp;originWidth=995&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=30149&amp;status=done&amp;style=none&amp;taskId=ucc2f9d9f-74d4-46ad-abcf-dc17701c539&amp;title=&amp;width=497.5" alt="图片.png"></a><br>使用了AES 128 ECB加密模式<br>直接提取key参数内容<br>长度刚好16位<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669854906-f3e5803f-1da8-4665-a92d-cdf58eed5ecf.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=62&amp;id=u4301fdb1&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=123&amp;originWidth=1016&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9427&amp;status=done&amp;style=none&amp;taskId=u5ce00d93-ed58-4485-abfd-e7e86aba267&amp;title=&amp;width=508" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669854906-f3e5803f-1da8-4665-a92d-cdf58eed5ecf.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=62&amp;id=u4301fdb1&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=123&amp;originWidth=1016&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9427&amp;status=done&amp;style=none&amp;taskId=u5ce00d93-ed58-4485-abfd-e7e86aba267&amp;title=&amp;width=508" alt="图片.png"></a><br>到这一步就成功拿到了加密秘钥<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669987264-3a30cad5-8312-4614-a154-0b4528445325.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=321&amp;id=ubd4094ab&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=641&amp;originWidth=1456&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=44968&amp;status=done&amp;style=none&amp;taskId=ua7771642-69dd-41dd-a117-7589005589e&amp;title=&amp;width=728" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640669987264-3a30cad5-8312-4614-a154-0b4528445325.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=321&amp;id=ubd4094ab&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=641&amp;originWidth=1456&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=44968&amp;status=done&amp;style=none&amp;taskId=ua7771642-69dd-41dd-a117-7589005589e&amp;title=&amp;width=728" alt="图片.png"></a><br>使用拿到的KEY就可以解密PHP文件<br>​</p>
+<h4 id="自动化通用解密-1">自动化通用解密<a class="post-anchor" href="#自动化通用解密-1"></a></h4><p>编写php扩展 HOOK zend_compile_file函数<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640675107674-1fe6e292-93dd-46f2-ba4b-c07ae9896045.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=315&amp;id=uef0c500e&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=630&amp;originWidth=1050&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=204205&amp;status=done&amp;style=none&amp;taskId=uc077cebf-97c7-47d3-bbf5-0679b5329d1&amp;title=&amp;width=525" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640675107674-1fe6e292-93dd-46f2-ba4b-c07ae9896045.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=315&amp;id=uef0c500e&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=630&amp;originWidth=1050&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=204205&amp;status=done&amp;style=none&amp;taskId=uc077cebf-97c7-47d3-bbf5-0679b5329d1&amp;title=&amp;width=525" alt="图片.png"></a><br>beast的加密不会对php文件做额外的操作  解密文件与加密前原文件完全一致<br>php注释和原格式都会保留<br>注意: 这里扩展加载顺序问题 建议直接修改php源码<br>Zendzend_language_scanner.c<br>ZEND_API zend_op_array *compile_file</p>
+<h3 id="opcode">opcode<a class="post-anchor" href="#opcode"></a></h3><p>php会将源代码翻译成类似汇编的二进制中间操作码再交给zend引擎执行。<br>之前的介绍的都是编译之前对php源代码的直接操作。这里是对opcode的操作，跳过翻译过程，直接把现成的opcode交给zend引擎执行(不同版本PHP引擎编译出的opcode可能会有兼容性问题)。<br>这种php代码防护方法 只能hook zend_execute 拿到opcode。 不可能直接得到原本的源码，只能通过反编译尽可能的还原源代码。<br>大部分商业php保护方案都使用这种可靠的方案为基础  _ZendGuard(zend) _SourceGuardian(SG)    IonCube (IC)  Swoole Compiler<br>上面的方案有的还对zend引擎进行了魔改，使翻译出的opcode只能在修改后的引擎执行,进一步增强了安全性。</p>
+<h4 id="还原代码">还原代码<a class="post-anchor" href="#还原代码"></a></h4><p>hook zend_execute 拿到opcode<br>使用对应版本的php操作码反推php代码<br><del>太菜了不会反编译)</del></p>
+<h2 id="附录">附录<a class="post-anchor" href="#附录"></a></h2><h3 id="PHP扩展编译">PHP扩展编译<a class="post-anchor" href="#PHP扩展编译"></a></h3><p>​</p>
+<p>​</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">docker run -it --rm -v /mnt/hgfs/tmpssd/php-eval-hook/:/ext/ php:5.6 /bin/bash<br>apt-get update <br>apt install libtool<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">phpize<br></code></pre></td></tr></tbody></table></figure>
+<p>phpize 生成Makefile<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640659743578-16966a47-0609-4141-befc-35f1f15de9f4.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=132&amp;id=u25e71fa8&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=264&amp;originWidth=617&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=66338&amp;status=done&amp;style=none&amp;taskId=uaaa95938-8f83-42d8-a618-e0199690899&amp;title=&amp;width=308.5" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640659743578-16966a47-0609-4141-befc-35f1f15de9f4.png#clientId=ua0db5940-4ff0-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=132&amp;id=u25e71fa8&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=264&amp;originWidth=617&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=66338&amp;status=done&amp;style=none&amp;taskId=uaaa95938-8f83-42d8-a618-e0199690899&amp;title=&amp;width=308.5" alt="图片.png"></a></p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">./configure --enable-evalhook<br></code></pre></td></tr></tbody></table></figure>
+<p>配置编译选项 启用扩展<br>​</p>
+<p>最后执行make 编译扩展<br>编译好的扩展会放在./modules/ 目录下<br>使用扩展</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><code class="hljs c">php -d extension=扩展位置 -f 文件<br></code></pre></td></tr></tbody></table></figure>
+<p>可以重复使用-d extension 加载多个扩展</p>
+<p>​</p>
+<h2 id="总结">总结<a class="post-anchor" href="#总结"></a></h2><p>在选用PHP源码保护方案时 尽量选择opcode或虚拟机方案<br>源代码混淆类只能对源代码获取和阅读增加一点困难 在加密扩展可被攻击者获取到时并不能起到保护作用<br><a target="_blank" rel="noopener" href="https://www.yuque.com/burpheart/phpaudit/readme?view=doc_embed">PHP代码审计入门指南</a>## 参考<br> <a target="_blank" rel="noopener" href="https://www.kancloud.cn/nickbai/php7/363273">php内核剖析</a>​<br><a target="_blank" rel="noopener" href="https://blog.zsxsoft.com/post/40">从Zend虚拟机分析PHP加密扩展</a><br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000007035295">通用加密php文件还原方法</a></p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2021/12/28/jycjmfqjm/">记一次审计时遇到的加密分区解密</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2021/12/28/phpydmbh/">https://rce.moe/2021/12/28/phpydmbh/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+        <footer>
+          <div class="copyright">
+            ©2021
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
