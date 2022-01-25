@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-01-25T03:17:22.804Z</updated>
+  <updated>2022-01-25T03:22:15.827Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>记一次src测试中的ldap注入的深入利用</title>
+    <title>记一次src测试中的ldap注入深入利用</title>
     <link href="https://rce.moe/2022/01/25/ldap-inject-1/"/>
     <id>https://rce.moe/2022/01/25/ldap-inject-1/</id>
     <published>2022-01-25T03:14:55.000Z</published>
-    <updated>2022-01-25T03:17:22.804Z</updated>
+    <updated>2022-01-25T03:22:15.827Z</updated>
     
     
       
