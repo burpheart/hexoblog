@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2021-12-28T09:07:00.234Z</updated>
+  <updated>2022-01-25T03:17:22.804Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>记一次src测试中的ldap注入的深入利用</title>
+    <link href="https://rce.moe/2022/01/25/ldap-inject-1/"/>
+    <id>https://rce.moe/2022/01/25/ldap-inject-1/</id>
+    <published>2022-01-25T03:14:55.000Z</published>
+    <updated>2022-01-25T03:17:22.804Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;ldap注入点判断&quot;&gt;ldap注入点判断&lt;a class=&quot;post-anchor&quot; href=&quot;#ldap注入点判断&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;在最近的一次的src测试中遇到了一个ldap注入漏洞,目标是一个管理</summary>
+      
+    
+    
+    
+    <category term="web" scheme="https://rce.moe/categories/web/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>浅谈PHP源代码保护方案&amp;受保护PHP代码の解密还原</title>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      记一次src测试中的ldap注入的深入利用 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ldap%E6%B3%A8%E5%85%A5%E7%82%B9%E5%88%A4%E6%96%AD"><span class="toc-text">ldap注入点判断</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ldap%E7%9A%84%E6%B3%A8%E5%85%A5%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8"><span class="toc-text">ldap的注入简单利用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96ldap%E4%B8%AD%E7%9A%84%E5%AF%86%E7%A0%81"><span class="toc-text">获取ldap中的密码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%B3%95"><span class="toc-text">修复方法</span></a></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">记一次src测试中的ldap注入的深入利用</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2022/01/25</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/web">web</a>
+                
+              
+          </span>
+        </span>
+        
+        
+        
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="ldap注入点判断">ldap注入点判断<a class="post-anchor" href="#ldap注入点判断"></a></h1><p>在最近的一次的src测试中遇到了一个ldap注入漏洞,目标是一个管理平台,漏洞点存在于用户名判断处.<br>ldap注入是指ldap过滤器语句(filter)的注入<br>ldap过滤器的基本语法如下</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">=<br>&gt;=<br>&lt;=<br>|  或<br>&amp;  与<br>!  非<br>*  通配符<br>(语句)<br></code></pre></td></tr></tbody></table></figure>
+<p>例如一个简单的查询语句如下</p>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><code class="hljs php">(cn=admin)<br></code></pre></td></tr></tbody></table></figure>
+<p>搜索cn值属性为admin的条目 成功会返回完整条目属性<br>实际使用时可能会比较复杂<br>比如说同时搜索匹配用户输入的用户名/邮箱/手机号</p>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><code class="hljs php">(|(cn=admin)(mail=admin)(mobile=admin))<br></code></pre></td></tr></tbody></table></figure>
+<p>ldap条目常见的属性值</p>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><code class="hljs php">cn  (Common Name 通用名称) 常被用做用户名<br>Surname 姓<br>mobile 手机号<br>mail 邮箱<br></code></pre></td></tr></tbody></table></figure>
+<p>在判断注入点的时候可以插入半个括号<br>多余的未闭合的括号会使ldap查询出错 观察返回是否出现异常 即可判断注入点<br>也可以直接输入*(星号) 通配符观察返回是否为用户存在但密码错误 或者是服务器错误(ldap查询可以同时返回多条结果 如果查询结果不唯一  后端未做好处理可能会报错)<br>ldap注入常见于在判断用户名是否存在的点 很少出现在用户名密码同时判断的地方<br>经过盲测发现目标可能的登陆逻辑如下</p>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><code class="hljs php"><br><span class="hljs-variable">$ds</span>=ldap_connect(<span class="hljs-variable">$ldapSrv</span>,<span class="hljs-variable">$port</span>);<span class="hljs-comment">//建立ldap连接</span><br><span class="hljs-keyword">if</span>(<span class="hljs-variable">$ds</span>) {<br>    <span class="hljs-variable">$r</span>=ldap_bind(<span class="hljs-variable">$ds</span>, <span class="hljs-string">"cn="</span>.<span class="hljs-variable">$username</span>.<span class="hljs-string">","</span>.<span class="hljs-variable">$dn</span>, <span class="hljs-variable">$passwd</span>);/绑定ldap区域(相当于登陆ldap服务器)  使用域管用户登陆 检索用户列表<br>    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$r</span>) {<br>        <span class="hljs-variable">$sr</span>=ldap_search(<span class="hljs-variable">$ds</span>, <span class="hljs-variable">$dn</span>, <span class="hljs-string">"(user="</span>.<span class="hljs-variable">$_GET</span>[<span class="hljs-string">"user"</span>].<span class="hljs-string">")"</span>);<span class="hljs-comment">//在ldap中使用过滤器搜索用户名</span><br>        <span class="hljs-variable">$info</span> = ldap_get_entries(<span class="hljs-variable">$ds</span>, <span class="hljs-variable">$sr</span>);<br>        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$info</span>[<span class="hljs-string">"count"</span>]==<span class="hljs-number">0</span>){<br>        	<span class="hljs-keyword">die</span>(<span class="hljs-string">'用户不存在'</span>);<br>        }<br>        ldap_close(<span class="hljs-variable">$ds</span>);<br>      <span class="hljs-variable">$ds</span>=ldap_connect(<span class="hljs-variable">$ldapSrv</span>,<span class="hljs-variable">$port</span>);<span class="hljs-comment">//建立ldap连接</span><br>          <span class="hljs-variable">$bd</span> = ldap_bind(<span class="hljs-variable">$conn</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">"user"</span>], <span class="hljs-variable">$passwd</span>); <span class="hljs-comment">// 绑定ldap区域(相当于登陆ldap服务器) 以普通用户登陆 判断是否登陆成功</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$bd</span>) {<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">'登陆成功'</span>;<br>    } <span class="hljs-keyword">else</span> {<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">'密码错误'</span>;<br>    }<br>      ldap_close(<span class="hljs-variable">$ds</span>);<br>        } <span class="hljs-keyword">else</span> {<br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">"Unable to connect to LDAP server."</span>;<br>        }        <br>    }<br></code></pre></td></tr></tbody></table></figure>
+<p>​</p>
+<h1 id="ldap的注入简单利用">ldap的注入简单利用<a class="post-anchor" href="#ldap的注入简单利用"></a></h1><p>ldap通常构造通配符查询 控制返回的结果<br>实现布尔注入从而带出ldap中储存的数据<br>比如ldap中存在一个admin的用户名 查询的注入点为cn<br>那么可以使用<em>匹配先猜测出用户名<br>(cn=a</em>) 返回密码错误<br>(cn=b*) 返回用户名不存在<br>只要判断为密码错误即为匹配成功</p>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><code class="hljs php">构造脚本递归匹配字符<br>(cn=a*)<br>(cn=ad*)<br>(cn=adm*)<br>(cn=admi*)<br>(cn=admin*)<br>当然*也可以插在开头和中间或者是单独使用<br>(cn=a*n)<br>(cn=*n)<br>(cn=*)<br></code></pre></td></tr></tbody></table></figure>
+<p>构造语句猜测admin用户的手机号<br>(cn=admin)(mobile=13*)<br>到这里已经可以跑出ldap中保存的一些敏感信息(手机号 邮箱 用户名)</p>
+<h1 id="获取ldap中的密码">获取ldap中的密码<a class="post-anchor" href="#获取ldap中的密码"></a></h1><p>但是这造成的影响还是不太够 一个注入就只能拿到这么少的数据<br>作为用于用户鉴权场景的ldap当然是要拿到用户的密码 登陆后台<br>查阅文档 用户的密码储存在 userPassword属性<br>尝试构造查询<br>(cn=admin)(userPassword=a*)<br>多次尝试发现都无法匹配记录.<br>但是直接使用<em>可以匹配成功<br>既然密码是一个属性为什么使用</em>号不能匹配部分字符串呢?<br>经过查阅ldap <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc4519">rfc4519</a>文档 发现userPassword属性类型不是常规的字符串,而是(Octet String 字节序列)<br>*通配符只能匹配字符串<br>那么怎么匹配字节序列呢<br>通过阅读l<a target="_blank" rel="noopener" href="https://ldapwiki.com/wiki/MatchingRule">dapwiki</a>发现过滤器除了可以使用常规的运算符外,还有一种特殊的匹配规则(MatchingRule)<br>其中有两个专门匹配Octet String的规则<br>octetStringMatch<br>octetStringOrderingMatch<br>第一个规则在完全匹配时才会返回真,这显然不能利用.<br>在 <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc4517#section-4.2.28">rfc4517</a> 找到了octetStringOrderingMatch规则的详细介绍</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">The rule evaluates to TRUE if and only if the attribute value appears<br>earlier in the collation order than the assertion value.  The rule<br>compares octet strings from the first octet to the last octet, and<br>from the most significant bit to the least significant bit within the<br>octet.  The first occurrence of a different bit determines the<br>ordering of the strings.  A zero bit precedes a one bit.  If the<br>strings contain different numbers of octets but the longer string is<br>identical to the shorter string up to the length of the shorter<br>string, then the shorter string precedes the longer string.<br></code></pre></td></tr></tbody></table></figure>
+<p>逐字节比较两字节之间的大小 后者大于前者就返回真 显然这个规则可以用于注入<br>使用 十六进制转义\xx匹配单个字节 (ldap过滤器的语法之一)<br> …. …. 用户名错误<br>(cn=admin)(userPassword:2.5.13.18:=\7b) 用户名错误<br>(cn=admin)(userPassword:2.5.13.18:=\7c) 密码错误 第一个字节为7b 继续尝试<br> …. …. 用户名错误<br>(cn=admin)(userPassword:2.5.13.18:=\7b\4d) 用户名错误<br>(cn=admin)(userPassword:2.5.13.18:=\7b\4e) 密码错误 第二个字节为4d 继续尝试<br> …. ….<br>注意要将匹配到的每个字节-1再进行下一个匹配<br>最后直接转为字符串得到密码<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1643029284243-e5d3251f-6c45-4901-91ba-82c9f2e4ab93.png#clientId=u7d74ff84-6060-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=438&amp;id=u8e439bf9&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=547&amp;originWidth=852&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=386226&amp;status=done&amp;style=none&amp;taskId=ua34a08f1-a688-4873-a212-9ae2da4f284&amp;title=&amp;width=681.6" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1643029284243-e5d3251f-6c45-4901-91ba-82c9f2e4ab93.png#clientId=u7d74ff84-6060-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=438&amp;id=u8e439bf9&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=547&amp;originWidth=852&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=386226&amp;status=done&amp;style=none&amp;taskId=ua34a08f1-a688-4873-a212-9ae2da4f284&amp;title=&amp;width=681.6" alt="图片.png"></a><br>最后成功跑出了目标账号的密码<br>现在ldap的密码很少有明文储存的<br>基本上都是哈希后的密码<br>格式为 {类型}base64后的值<br>ldap有四种常见哈希<br>{SHA} (SHA-1)<br>(SSHA) (带盐 SHA-1) 新版本最常见<br>{MD5}_<br>{SMD5}带盐MD5<br>将base64解码转换为十六进制字符串就可以进行常规的HASH猜测了</p>
+<h1 id="修复方法">修复方法<a class="post-anchor" href="#修复方法"></a></h1><p>转义可能会改变ldap过滤器语法的字符<br><a target="_blank" rel="noopener" href="https://tttang.com/archive/1179/">LDAP注入与防御剖析</a>​</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">function ldapspecialchars($string) {<br>    $sanitized=array('\\' =&gt; '\5c',<br>                     '*' =&gt; '\2a',<br>                     '(' =&gt; '\28',<br>                     ')' =&gt; '\29',<br>                     "\x00" =&gt; '\00');<br><br>    return str_replace(array_keys($sanitized),array_values($sanitized),$string);<br>}<br></code></pre></td></tr></tbody></table></figure>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2021/12/28/phpydmbh/">浅谈PHP源代码保护方案&受保护PHP代码の解密还原</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2022/01/25/ldap-inject-1/">https://rce.moe/2022/01/25/ldap-inject-1/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+        <footer>
+          <div class="copyright">
+            ©2022
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
