@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-01-31T05:50:50.225Z</updated>
+  <updated>2022-03-15T04:45:51.986Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -21,12 +21,12 @@
     <link href="https://rce.moe/2022/01/25/ldap-inject-1/"/>
     <id>https://rce.moe/2022/01/25/ldap-inject-1/</id>
     <published>2022-01-25T03:14:55.000Z</published>
-    <updated>2022-01-31T05:50:50.225Z</updated>
+    <updated>2022-03-15T04:45:51.986Z</updated>
     
     
       
       
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;ldap注入点判断&quot;&gt;ldap注入点判断&lt;a class=&quot;post-anchor&quot; href=&quot;#ldap注入点判断&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;在最近的一次的src测试中遇到了一个ldap注入漏洞,目标是一个管理</summary>
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;在最近的一次的src测试中遇到了ldap注入漏洞,目标是一个管理平台的单点登陆入口,漏洞存在于用户名存在判断处</summary>
       
     
     
