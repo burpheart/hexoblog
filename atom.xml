@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-03-27T13:40:47.179Z</updated>
+  <updated>2022-04-18T11:00:33.917Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>构建jsp webshell的一个小trick</title>
+    <link href="https://rce.moe/2022/04/18/jsp-webshell-trick/"/>
+    <id>https://rce.moe/2022/04/18/jsp-webshell-trick/</id>
+    <published>2022-04-18T10:58:20.000Z</published>
+    <updated>2022-04-18T11:00:33.917Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;jsp中可以使用el表达式&lt;br&gt;所以我们可以使用和el表达式注入一样的方法构造webshell&lt;/p&gt;
+&lt;p&gt;可以避免出现 &amp;lt;%符号&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;tabl</summary>
+      
+    
+    
+    
+    <category term="笔记" scheme="https://rce.moe/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>如何打造一个网络空间资产测绘系统--网络框架测绘の开发笔记</title>
