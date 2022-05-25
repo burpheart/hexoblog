@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-05-08T12:37:58.787Z</updated>
+  <updated>2022-05-25T15:02:14.564Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ping2rce出题人writeup 一种环境变量注入劫持bash的实际利用场景</title>
+    <link href="https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/"/>
+    <id>https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/</id>
+    <published>2022-05-25T14:58:08.000Z</published>
+    <updated>2022-05-25T15:02:14.564Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;前不久p牛分享了一个&lt;a href=&quot;https://tttang.com/archive/1450/&quot;&gt;利用</summary>
+      
+    
+    
+    
+    <category term="WEB" scheme="https://rce.moe/categories/WEB/"/>
+    
+    <category term="writeup" scheme="https://rce.moe/categories/WEB/writeup/"/>
+    
+    
+    <category term="writeup" scheme="https://rce.moe/tags/writeup/"/>
+    
+    <category term="WEB" scheme="https://rce.moe/tags/WEB/"/>
+    
+    <category term="goahead" scheme="https://rce.moe/tags/goahead/"/>
+    
+  </entry>
   
   <entry>
     <title>CTFd性能优化笔记-DNUICTF</title>

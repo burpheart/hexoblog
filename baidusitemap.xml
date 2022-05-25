@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/</loc>
+    <lastmod>2022-05-25</lastmod>
+  </url>
+  <url>
     <loc>https://rce.moe/2022/05/08/untitled-1652012374403/</loc>
     <lastmod>2022-05-08</lastmod>
   </url>
