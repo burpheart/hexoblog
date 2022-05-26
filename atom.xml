@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-05-26T05:09:28.791Z</updated>
+  <updated>2022-05-26T05:24:28.954Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>ping2rce出题人writeup 一种环境变量注入劫持bash的实际利用场景</title>
-    <link href="https://rce.moe/2022/06/06/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/"/>
-    <id>https://rce.moe/2022/06/06/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/</id>
-    <published>2022-06-06T14:58:08.000Z</published>
-    <updated>2022-05-26T05:09:28.791Z</updated>
+    <link href="https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/"/>
+    <id>https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/</id>
+    <published>2022-05-25T14:58:08.000Z</published>
+    <updated>2022-05-26T05:24:28.954Z</updated>
     
     
     <summary type="html">这篇文章需要密码才能浏览的说 ~☆</summary>
