@@ -46,10 +46,13 @@
     <link href="https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/"/>
     <id>https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/</id>
     <published>2022-05-25T14:58:08.000Z</published>
-    <updated>2022-05-26T05:24:28.954Z</updated>
+    <updated>2022-05-30T04:14:56.257Z</updated>
     
     
-    <summary type="html">这篇文章需要密码才能浏览的说 ~☆</summary>
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;前不久p牛分享了一个&lt;a href=&quot;https://tttang.com/archive/1450/&quot;&gt;利用</summary>
+      
     
     
     
@@ -59,8 +62,6 @@
     
     
     <category term="writeup" scheme="https://rce.moe/tags/writeup/"/>
-    
-    <category term="password" scheme="https://rce.moe/tags/password/"/>
     
     <category term="WEB" scheme="https://rce.moe/tags/WEB/"/>
     
