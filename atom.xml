@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-05-26T05:24:28.954Z</updated>
+  <updated>2022-05-30T03:26:04.269Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>第15届全国大学生知识竞赛 online_crt writeup    c_rehash(CVE-2022-1292)   ciscn 2022</title>
+    <link href="https://rce.moe/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/"/>
+    <id>https://rce.moe/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/</id>
+    <published>2022-05-30T03:23:02.000Z</published>
+    <updated>2022-05-30T03:26:04.269Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;author:白帽酱&lt;br&gt;题目给了后端源码  一道题利用了前不久出现的一个鸡肋洞 openssl c_rehash(CVE-2022-1292)  题目还是比较有意思的&lt;/p&gt;
+&lt;h1 id=&quot;项目分析&quot;&gt;项目分析&lt;a c</summary>
+      
+    
+    
+    
+    <category term="CTF" scheme="https://rce.moe/categories/CTF/"/>
+    
+    
+    <category term="CTF" scheme="https://rce.moe/tags/CTF/"/>
+    
+    <category term="CVE" scheme="https://rce.moe/tags/CVE/"/>
+    
+  </entry>
   
   <entry>
     <title>ping2rce出题人writeup 一种环境变量注入劫持bash的实际利用场景</title>

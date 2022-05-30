@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://rce.moe/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/</loc>
+    
+    <lastmod>2022-05-30</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/</loc>
     
     <lastmod>2022-05-26</lastmod>
@@ -165,7 +172,7 @@
 
   <url>
     <loc>https://rce.moe/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -173,98 +180,105 @@
   
   <url>
     <loc>https://rce.moe/tags/CTF/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/WRITEUP/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/fastjson/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/DPAPI/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/CHROME/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/mimikatz/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/writeup/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/%E5%BC%BA%E7%BD%91%E6%9D%AF/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/PHP/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/password/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/WEB/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/goahead/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://rce.moe/tags/CVE/</loc>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -273,49 +287,49 @@
   
   <url>
     <loc>https://rce.moe/categories/%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/CTF/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/PHP/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/web/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/WEB/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/WEB/writeup/</loc>
-    <lastmod>2022-05-26</lastmod>
+    <lastmod>2022-05-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
