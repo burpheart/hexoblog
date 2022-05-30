@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-05-30T03:26:04.269Z</updated>
+  <updated>2022-05-30T12:25:04.594Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>第15届全国大学生知识竞赛 online_crt writeup    c_rehash(CVE-2022-1292)   ciscn 2022</title>
+    <title>第15届全国大学生信息安全竞赛 online_crt writeup    c_rehash(CVE-2022-1292)   ciscn 2022</title>
     <link href="https://rce.moe/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/"/>
     <id>https://rce.moe/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/</id>
     <published>2022-05-30T03:23:02.000Z</published>
-    <updated>2022-05-30T03:26:04.269Z</updated>
+    <updated>2022-05-30T12:25:04.594Z</updated>
     
     
       
