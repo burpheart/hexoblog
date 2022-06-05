@@ -24,7 +24,7 @@ var _hmt = _hmt || [];
     <meta name="description" content="" />
     
     <title>
-      归档 - 白帽酱の博客
+      cdnlookup 一个使用 ECS 遍历智能DNS节点IP地址的工具 - 白帽酱の博客
     </title>
     <link rel="manifest" href="/manifest.json" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
@@ -35,6 +35,11 @@ var _hmt = _hmt || [];
 </head>
   <body>
     <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#cdnlookup"><span class="toc-text">cdnlookup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%99%BA%E8%83%BDDNS"><span class="toc-text">智能DNS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Edns-Client-Subnet-ECS"><span class="toc-text">Edns Client Subnet(ECS)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cdnlookup-1"><span class="toc-text">cdnlookup</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a></li></ol>
+    </div>
     
     <div id="fixed-menu-wrap">
       <span class="iconfont icon-sousuo search-box menu-reset"></span>
@@ -69,7 +74,7 @@ var _hmt = _hmt || [];
           首页
         </a>
         
-        <a href="/archives" class="current">
+        <a href="/archives" class="">
           归档
         </a>
         
@@ -123,7 +128,7 @@ var _hmt = _hmt || [];
             首页
           </a>
           
-          <a href="/archives" class="current">
+          <a href="/archives" class="">
             归档
           </a>
           
@@ -172,137 +177,90 @@ var _hmt = _hmt || [];
     </div>
     <div id="container">
       <div class="main animated bounceInRight delay-0.7s">
-        <div id="archives">
-    
-        <div class="title">
-            归档 
-            
-        </div>
-    
-
-
-
-
-    
-    
-    <section class="wrap">
-        <div class="meta">
-            <a href="/archives/2022" >
-                2022
-            </a>
-        </div>
-        <div class="year">
-            
-            <article class="item">
-            <a href="/2022/06/05/cdnlookup/" title="cdnlookup 一个使用 ECS 遍历智能DNS节点IP地址的工具">
-                <span>2022/06/05</span>
-                <span>cdnlookup 一个使用 ECS 遍历智能DNS节点IP地址的工具</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/" title="第15届全国大学生信息安全竞赛 online_crt writeup    c_rehash(CVE-2022-1292)   ciscn 2022">
-                <span>2022/05/30</span>
-                <span>第15届全国大学生信息安全竞赛 online_crt writeup    c_rehash(CVE-2022-1292)   ciscn 2022</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/" title="ping2rce出题人writeup 一种环境变量注入劫持bash的实际利用场景">
-                <span>2022/05/25</span>
-                <span>ping2rce出题人writeup 一种环境变量注入劫持bash的实际利用场景</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2022/05/08/untitled-1652012374403/" title="CTFd性能优化笔记-DNUICTF">
-                <span>2022/05/08</span>
-                <span>CTFd性能优化笔记-DNUICTF</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2022/04/18/jsp-webshell-trick/" title="构建jsp webshell的一个小trick">
-                <span>2022/04/18</span>
-                <span>构建jsp webshell的一个小trick</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2022/03/27/wlch/" title="如何打造一个网络空间资产测绘系统--网络框架测绘の开发笔记">
-                <span>2022/03/27</span>
-                <span>如何打造一个网络空间资产测绘系统--网络框架测绘の开发笔记</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2022/03/27/sunlogin12rce/" title="向日葵12の一个有趣的RCE">
-                <span>2022/03/27</span>
-                <span>向日葵12の一个有趣的RCE</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2022/01/25/ldap-inject-1/" title="记一次src测试中的ldap注入深入利用">
-                <span>2022/01/25</span>
-                <span>记一次src测试中的ldap注入深入利用</span>
-            </a>
-            </article>
-            
-
-
-    
-    </div>
-    </section>
-    
-    
-    <section class="wrap">
-        <div class="meta">
-            <a href="/archives/2021" >
-                2021
-            </a>
-        </div>
-        <div class="year">
-            
-            <article class="item">
-            <a href="/2021/12/28/phpydmbh/" title="浅谈PHP源代码保护方案&amp;受保护PHP代码の解密还原">
-                <span>2021/12/28</span>
-                <span>浅谈PHP源代码保护方案&amp;受保护PHP代码の解密还原</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="/2021/12/28/jycjmfqjm/" title="记一次审计时遇到的加密分区解密">
-                <span>2021/12/28</span>
-                <span>记一次审计时遇到的加密分区解密</span>
-            </a>
-            </article>
-            
-    
-        </div>
-    </section>
+        <article class="post-entry">
+    <div class="header">
       
-<div class="paginator">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a>
-</div>
-</div>
+      <div class="title">cdnlookup 一个使用 ECS 遍历智能DNS节点IP地址的工具</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2022/06/05</span>
+        </span>
 
+        
+
+        
+        
+        
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="cdnlookup">cdnlookup<a class="post-anchor" href="#cdnlookup"></a></h1><p>一个使用 Edns-Client-Subnet(ECS) 遍历智能DNS节点IP地址的工具<br>项目地址 <a target="_blank" rel="noopener" href="https://github.com/burpheart/cdnlookup">https://github.com/burpheart/cdnlookup</a></p>
+<h2 id="原理">原理<a class="post-anchor" href="#原理"></a></h2><h4 id="智能DNS">智能DNS<a class="post-anchor" href="#智能DNS"></a></h4><p>为了让用户有更好的网络体验，让用户连接到地理位置更近的服务器， NS服务器会根据客户端IP地址来判断用户所在区域及运营商，来返回距离较近的节点。</p>
+<p>早期，NS服务器通常无法直接获取到客户端ip，只能获取到上级公共DNS服务器地址。</p>
+<h4 id="Edns-Client-Subnet-ECS">Edns Client Subnet(ECS)<a class="post-anchor" href="#Edns-Client-Subnet-ECS"></a></h4><p>ECS 是由Google提交的一份DNS扩展协议，主要作用是传递用户的IP地址给权威DNS服务器。</p>
+<p><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7871">rfc7871</a> （2016 年 5 月）</p>
+<p>遵循ECS标准的公共DNS，会将经遮罩脱敏后的客户端ip添加至DNS扩展区域( <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc6891">EDNS rfc6891</a>)传递至NS服务器 （通常为/24）</p>
+<p>这样NS服务器就可以获取到模糊的客户端ip，这足以用于判断用户运营商和位置信息。</p>
+<h4 id="cdnlookup-1">cdnlookup<a class="post-anchor" href="#cdnlookup-1"></a></h4><p>这个工具会直接发送包含自定义IP的ECS数据的DNS请求，诱导NS服务器返回对应IP的解析结果。</p>
+<p>经测试，国内大部分公共DNS都不支持自定义ECS。  谷歌DNS 8.8.8.8 可以正常使用</p>
+<p>除了公共DNS，也可以直接将带有ECS数据的DNS请求发送到目标NS服务器，获取解析结果。</p>
+<h1 id="使用">使用<a class="post-anchor" href="#使用"></a></h1><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">-d  域名  (默认 www.taobao.com)<br><br>-i  只输出IP地址列表<br><br>-ip 客户端ip<br><br>-r  请求重复轮数<br><br>-s DNS服务器地址 (默认 8.8.8.8:53)<br></code></pre></td></tr></tbody></table></figure>
+
+<p>自定义客户端ip</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">cdnlookup.exe -d www.taobao.com  -ip 1.2.3.4<br>219.147.75.XXX<br>219.147.75.XXX<br></code></pre></td></tr></tbody></table></figure>
+
+<p>使用内置的实例ip列表 (内置列表可能会出现判断错误. 建议使用家宽ip段地址定位. )</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">cdnlookup.exe -d www.taobao.com<br><br>北京市 教育网<br>36.99.228.XXX<br>36.99.228.XXX<br>吉林 长春 移动<br>111.26.147.XXX<br>111.26.147.XXX<br>辽宁 沈阳 电信<br>59.47.225.XXX<br>59.47.225.XXX<br>......<br></code></pre></td></tr></tbody></table></figure>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/">第15届全国大学生信息安全竞赛 online_crt writeup    c_rehash(CVE-2022-1292)   ciscn 2022</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2022/06/05/cdnlookup/">https://rce.moe/2022/06/05/cdnlookup/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true
+    }).render('gitalk-container')
+</script>
         <footer>
           <div class="copyright">
             ©2022
