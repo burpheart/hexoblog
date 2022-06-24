@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      php在流量层面绕waf的一些姿势-php文件上传处理流程简单分析 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#boundary%E5%80%BC%E5%A4%84%E7%90%86"><span class="toc-text">boundary值处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#body%E5%A4%84%E7%90%86"><span class="toc-text">body处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#filename%E7%9A%84%E7%89%B9%E6%AE%8A%E5%A4%84%E7%90%86"><span class="toc-text">filename的特殊处理</span></a></li></ol></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">php在流量层面绕waf的一些姿势-php文件上传处理流程简单分析</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2022/06/24</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/PHP">PHP</a>
+                
+              
+                
+                  <a href="/categories/WAF">WAF</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/PHP">PHP</a>
+                  
+                
+                  
+                    <a href="/tags/WAF">WAF</a>
+                  
+                
+                  
+                    <a href="/tags/bypass">bypass</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><p>测试环境 PHP 7.1.9</p>
+<p>php文件上传处理在 main/rfc1867.c 中的 rfc1867_post_handler函数</p>
+<h2 id="boundary值处理">boundary值处理<a class="post-anchor" href="#boundary值处理"></a></h2><figure class="highlight c"><table><tbody><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span> (SG(post_max_size) &gt; <span class="hljs-number">0</span> &amp;&amp; SG(request_info).content_length &gt; SG(post_max_size)) {<br>    sapi_module.sapi_error(E_WARNING, <span class="hljs-string">"POST Content-Length of "</span> ZEND_LONG_FMT <span class="hljs-string">" bytes exceeds the limit of "</span> ZEND_LONG_FMT <span class="hljs-string">" bytes"</span>, SG(request_info).content_length, SG(post_max_size));<br>    <span class="hljs-keyword">return</span>;<br>}<br><br><span class="hljs-comment">/* Get the boundary */</span><br>boundary = <span class="hljs-built_in">strstr</span>(content_type_dup, <span class="hljs-string">"boundary"</span>);<span class="hljs-comment">//查找是否包含boundary</span><br><span class="hljs-keyword">if</span> (!boundary) {<br>    <span class="hljs-keyword">int</span> content_type_len = (<span class="hljs-keyword">int</span>)<span class="hljs-built_in">strlen</span>(content_type_dup);<br>    <span class="hljs-keyword">char</span> *content_type_lcase = estrndup(content_type_dup, content_type_len);<br>    <br>    php_strtolower(content_type_lcase, content_type_len);<br>    boundary = <span class="hljs-built_in">strstr</span>(content_type_lcase, <span class="hljs-string">"boundary"</span>);<br>    <span class="hljs-keyword">if</span> (boundary) {<br>        boundary = content_type_dup + (boundary - content_type_lcase);<br>    }<br>    efree(content_type_lcase);<br>}<br><br><span class="hljs-keyword">if</span> (!boundary || !(boundary = <span class="hljs-built_in">strchr</span>(boundary, <span class="hljs-string">'='</span>))) {<span class="hljs-comment">//判断boundary值起始位置</span><br>    sapi_module.sapi_error(E_WARNING, <span class="hljs-string">"Missing boundary in multipart/form-data POST data"</span>);<br>    <span class="hljs-keyword">return</span>;<span class="hljs-comment">//传入畸形的boundary会抛出警告 (可以用来检测目标php是否开启错误回显)</span><br>}<br><br>boundary++;<br>boundary_len = (<span class="hljs-keyword">int</span>)<span class="hljs-built_in">strlen</span>(boundary);<br><br><span class="hljs-keyword">if</span> (boundary[<span class="hljs-number">0</span>] == <span class="hljs-string">'"'</span>) {<span class="hljs-comment">//引号包裹</span><br>    boundary++;<br>    boundary_end = <span class="hljs-built_in">strchr</span>(boundary, <span class="hljs-string">'"'</span>);<br>    <span class="hljs-keyword">if</span> (!boundary_end) {<br>        sapi_module.sapi_error(E_WARNING, <span class="hljs-string">"Invalid boundary in multipart/form-data POST data"</span>);<br>        <span class="hljs-keyword">return</span>;<br>    }<br>} <span class="hljs-keyword">else</span> {<span class="hljs-comment">//非引号包裹</span><br>    <span class="hljs-comment">/* search for the end of the boundary */</span><br>    boundary_end = <span class="hljs-built_in">strpbrk</span>(boundary, <span class="hljs-string">",;"</span>);<span class="hljs-comment">//截止字符</span><br>}<br><span class="hljs-keyword">if</span> (boundary_end) {<br>    boundary_end[<span class="hljs-number">0</span>] = <span class="hljs-string">'\0'</span>;<br>    boundary_len = boundary_end-boundary;<br>}<br><br><span class="hljs-comment">/* Initialize the buffer */</span><br><span class="hljs-keyword">if</span> (!(mbuff = multipart_buffer_new(boundary, boundary_len))) {<br>    sapi_module.sapi_error(E_WARNING, <span class="hljs-string">"Unable to initialize the input buffer"</span>);<br>    <span class="hljs-keyword">return</span>;<br>	}<br></code></pre></td></tr></tbody></table></figure>
+<p>首先，php先从Content-Type是否包含boundary字符串<br>之后寻找等号的位置作为起始位置，获取boundary值。<br>boundary的值有引号包裹和无引号包裹两种情况<br>在无引号包裹时，可以使用逗号或分号作为终止字符。<br>到这里就可以总结出有效boundary格式了<br><strong>{任意字符}boundary{除等号外任意字符}=[“]{boundary内容}[“][[,;]{任意字符}]</strong></p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><code class="hljs c"><br><span class="hljs-function"><span class="hljs-keyword">static</span> multipart_buffer *<span class="hljs-title">multipart_buffer_new</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *boundary, <span class="hljs-keyword">int</span> boundary_len)</span></span><br><span class="hljs-function"></span>{<br>    multipart_buffer *self = (multipart_buffer *) ecalloc(<span class="hljs-number">1</span>, <span class="hljs-keyword">sizeof</span>(multipart_buffer));<br>    <br>    <span class="hljs-keyword">int</span> minsize = boundary_len + <span class="hljs-number">6</span>;<br>    <span class="hljs-keyword">if</span> (minsize &lt; FILLUNIT) minsize = FILLUNIT;<br>    <br>    self-&gt;buffer = (<span class="hljs-keyword">char</span> *) ecalloc(<span class="hljs-number">1</span>, minsize + <span class="hljs-number">1</span>);<br>    self-&gt;bufsize = minsize;<br>    <br>    spprintf(&amp;self-&gt;boundary, <span class="hljs-number">0</span>, <span class="hljs-string">"--%s"</span>, boundary);<br>    <br>    self-&gt;boundary_next_len = (<span class="hljs-keyword">int</span>)spprintf(&amp;self-&gt;boundary_next, <span class="hljs-number">0</span>, <span class="hljs-string">"\n--%s"</span>, boundary);<br>    <br>    self-&gt;buf_begin = self-&gt;buffer;<br>    self-&gt;bytes_in_buffer = <span class="hljs-number">0</span>;<br>    <br>    <span class="hljs-keyword">if</span> (php_rfc1867_encoding_translation()) {<br>        php_rfc1867_get_detect_order(&amp;self-&gt;detect_order, &amp;self-&gt;detect_order_size);<br>    } <span class="hljs-keyword">else</span> {<br>        self-&gt;detect_order = <span class="hljs-literal">NULL</span>;<br>        self-&gt;detect_order_size = <span class="hljs-number">0</span>;<br>    }<br>    <br>    self-&gt;input_encoding = <span class="hljs-literal">NULL</span>;<br>    <br>    <span class="hljs-keyword">return</span> self;<br>}<br></code></pre></td></tr></tbody></table></figure>
+<p>在获取boundary值之后<br>调用multipart_buffer_new来生成multipart的缓冲区<br>函数内定义了body中的分界线<br><strong>–boundary值</strong></p>
+<p>结合上面几个特性构造一个比较极端的例子：<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1656063963296-a4d08a55-5192-405c-820b-00349a7c7a9f.png#clientId=u70a1fcc1-9b91-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=401&amp;id=u6910663f&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=501&amp;originWidth=1490&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=127718&amp;status=done&amp;style=none&amp;taskId=u47924b9d-0b8a-4310-840a-c5cc026b101&amp;title=&amp;width=1192" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1656063963296-a4d08a55-5192-405c-820b-00349a7c7a9f.png#clientId=u70a1fcc1-9b91-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=401&amp;id=u6910663f&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=501&amp;originWidth=1490&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=127718&amp;status=done&amp;style=none&amp;taskId=u47924b9d-0b8a-4310-840a-c5cc026b101&amp;title=&amp;width=1192" alt="图片.png"></a></p>
+<h2 id="body处理">body处理<a class="post-anchor" href="#body处理"></a></h2><p>下面开始body的处理</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span> (!multipart_buffer_headers(mbuff, &amp;header)) { <span class="hljs-comment">//获取multipart头</span><br>	<span class="hljs-keyword">goto</span> fileupload_done;<br>}<br><span class="hljs-keyword">if</span> ((cd = php_mime_get_hdr_value(header, <span class="hljs-string">"Content-Disposition"</span>))) {<br>	<span class="hljs-keyword">char</span> *<span class="hljs-built_in">pair</span> = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-keyword">int</span> end = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">while</span> (<span class="hljs-built_in">isspace</span>(*cd)) {<br>		++cd;<br>	}<br>	<span class="hljs-keyword">while</span> (*cd &amp;&amp; (<span class="hljs-built_in">pair</span> = getword(mbuff-&gt;input_encoding, &amp;cd, <span class="hljs-string">';'</span>))) {<br>		<span class="hljs-keyword">char</span> *key = <span class="hljs-literal">NULL</span>, *word = <span class="hljs-built_in">pair</span>;<br>		<span class="hljs-keyword">while</span> (<span class="hljs-built_in">isspace</span>(*cd)) {<br>			++cd;<br>		}<br>		<span class="hljs-keyword">if</span> (<span class="hljs-built_in">strchr</span>(<span class="hljs-built_in">pair</span>, <span class="hljs-string">'='</span>)) {<br>			key = getword(mbuff-&gt;input_encoding, &amp;<span class="hljs-built_in">pair</span>, <span class="hljs-string">'='</span>);<br>			<span class="hljs-keyword">if</span> (!strcasecmp(key, <span class="hljs-string">"name"</span>)) {<br>				<span class="hljs-keyword">if</span> (param) {<br>					efree(param);<br>				}<br>				param = getword_conf(mbuff-&gt;input_encoding, <span class="hljs-built_in">pair</span>);<br>				<span class="hljs-keyword">if</span> (mbuff-&gt;input_encoding &amp;&amp; internal_encoding) {<br>					<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *new_param;<br>					<span class="hljs-keyword">size_t</span> new_param_len;<br>					<span class="hljs-keyword">if</span> ((<span class="hljs-keyword">size_t</span>)<span class="hljs-number">-1</span> != zend_multibyte_encoding_converter(&amp;new_param, &amp;new_param_len, (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *)param, <span class="hljs-built_in">strlen</span>(param), internal_encoding, mbuff-&gt;input_encoding)) {<br>						efree(param);<br>						param = (<span class="hljs-keyword">char</span> *)new_param;<br>					}<br>				}<br>			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!strcasecmp(key, <span class="hljs-string">"filename"</span>)) {<br>				<span class="hljs-keyword">if</span> (filename) {<br>					efree(filename);<br>				}<br>				filename = getword_conf(mbuff-&gt;input_encoding, <span class="hljs-built_in">pair</span>);<br>				<span class="hljs-keyword">if</span> (mbuff-&gt;input_encoding &amp;&amp; internal_encoding) {<br>					<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *new_filename;<br>					<span class="hljs-keyword">size_t</span> new_filename_len;<br>					<span class="hljs-keyword">if</span> ((<span class="hljs-keyword">size_t</span>)<span class="hljs-number">-1</span> != zend_multibyte_encoding_converter(&amp;new_filename, &amp;new_filename_len, (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *)filename, <span class="hljs-built_in">strlen</span>(filename), internal_encoding, mbuff-&gt;input_encoding)) {<br>						efree(filename);<br>						filename = (<span class="hljs-keyword">char</span> *)new_filename;<br>					}<br>				}<br>			}<br>		}<br>		<span class="hljs-keyword">if</span> (key) {<br>			efree(key);<br>		}<br>		efree(word);<br>	}<br></code></pre></td></tr></tbody></table></figure>
+
+
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">multipart_buffer_headers</span><span class="hljs-params">(multipart_buffer *self, zend_llist *header)</span></span><br><span class="hljs-function"></span>{<br>	<span class="hljs-keyword">char</span> *line;<br>	mime_header_entry entry = {<span class="hljs-number">0</span>};<br>	smart_string buf_value = {<span class="hljs-number">0</span>};<br>	<span class="hljs-keyword">char</span> *key = <span class="hljs-literal">NULL</span>;<br><br>	<span class="hljs-comment">/* didn't find boundary, abort */</span><br>	<span class="hljs-keyword">if</span> (!find_boundary(self, self-&gt;boundary)) {<span class="hljs-comment">//匹配分界线</span><br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	}<br><br>	<span class="hljs-comment">/* get lines of text, or CRLF_CRLF */</span><br><br>	<span class="hljs-keyword">while</span> ((line = get_line(self)) &amp;&amp; line[<span class="hljs-number">0</span>] != <span class="hljs-string">'\0'</span>) {<span class="hljs-comment">//获取下一行字符串 [1]</span><br>		<span class="hljs-comment">/* add header to table */</span><br>		<span class="hljs-keyword">char</span> *value = <span class="hljs-literal">NULL</span>;<br><br>		<span class="hljs-keyword">if</span> (php_rfc1867_encoding_translation()) { <span class="hljs-comment">//[2] 判断编码 之后处理字符串会用到 好像默认禁用 写死了返回0??</span><br>			self-&gt;input_encoding = zend_multibyte_encoding_detector((<span class="hljs-keyword">const</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *) line, <span class="hljs-built_in">strlen</span>(line), self-&gt;detect_order, self-&gt;detect_order_size);<br>		}<br><br>		<span class="hljs-comment">/* space in the beginning means same header */</span><br>		<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">isspace</span>(line[<span class="hljs-number">0</span>])) {<br>			value = <span class="hljs-built_in">strchr</span>(line, <span class="hljs-string">':'</span>);<br>		}<br><br>		<span class="hljs-keyword">if</span> (value) {<br>			<span class="hljs-keyword">if</span> (buf_value.c &amp;&amp; key) {<br>				<span class="hljs-comment">/* new entry, add the old one to the list */</span><br>				smart_string_0(&amp;buf_value);<br>				entry.key = key;<br>				entry.value = buf_value.c;<br>				zend_llist_add_element(header, &amp;entry);<br>				buf_value.c = <span class="hljs-literal">NULL</span>;<br>				key = <span class="hljs-literal">NULL</span>;<br>			}<br><br>			*value = <span class="hljs-string">'\0'</span>;<br>			<span class="hljs-keyword">do</span> { value++; } <span class="hljs-keyword">while</span> (<span class="hljs-built_in">isspace</span>(*value));<br><br>			key = estrdup(line);<br>			smart_string_appends(&amp;buf_value, value);<br>		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (buf_value.c) { <span class="hljs-comment">/* If no ':' on the line, add to previous line */</span><br>			smart_string_appends(&amp;buf_value, line);  <span class="hljs-comment">//[2]  如果没有冒号就作为上一行的值</span><br>		} <span class="hljs-keyword">else</span> {<br>			<span class="hljs-keyword">continue</span>;<br>		}<br>	}<br><br>	<span class="hljs-keyword">if</span> (buf_value.c &amp;&amp; key) {<br>		<span class="hljs-comment">/* add the last one to the list */</span><br>		smart_string_0(&amp;buf_value);<br>		entry.key = key;<br>		entry.value = buf_value.c;<br>		zend_llist_add_element(header, &amp;entry);<br>	}<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>这个过程有几个值得注意的点</p>
+<p>[1]  multipart中换行可以不是CLRF，只需要包含一个\n就会判断为新行。</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">char</span> *<span class="hljs-title">get_line</span><span class="hljs-params">(multipart_buffer *self)</span></span><br><span class="hljs-function"></span>{<br>	<span class="hljs-keyword">char</span>* ptr = next_line(self);<br><br>	<span class="hljs-keyword">if</span> (!ptr) {<br>		fill_buffer(self);<br>		ptr = next_line(self);<br>	}<br><br>	<span class="hljs-keyword">return</span> ptr;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1656065734235-afaa5cb4-4a96-4954-83a1-4ab37199fe98.png#clientId=u70a1fcc1-9b91-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=634&amp;id=HCyUf&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=792&amp;originWidth=727&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=52608&amp;status=done&amp;style=none&amp;taskId=u4274e0d0-b4f1-4458-a3dd-baa4c75116c&amp;title=&amp;width=581.6" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1656065734235-afaa5cb4-4a96-4954-83a1-4ab37199fe98.png#clientId=u70a1fcc1-9b91-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=634&amp;id=HCyUf&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=792&amp;originWidth=727&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=52608&amp;status=done&amp;style=none&amp;taskId=u4274e0d0-b4f1-4458-a3dd-baa4c75116c&amp;title=&amp;width=581.6" alt="图片.png"></a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1656066431659-0831644e-a69a-4637-9e5b-4f8330c2a437.png#clientId=u70a1fcc1-9b91-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=344&amp;id=uf412d441&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=430&amp;originWidth=1089&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=128667&amp;status=done&amp;style=none&amp;taskId=u22ae29ab-d09e-4574-bb88-c9b75dc04d5&amp;title=&amp;width=871.2" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1656066431659-0831644e-a69a-4637-9e5b-4f8330c2a437.png#clientId=u70a1fcc1-9b91-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=344&amp;id=uf412d441&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=430&amp;originWidth=1089&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=128667&amp;status=done&amp;style=none&amp;taskId=u22ae29ab-d09e-4574-bb88-c9b75dc04d5&amp;title=&amp;width=871.2" alt="图片.png"></a><br><strong>[2] 如果当前行没有冒号就和上一行合并</strong><br>这个就好玩了 直接一个字符一行 秒杀低端waf x)<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1656066816709-e8c81b2b-dd54-4240-b1e1-f851f0979d1a.png#clientId=u70a1fcc1-9b91-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=414&amp;id=u026dea24&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=518&amp;originWidth=1185&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=141749&amp;status=done&amp;style=none&amp;taskId=u30400f67-a5e1-4b2f-9aaa-0d98e99dc61&amp;title=&amp;width=948" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1656066816709-e8c81b2b-dd54-4240-b1e1-f851f0979d1a.png#clientId=u70a1fcc1-9b91-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=414&amp;id=u026dea24&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=518&amp;originWidth=1185&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=141749&amp;status=done&amp;style=none&amp;taskId=u30400f67-a5e1-4b2f-9aaa-0d98e99dc61&amp;title=&amp;width=948" alt="图片.png"></a><br>[3] multipart前后可以填充垃圾数据</p>
+<h3 id="filename的特殊处理">filename的特殊处理<a class="post-anchor" href="#filename的特殊处理"></a></h3><p>为了兼容老旧的IE浏览器 需要对包含路径的文件名进行处理<br>如果文件名包含/<br>会取/后面字符串作为文件名</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* The \ check should technically be needed for win32 systems only where</span><br><span class="hljs-comment">* it is a valid path separator. However, IE in all it's wisdom always sends</span><br><span class="hljs-comment">* the full path of the file on the user's filesystem, which means that unless</span><br><span class="hljs-comment">* the user does basename() they get a bogus file name. Until IE's user base drops</span><br><span class="hljs-comment">* to nill or problem is fixed this code must remain enabled for all systems. */</span><br>s = _basename(internal_encoding, filename);<br><span class="hljs-keyword">if</span> (!s) {<br>s = filename;<br>}<br><br><span class="hljs-function">PHPAPI zend_string *<span class="hljs-title">php_basename</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *s, <span class="hljs-keyword">size_t</span> len, <span class="hljs-keyword">char</span> *suffix, <span class="hljs-keyword">size_t</span> sufflen)</span></span><br><span class="hljs-function"></span>{<br>	<span class="hljs-keyword">char</span> *c;<br>	<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *comp, *cend;<br>	<span class="hljs-keyword">size_t</span> inc_len, cnt;<br>	<span class="hljs-keyword">int</span> state;<br>	zend_string *ret;<br><br>	comp = cend = c = (<span class="hljs-keyword">char</span>*)s;<br>	cnt = len;<br>	state = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">while</span> (cnt &gt; <span class="hljs-number">0</span>) {<br>		inc_len = (*c == <span class="hljs-string">'\0'</span> ? <span class="hljs-number">1</span> : php_mblen(c, cnt));<br><br>		<span class="hljs-keyword">switch</span> (inc_len) {<br>			<span class="hljs-keyword">case</span> <span class="hljs-number">-2</span>:<br>			<span class="hljs-keyword">case</span> <span class="hljs-number">-1</span>:<br>				inc_len = <span class="hljs-number">1</span>;<br>				php_mb_reset();<br>				<span class="hljs-keyword">break</span>;<br>			<span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>				<span class="hljs-keyword">goto</span> quit_loop;<br>			<span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> defined(PHP_WIN32)</span><br>				<span class="hljs-keyword">if</span> (*c == <span class="hljs-string">'/'</span> || *c == <span class="hljs-string">'\\'</span>) {<br><span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span><br>				<span class="hljs-keyword">if</span> (*c == <span class="hljs-string">'/'</span>) {<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br>					<span class="hljs-keyword">if</span> (state == <span class="hljs-number">1</span>) {<br>						state = <span class="hljs-number">0</span>;<br>						cend = c;<br>					}<br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> defined(PHP_WIN32)</span><br>				<span class="hljs-comment">/* Catch relative paths in c:file.txt style. They're not to confuse</span><br><span class="hljs-comment">				   with the NTFS streams. This part ensures also, that no drive</span><br><span class="hljs-comment">				   letter traversing happens. */</span><br>				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((*c == <span class="hljs-string">':'</span> &amp;&amp; (c - comp == <span class="hljs-number">1</span>))) {<br>					<span class="hljs-keyword">if</span> (state == <span class="hljs-number">0</span>) {<br>						comp = c;<br>						state = <span class="hljs-number">1</span>;<br>					} <span class="hljs-keyword">else</span> {<br>						cend = c;<br>						state = <span class="hljs-number">0</span>;<br>					}<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br>				} <span class="hljs-keyword">else</span> {<br>					<span class="hljs-keyword">if</span> (state == <span class="hljs-number">0</span>) {<br>						comp = c;<br>						state = <span class="hljs-number">1</span>;<br>					}<br>				}<br>				<span class="hljs-keyword">break</span>;<br>			<span class="hljs-keyword">default</span>:<br>				<span class="hljs-keyword">if</span> (state == <span class="hljs-number">0</span>) {<br>					comp = c;<br>					state = <span class="hljs-number">1</span>;<br>				}<br>				<span class="hljs-keyword">break</span>;<br>		}<br>		c += inc_len;<br>		cnt -= inc_len;<br>	}<br><br>quit_loop:<br>	<span class="hljs-keyword">if</span> (state == <span class="hljs-number">1</span>) {<br>		cend = c;<br>	}<br>	<span class="hljs-keyword">if</span> (suffix != <span class="hljs-literal">NULL</span> &amp;&amp; sufflen &lt; (<span class="hljs-keyword">size_t</span>)(cend - comp) &amp;&amp;<br>			<span class="hljs-built_in">memcmp</span>(cend - sufflen, suffix, sufflen) == <span class="hljs-number">0</span>) {<br>		cend -= sufflen;<br>	}<br><br>	len = cend - comp;<br><br>	ret = zend_string_init(comp, len, <span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">return</span> ret;<br>}<br><br></code></pre></td></tr></tbody></table></figure>
+
+
+
+
+
+
+
+
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2022/06/05/cdnlookup/">cdnlookup 一个使用 ECS 遍历智能DNS节点IP地址的工具</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2022/06/24/php-upload-bypass-waf/">https://rce.moe/2022/06/24/php-upload-bypass-waf/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true
+    }).render('gitalk-container')
+</script>
+        <footer>
+          <div class="copyright">
+            ©2022
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
