@@ -198,6 +198,8 @@ var _hmt = _hmt || [];
     </div>
     <html><head></head><body><h1 id="前言">前言<a class="post-anchor" href="#前言"></a></h1><p>前不久我遇到了一个关于获取CDN节点ip列表的问题:<br>如何快速获取一家CDN节点在全国的范围内的节点ip？</p>
 <p>为了解决这个问题，我分析了智能DNS的工作原理。根据原理，我写出了一个使用 Edns-Client-Subnet(ECS)  伪造客户端ip用于遍历cdn节点ip的小工具。</p>
+<span id="more"></span>
+
 <p>之前为了获取目标地理位置的的CDN节点需要使用大量代理服务器去发起DNS查询。但是寻找合适的代理服务器非常困难。这个工具解决了这个问题。 该工具无需使用代理，只需要提供要模拟的客户端ip地址，就可以轻松获取对应ip地址地理位置的DNS解析结果。</p>
 <h1 id="cdnlookup">cdnlookup<a class="post-anchor" href="#cdnlookup"></a></h1><p>项目地址 <a target="_blank" rel="noopener" href="https://github.com/burpheart/cdnlookup">https://github.com/burpheart/cdnlookup</a></p>
 <h2 id="原理">原理<a class="post-anchor" href="#原理"></a></h2><h4 id="智能DNS">智能DNS<a class="post-anchor" href="#智能DNS"></a></h4><p>CDN 为了让用户连接到地理位置更近的服务器，在DNS解析时使用了一种叫做智能DNS解析的操作。 CDN的权威DNS服务器会根据客户端IP地址来判断用户所在区域及运营商，来返回距离较近的节点。</p>

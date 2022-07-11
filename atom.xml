@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-06-24T11:43:50.608Z</updated>
+  <updated>2022-07-11T03:20:30.521Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -21,15 +21,11 @@
     <link href="https://rce.moe/2022/06/24/php-upload-bypass-waf/"/>
     <id>https://rce.moe/2022/06/24/php-upload-bypass-waf/</id>
     <published>2022-06-24T11:41:12.000Z</published>
-    <updated>2022-06-24T11:43:50.608Z</updated>
+    <updated>2022-07-11T03:20:30.521Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;测试环境 PHP 7.1.9&lt;/p&gt;
-&lt;p&gt;php文件上传处理在 main/rfc1867.c 中的 rfc1867_post_handler函数&lt;/p&gt;
-&lt;h2 id=&quot;boundary值处理&quot;&gt;boundary值处理&lt;a</summary>
-      
+    <summary type="html">&lt;p&gt;测试环境 PHP 7.1.9&lt;/p&gt;
+&lt;p&gt;php文件上传处理在 main/rfc1867.c 中的 rfc1867_post_handler函数&lt;/p&gt;</summary>
     
     
     
@@ -51,13 +47,11 @@
     <link href="https://rce.moe/2022/06/05/cdnlookup/"/>
     <id>https://rce.moe/2022/06/05/cdnlookup/</id>
     <published>2022-06-05T12:41:14.000Z</published>
-    <updated>2022-06-07T06:17:20.193Z</updated>
+    <updated>2022-07-11T03:20:50.633Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;前不久我遇到了一个关于获取CDN节点ip列表的问题:&lt;br&gt;如何快速获取一家CDN节点在全国的范围内的节点ip</summary>
-      
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;前不久我遇到了一个关于获取CDN节点ip列表的问题:&lt;br&gt;如何快速获取一家CDN节点在全国的范围内的节点ip？&lt;/p&gt;
+&lt;p&gt;为了解决这个问题，我分析了智能DNS的工作原理。根据原理，我写出了一个使用 Edns-Client-Subnet(ECS)  伪造客户端ip用于遍历cdn节点ip的小工具。&lt;/p&gt;</summary>
     
     
     
@@ -69,14 +63,10 @@
     <link href="https://rce.moe/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/"/>
     <id>https://rce.moe/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/</id>
     <published>2022-05-30T03:23:02.000Z</published>
-    <updated>2022-05-30T12:25:04.594Z</updated>
+    <updated>2022-07-11T03:21:05.751Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;author:白帽酱&lt;br&gt;题目给了后端源码  一道题利用了前不久出现的一个鸡肋洞 openssl c_rehash(CVE-2022-1292)  题目还是比较有意思的&lt;/p&gt;
-&lt;h1 id=&quot;项目分析&quot;&gt;项目分析&lt;a c</summary>
-      
+    <summary type="html">&lt;p&gt;author:白帽酱&lt;br&gt;题目给了后端源码  一道题利用了前不久出现的一个鸡肋洞 openssl c_rehash(CVE-2022-1292)  题目还是比较有意思的&lt;/p&gt;</summary>
     
     
     
@@ -94,13 +84,10 @@
     <link href="https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/"/>
     <id>https://rce.moe/2022/05/25/ping2rce-writeup-goahead-environment-variable-inject-bash-hijack/</id>
     <published>2022-05-25T14:58:08.000Z</published>
-    <updated>2022-05-30T04:14:56.257Z</updated>
+    <updated>2022-07-11T03:21:19.308Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;前不久p牛分享了一个&lt;a href=&quot;https://tttang.com/archive/1450/&quot;&gt;利用</summary>
-      
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;前不久p牛分享了一个&lt;a href=&quot;https://tttang.com/archive/1450/&quot;&gt;利用环境变量注入劫持bash&lt;/a&gt;的技巧.&lt;br&gt;当时我就在想这种环境变量的注入有没有什么比较通用的场景。一般遇到的环境变量注入基本上都是直接使用ld_preload解决问题。p牛的这种新的环境变量注入的利用技巧，有没有什么特殊的利用面呢。&lt;/p&gt;</summary>
     
     
     
@@ -139,15 +126,12 @@
     <link href="https://rce.moe/2022/04/18/jsp-webshell-trick/"/>
     <id>https://rce.moe/2022/04/18/jsp-webshell-trick/</id>
     <published>2022-04-18T10:58:20.000Z</published>
-    <updated>2022-04-18T11:00:33.917Z</updated>
+    <updated>2022-07-11T03:21:32.823Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;jsp中可以使用el表达式&lt;br&gt;所以我们可以使用和el表达式注入一样的方法构造webshell&lt;/p&gt;
+    <summary type="html">&lt;p&gt;jsp中可以使用el表达式&lt;br&gt;所以我们可以使用和el表达式注入一样的方法构造webshell&lt;/p&gt;
 &lt;p&gt;可以避免出现 &amp;lt;%符号&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;tabl</summary>
-      
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs plain&quot;&gt;$&amp;#123;Runtime.getRuntime().exec(param.a)&amp;#125;&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
     
     
     
@@ -197,13 +181,10 @@
     <link href="https://rce.moe/2022/01/25/ldap-inject-1/"/>
     <id>https://rce.moe/2022/01/25/ldap-inject-1/</id>
     <published>2022-01-25T03:14:55.000Z</published>
-    <updated>2022-03-15T04:47:34.688Z</updated>
+    <updated>2022-07-11T03:22:03.371Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;在最近的一次的src测试中遇到了ldap注入漏洞,目标是一个管理平台的单点登陆入口,漏洞存在于用户名存在判断处</summary>
-      
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;在最近的一次的src测试中遇到了ldap注入漏洞,目标是一个管理平台的单点登陆入口,漏洞存在于用户名存在判断处.&lt;br&gt;之前渗透测试的时候我也遇到过几个生产环境中ldap注入的漏洞,但是都只能获取到有限的敏感信息(用户名 手机号 邮箱) 危害程度与ldap匿名绑定相同.&lt;br&gt;在研究ldap查询语法时,我找到了一种可以外带ldap储存的用户密码的方法,实现了对ldap注入的进一步利用.&lt;/p&gt;</summary>
     
     
     
@@ -217,13 +198,16 @@
     <link href="https://rce.moe/2021/12/28/phpydmbh/"/>
     <id>https://rce.moe/2021/12/28/phpydmbh/</id>
     <published>2021-12-28T09:05:57.000Z</published>
-    <updated>2022-01-31T05:51:06.424Z</updated>
+    <updated>2022-07-11T03:22:29.851Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;php是一种解释型脚本语言.&lt;br&gt;与编译型语言不同,php源代码不是直接翻译成机器语言.而是翻译成中间代码(</summary>
-      
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;php是一种解释型脚本语言.&lt;br&gt;与编译型语言不同,php源代码不是直接翻译成机器语言.而是翻译成中间代码(OPCODE) ,再由解释器(ZEND引擎)对中间代码进行解释运行 .&lt;/p&gt;
+&lt;p&gt;在php源代码的保护在原理可以分为3大类.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;源代码混淆(编码)&lt;/li&gt;
+&lt;li&gt;OPCODE混淆(编码)&lt;/li&gt;
+&lt;li&gt;修改解释引擎(虚拟机)&lt;/li&gt;
+&lt;/ul&gt;</summary>
     
     
     
@@ -237,14 +221,15 @@
     <link href="https://rce.moe/2021/12/28/jycjmfqjm/"/>
     <id>https://rce.moe/2021/12/28/jycjmfqjm/</id>
     <published>2021-12-28T09:03:40.000Z</published>
-    <updated>2021-12-28T09:05:37.081Z</updated>
+    <updated>2022-07-11T03:23:39.665Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h2 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;​&lt;/p&gt;
-&lt;p&gt;最近拿到了一个商业产品的qcow2 镜像 准备试一试代码审计&lt;br&gt;首先用qemu-img </summary>
-      
+    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;最近拿到了一个商业产品的qcow2 镜像 准备试一试代码审计&lt;br&gt;首先用qemu-img 转换成vmdk 镜像 &lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs plain&quot;&gt;qemu-img convert -f qcow2 123.qcow2 -O vmdk 123.vmdk&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605980043-744183b4-7855-4f05-975b-7022a74ee567.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=46&amp;id=u4a0541fe&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=91&amp;originWidth=1190&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9996&amp;status=done&amp;style=none&amp;taskId=u5bca7c69-2dc3-484f-8b5d-b1d8e9298ea&amp;title=&amp;width=595&quot; alt=&quot;图片.png&quot;&gt;&lt;br&gt;转换遇到错误 网上搜索只有一个其他项目的issue 没有解决方案&lt;br&gt;阅读qemu源代码 发现是在2017-02-15版本引入了这个特性&lt;br&gt;&lt;a href=&quot;https://lists.gnu.org/archive/html/qemu-devel/2017-02/msg03173.html&quot;&gt;https://lists.gnu.org/archive/html/qemu-devel/2017-02/msg03173.html&lt;/a&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs plain&quot;&gt;bitmaps_ext: Invalid extension length: Unknown error&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
     
     
     
@@ -280,13 +265,10 @@
     <link href="https://rce.moe/2021/10/27/PHPsuchabiao/"/>
     <id>https://rce.moe/2021/10/27/PHPsuchabiao/</id>
     <published>2021-10-27T13:20:47.000Z</published>
-    <updated>2021-10-27T13:47:38.434Z</updated>
+    <updated>2022-07-11T03:24:05.149Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;PHP敏感函数速查表&quot;&gt;PHP敏感函数速查表&lt;a class=&quot;post-anchor&quot; href=&quot;#PHP敏感函数速查表&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;最近正在写一篇PHP代码审计的入门指南文档. 如果表格内出现遗</summary>
-      
+    <summary type="html">&lt;h1 id=&quot;PHP敏感函数速查表&quot;&gt;&lt;a href=&quot;#PHP敏感函数速查表&quot; class=&quot;headerlink&quot; title=&quot;PHP敏感函数速查表&quot;&gt;&lt;/a&gt;PHP敏感函数速查表&lt;/h1&gt;&lt;p&gt;最近正在写一篇PHP代码审计的入门指南文档. 如果表格内出现遗漏或错误,欢迎大家私信反馈.&lt;/p&gt;</summary>
     
     
     
@@ -304,13 +286,10 @@
     <link href="https://rce.moe/2021/06/14/QWB-2021-WEB-WP/"/>
     <id>https://rce.moe/2021/06/14/QWB-2021-WEB-WP/</id>
     <published>2021-06-14T13:00:33.000Z</published>
-    <updated>2021-06-14T06:38:25.231Z</updated>
+    <updated>2022-07-11T03:24:33.306Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;EASYWEB&quot;&gt;EASYWEB&lt;a class=&quot;post-anchor&quot; href=&quot;#EASYWEB&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt; &lt;a href=&quot;https://i.loli.net/2021/06/14/</summary>
-      
+    <summary type="html">&lt;h1 id=&quot;EASYWEB&quot;&gt;&lt;a href=&quot;#EASYWEB&quot; class=&quot;headerlink&quot; title=&quot;EASYWEB&quot;&gt;&lt;/a&gt;EASYWEB&lt;/h1&gt;&lt;p&gt; &lt;img src=&quot;https://i.loli.net/2021/06/14/IEzFq6ue2vtodgn.png&quot; alt=&quot;LZYFHP@LAC_IENMHL__OT8M.png&quot;&gt;&lt;br&gt;</summary>
     
     
     
@@ -330,14 +309,10 @@
     <link href="https://rce.moe/2021/06/08/2021%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E6%98%A5%E5%AD%A3%E8%B5%9B-CTF-GameContract-WriteUp/"/>
     <id>https://rce.moe/2021/06/08/2021%E5%B9%B4%E6%98%A5%E7%A7%8B%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%81%94%E8%B5%9B%E6%98%A5%E5%AD%A3%E8%B5%9B-CTF-GameContract-WriteUp/</id>
     <published>2021-06-08T03:35:19.000Z</published>
-    <updated>2021-06-09T10:07:45.360Z</updated>
+    <updated>2022-07-11T03:24:43.719Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;今年春秋杯春秋杯出了一道智能合约杂项 从来没接触过ETH合约的CTF题 网上找了一堆文章做出来了这道题 这里详细写出解题过程以便学习ETH智能合约的调用&lt;/p&gt;
-&lt;h1 id=&quot;GameContract&quot;&gt;GameContr</summary>
-      
+    <summary type="html">&lt;p&gt;今年春秋杯春秋杯出了一道智能合约杂项 从来没接触过ETH合约的CTF题 网上找了一堆文章做出来了这道题 这里详细写出解题过程以便学习ETH智能合约的调用&lt;/p&gt;</summary>
     
     
     
@@ -353,13 +328,10 @@
     <link href="https://rce.moe/2021/05/20/fanruanupload/"/>
     <id>https://rce.moe/2021/05/20/fanruanupload/</id>
     <published>2021-05-20T04:20:06.000Z</published>
-    <updated>2022-04-10T04:28:33.168Z</updated>
+    <updated>2022-07-11T03:24:56.200Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h2 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;好久没写博客了 博客源文件找不到了233 假期重新抄了下顺便换了个博客主题&lt;br&gt;经过简单的分析这个exp经过</summary>
-      
+    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;好久没写博客了 博客源文件找不到了233 假期重新抄了下顺便换了个博客主题&lt;br&gt;经过简单的分析这个exp经过简单的修改即可不覆盖就可以成功上传文件 显而易见一堆人不分析就传exp 还说只能覆盖文件 今天又看到一篇一模一样的文章)&lt;/p&gt;</summary>
     
     
     
@@ -375,13 +347,10 @@
     <link href="https://rce.moe/2021/05/05/chrome-%E6%B5%8F%E8%A7%88%E5%99%A8cookies-%E7%99%BB%E9%99%86%E5%87%AD%E6%8D%AE%E8%A7%A3%E5%AF%86-Windows%E7%B3%BB%E7%BB%9F%E4%B8%8BDPAPI%E4%B8%AD%E7%9A%84MasterKey%E8%8E%B7%E5%8F%96/"/>
     <id>https://rce.moe/2021/05/05/chrome-%E6%B5%8F%E8%A7%88%E5%99%A8cookies-%E7%99%BB%E9%99%86%E5%87%AD%E6%8D%AE%E8%A7%A3%E5%AF%86-Windows%E7%B3%BB%E7%BB%9F%E4%B8%8BDPAPI%E4%B8%AD%E7%9A%84MasterKey%E8%8E%B7%E5%8F%96/</id>
     <published>2021-05-05T08:05:36.000Z</published>
-    <updated>2021-05-05T09:06:54.874Z</updated>
+    <updated>2022-07-11T03:26:57.694Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h6 id=&quot;谷歌浏览器cookies-amp-登陆凭据解密-amp-Windows系统下DPAPI中的MasterKey获取&quot;&gt;谷歌浏览器cookies&amp;amp;登陆凭据解密&amp;amp;Windows系统下DPAPI中的Mast</summary>
-      
+    <summary type="html">&lt;h6 id=&quot;谷歌浏览器cookies-amp-登陆凭据解密-amp-Windows系统下DPAPI中的MasterKey获取&quot;&gt;&lt;a href=&quot;#谷歌浏览器cookies-amp-登陆凭据解密-amp-Windows系统下DPAPI中的MasterKey获取&quot; class=&quot;headerlink&quot; title=&quot;谷歌浏览器cookies&amp;amp;登陆凭据解密&amp;amp;Windows系统下DPAPI中的MasterKey获取&quot;&gt;&lt;/a&gt;谷歌浏览器cookies&amp;amp;登陆凭据解密&amp;amp;Windows系统下DPAPI中的MasterKey获取&lt;/h6&gt;&lt;h2 id=&quot;谷歌浏览器の加解密&quot;&gt;&lt;a href=&quot;#谷歌浏览器の加解密&quot; class=&quot;headerlink&quot; title=&quot;谷歌浏览器の加解密&quot;&gt;&lt;/a&gt;谷歌浏览器の加解密&lt;/h2&gt;&lt;p&gt;Chrome cookies 储存位置  “%localappdata%\Google\Chrome\User Data\Default\Cookies”&lt;br&gt;Chrome 登陆凭据 储存位置 “%localappdata%\Google\Chrome\User Data\Default\Login Data”&lt;br&gt; 谷歌浏览器使用了windows自带的DPAPI进行加解密操作&lt;br&gt; 解密方法有两种&lt;br&gt;</summary>
     
     
     
@@ -403,13 +372,10 @@
     <link href="https://rce.moe/2021/05/05/fastjson%E7%BB%95WAF-TIPS/"/>
     <id>https://rce.moe/2021/05/05/fastjson%E7%BB%95WAF-TIPS/</id>
     <published>2021-05-05T03:32:36.000Z</published>
-    <updated>2021-05-05T04:01:51.378Z</updated>
+    <updated>2022-07-11T03:25:25.686Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;fastjson绕WAFのTIPS&quot;&gt;fastjson绕WAFのTIPS&lt;a class=&quot;post-anchor&quot; href=&quot;#fastjson绕WAFのTIPS&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h3 id=&quot;fastj</summary>
-      
+    <summary type="html">&lt;h1 id=&quot;fastjson绕WAFのTIPS&quot;&gt;&lt;a href=&quot;#fastjson绕WAFのTIPS&quot; class=&quot;headerlink&quot; title=&quot;fastjson绕WAFのTIPS&quot;&gt;&lt;/a&gt;fastjson绕WAFのTIPS&lt;/h1&gt;&lt;h3 id=&quot;fastjson对字符串转义处理の特性&quot;&gt;&lt;a href=&quot;#fastjson对字符串转义处理の特性&quot; class=&quot;headerlink&quot; title=&quot;fastjson对字符串转义处理の特性&quot;&gt;&lt;/a&gt;fastjson对字符串转义处理の特性&lt;/h3&gt;&lt;p&gt;fast解析字符串支持\u Unicode转义和 \x HEX转义的字符串解码 (一般json仅支持Unicode转义 fastjson多了对十六进制转义的支持)&lt;br&gt;例如 字符串 driverClassLoader&lt;/p&gt;</summary>
     
     
     
@@ -427,14 +393,14 @@
     <link href="https://rce.moe/2020/08/25/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-writeup/"/>
     <id>https://rce.moe/2020/08/25/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-writeup/</id>
     <published>2020-08-24T16:00:00.000Z</published>
-    <updated>2021-05-03T11:20:24.618Z</updated>
+    <updated>2022-07-11T03:25:45.093Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;早上有点事 差点忘了有比赛233&lt;/p&gt;
-&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs php</summary>
-      
+    <summary type="html">&lt;p&gt;早上有点事 差点忘了有比赛233&lt;/p&gt;
+&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs php&quot;&gt;&lt;span class=&quot;hljs-meta&quot;&gt;&amp;lt;?php&lt;/span&gt;&lt;br&gt;error_reporting(&lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;);&lt;br&gt;show_source(&lt;span class=&quot;hljs-keyword&quot;&gt;__FILE__&lt;/span&gt;);&lt;br&gt;&lt;span class=&quot;hljs-variable&quot;&gt;$code&lt;/span&gt;=&lt;span class=&quot;hljs-variable&quot;&gt;$_POST&lt;/span&gt;[&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;code&amp;#x27;&lt;/span&gt;];&lt;br&gt;&lt;span class=&quot;hljs-variable&quot;&gt;$_&lt;/span&gt;=&lt;span class=&quot;hljs-keyword&quot;&gt;array&lt;/span&gt;(&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;a&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;b&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;c&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;d&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;e&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;f&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;g&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;h&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;i&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;j&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;k&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;m&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;n&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;l&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;o&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;p&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;q&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;r&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;s&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;t&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;u&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;v&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;w&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;x&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;y&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;z&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;@&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\~&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\^&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\[&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\]&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\&amp;amp;&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\?&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\&amp;lt;&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\&amp;gt;&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\*&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;1&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;2&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;3&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;4&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;5&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;6&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;7&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;8&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;9&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;0&amp;#x27;&lt;/span&gt;);&lt;br&gt;&lt;span class=&quot;hljs-comment&quot;&gt;//This blacklist is so stupid.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;hljs-variable&quot;&gt;$blacklist&lt;/span&gt; = array_merge(&lt;span class=&quot;hljs-variable&quot;&gt;$_&lt;/span&gt;);&lt;br&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;foreach&lt;/span&gt; (&lt;span class=&quot;hljs-variable&quot;&gt;$blacklist&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;hljs-variable&quot;&gt;$blacklisted&lt;/span&gt;) &amp;#123;&lt;br&gt;    &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (preg_match (&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;/&amp;#x27;&lt;/span&gt; . &lt;span class=&quot;hljs-variable&quot;&gt;$blacklisted&lt;/span&gt; . &lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;/im&amp;#x27;&lt;/span&gt;, &lt;span class=&quot;hljs-variable&quot;&gt;$code&lt;/span&gt;)) &amp;#123;&lt;br&gt;        &lt;span class=&quot;hljs-keyword&quot;&gt;die&lt;/span&gt;(&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;you are not smart&amp;#x27;&lt;/span&gt;);&lt;br&gt;    &amp;#125;&lt;br&gt;&amp;#125;&lt;br&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;eval&lt;/span&gt;(&lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;echo(&lt;span class=&quot;hljs-subst&quot;&gt;$code&lt;/span&gt;)&amp;quot;&lt;/span&gt;);&lt;br&gt;&lt;span class=&quot;hljs-meta&quot;&gt;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;题目过滤了全部字母和数字和部分位运算符&lt;/p&gt;
+&lt;p&gt;由http头X-Powered-By: PHP/7.3.21可知 服务器PHP版本为7.3.21&lt;/p&gt;
+&lt;p&gt;需要构造无字母数字的playload&lt;/p&gt;</summary>
     
     
     
@@ -450,13 +416,10 @@
     <link href="https://rce.moe/2020/08/15/%E8%AE%B0%E4%B8%80%E6%AC%A1mysql%E7%9B%B2%E6%B3%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
     <id>https://rce.moe/2020/08/15/%E8%AE%B0%E4%B8%80%E6%AC%A1mysql%E7%9B%B2%E6%B3%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</id>
     <published>2020-08-14T16:00:00.000Z</published>
-    <updated>2021-05-03T11:21:01.699Z</updated>
+    <updated>2022-07-11T03:25:55.169Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;前几天我把一个CVE写成EXP的时候遇到了一个问题&lt;br&gt;目标使用了直接拼接SQL语句的方法进行sql查询&lt;br&gt;而且使用的是UPDATE方法&lt;br&gt;&lt;code&gt;sql_query(&quot;UPDATE users SET sta</summary>
-      
+    <summary type="html">&lt;p&gt;前几天我把一个CVE写成EXP的时候遇到了一个问题&lt;br&gt;目标使用了直接拼接SQL语句的方法进行sql查询&lt;br&gt;而且使用的是UPDATE方法&lt;br&gt;&lt;code&gt;sql_query(&amp;quot;UPDATE users SET status = &amp;#39;confirmed&amp;#39;, editsecret = &amp;#39;&amp;#39; WHERE id IN (&amp;quot; . implode(&amp;quot;, &amp;quot;, $_POST[conusr]) . &amp;quot;) AND status=&amp;#39;pending&amp;#39;&amp;quot;);&lt;/code&gt;&lt;br&gt;根据拼接的语句 我写出了这样的playload 准备读取数据库中用户表的密码hash&lt;/p&gt;</summary>
     
     
     

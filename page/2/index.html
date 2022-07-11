@@ -193,6 +193,13 @@ var _hmt = _hmt || [];
           <span>21/12/28</span>
         </div>
         
+        <div class="excerpt post-wrap"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近拿到了一个商业产品的qcow2 镜像 准备试一试代码审计<br>首先用qemu-img 转换成vmdk 镜像 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><code class="hljs plain">qemu-img convert -f qcow2 123.qcow2 -O vmdk 123.vmdk<br></code></pre></td></tr></table></figure>
+
+
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605980043-744183b4-7855-4f05-975b-7022a74ee567.png#clientId=u0ac4a771-50e4-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=46&id=u4a0541fe&margin=%5Bobject%20Object%5D&name=%E5%9B%BE%E7%89%87.png&originHeight=91&originWidth=1190&originalType=binary&ratio=1&rotation=0&showTitle=false&size=9996&status=done&style=none&taskId=u5bca7c69-2dc3-484f-8b5d-b1d8e9298ea&title=&width=595" alt="图片.png"><br>转换遇到错误 网上搜索只有一个其他项目的issue 没有解决方案<br>阅读qemu源代码 发现是在2017-02-15版本引入了这个特性<br><a target="_blank" rel="noopener" href="https://lists.gnu.org/archive/html/qemu-devel/2017-02/msg03173.html">https://lists.gnu.org/archive/html/qemu-devel/2017-02/msg03173.html</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><code class="hljs plain">bitmaps_ext: Invalid extension length: Unknown error<br></code></pre></td></tr></table></figure></div>
+        
         <div class="meta">
           <div class="l">
             <div class="warp">
@@ -303,6 +310,8 @@ var _hmt = _hmt || [];
           <span>21/10/27</span>
         </div>
         
+        <div class="excerpt post-wrap"><h1 id="PHP敏感函数速查表"><a href="#PHP敏感函数速查表" class="headerlink" title="PHP敏感函数速查表"></a>PHP敏感函数速查表</h1><p>最近正在写一篇PHP代码审计的入门指南文档. 如果表格内出现遗漏或错误,欢迎大家私信反馈.</p></div>
+        
         <div class="meta">
           <div class="l">
             <div class="warp">
@@ -360,6 +369,8 @@ var _hmt = _hmt || [];
           <span class="iconfont icon-time-circle"></span>
           <span>21/06/14</span>
         </div>
+        
+        <div class="excerpt post-wrap"><h1 id="EASYWEB"><a href="#EASYWEB" class="headerlink" title="EASYWEB"></a>EASYWEB</h1><p> <img src="https://i.loli.net/2021/06/14/IEzFq6ue2vtodgn.png" alt="LZYFHP@LAC_IENMHL__OT8M.png"><br></div>
         
         <div class="meta">
           <div class="l">
@@ -421,6 +432,8 @@ var _hmt = _hmt || [];
           <span>21/06/08</span>
         </div>
         
+        <div class="excerpt post-wrap"><p>今年春秋杯春秋杯出了一道智能合约杂项 从来没接触过ETH合约的CTF题 网上找了一堆文章做出来了这道题 这里详细写出解题过程以便学习ETH智能合约的调用</p></div>
+        
         <div class="meta">
           <div class="l">
             <div class="warp">
@@ -477,6 +490,8 @@ var _hmt = _hmt || [];
           <span>21/05/20</span>
         </div>
         
+        <div class="excerpt post-wrap"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>好久没写博客了 博客源文件找不到了233 假期重新抄了下顺便换了个博客主题<br>经过简单的分析这个exp经过简单的修改即可不覆盖就可以成功上传文件 显而易见一堆人不分析就传exp 还说只能覆盖文件 今天又看到一篇一模一样的文章)</p></div>
+        
         <div class="meta">
           <div class="l">
             <div class="warp">
@@ -532,6 +547,8 @@ var _hmt = _hmt || [];
           <span class="iconfont icon-time-circle"></span>
           <span>21/05/05</span>
         </div>
+        
+        <div class="excerpt post-wrap"><h6 id="谷歌浏览器cookies-amp-登陆凭据解密-amp-Windows系统下DPAPI中的MasterKey获取"><a href="#谷歌浏览器cookies-amp-登陆凭据解密-amp-Windows系统下DPAPI中的MasterKey获取" class="headerlink" title="谷歌浏览器cookies&amp;登陆凭据解密&amp;Windows系统下DPAPI中的MasterKey获取"></a>谷歌浏览器cookies&amp;登陆凭据解密&amp;Windows系统下DPAPI中的MasterKey获取</h6><h2 id="谷歌浏览器の加解密"><a href="#谷歌浏览器の加解密" class="headerlink" title="谷歌浏览器の加解密"></a>谷歌浏览器の加解密</h2><p>Chrome cookies 储存位置  “%localappdata%\Google\Chrome\User Data\Default\Cookies”<br>Chrome 登陆凭据 储存位置 “%localappdata%\Google\Chrome\User Data\Default\Login Data”<br> 谷歌浏览器使用了windows自带的DPAPI进行加解密操作<br> 解密方法有两种<br></div>
         
         <div class="meta">
           <div class="l">
@@ -595,6 +612,8 @@ var _hmt = _hmt || [];
           <span>21/05/05</span>
         </div>
         
+        <div class="excerpt post-wrap"><h1 id="fastjson绕WAFのTIPS"><a href="#fastjson绕WAFのTIPS" class="headerlink" title="fastjson绕WAFのTIPS"></a>fastjson绕WAFのTIPS</h1><h3 id="fastjson对字符串转义处理の特性"><a href="#fastjson对字符串转义处理の特性" class="headerlink" title="fastjson对字符串转义处理の特性"></a>fastjson对字符串转义处理の特性</h3><p>fast解析字符串支持\u Unicode转义和 \x HEX转义的字符串解码 (一般json仅支持Unicode转义 fastjson多了对十六进制转义的支持)<br>例如 字符串 driverClassLoader</p></div>
+        
         <div class="meta">
           <div class="l">
             <div class="warp">
@@ -653,6 +672,12 @@ var _hmt = _hmt || [];
           <span>20/08/25</span>
         </div>
         
+        <div class="excerpt post-wrap"><p>早上有点事 差点忘了有比赛233</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>error_reporting(<span class="hljs-number">0</span>);<br>show_source(<span class="hljs-keyword">__FILE__</span>);<br><span class="hljs-variable">$code</span>=<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;code&#x27;</span>];<br><span class="hljs-variable">$_</span>=<span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;d&#x27;</span>,<span class="hljs-string">&#x27;e&#x27;</span>,<span class="hljs-string">&#x27;f&#x27;</span>,<span class="hljs-string">&#x27;g&#x27;</span>,<span class="hljs-string">&#x27;h&#x27;</span>,<span class="hljs-string">&#x27;i&#x27;</span>,<span class="hljs-string">&#x27;j&#x27;</span>,<span class="hljs-string">&#x27;k&#x27;</span>,<span class="hljs-string">&#x27;m&#x27;</span>,<span class="hljs-string">&#x27;n&#x27;</span>,<span class="hljs-string">&#x27;l&#x27;</span>,<span class="hljs-string">&#x27;o&#x27;</span>,<span class="hljs-string">&#x27;p&#x27;</span>,<span class="hljs-string">&#x27;q&#x27;</span>,<span class="hljs-string">&#x27;r&#x27;</span>,<span class="hljs-string">&#x27;s&#x27;</span>,<span class="hljs-string">&#x27;t&#x27;</span>,<span class="hljs-string">&#x27;u&#x27;</span>,<span class="hljs-string">&#x27;v&#x27;</span>,<span class="hljs-string">&#x27;w&#x27;</span>,<span class="hljs-string">&#x27;x&#x27;</span>,<span class="hljs-string">&#x27;y&#x27;</span>,<span class="hljs-string">&#x27;z&#x27;</span>,<span class="hljs-string">&#x27;@&#x27;</span>,<span class="hljs-string">&#x27;\~&#x27;</span>,<span class="hljs-string">&#x27;\^&#x27;</span>,<span class="hljs-string">&#x27;\[&#x27;</span>,<span class="hljs-string">&#x27;\]&#x27;</span>,<span class="hljs-string">&#x27;\&amp;&#x27;</span>,<span class="hljs-string">&#x27;\?&#x27;</span>,<span class="hljs-string">&#x27;\&lt;&#x27;</span>,<span class="hljs-string">&#x27;\&gt;&#x27;</span>,<span class="hljs-string">&#x27;\*&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;2&#x27;</span>,<span class="hljs-string">&#x27;3&#x27;</span>,<span class="hljs-string">&#x27;4&#x27;</span>,<span class="hljs-string">&#x27;5&#x27;</span>,<span class="hljs-string">&#x27;6&#x27;</span>,<span class="hljs-string">&#x27;7&#x27;</span>,<span class="hljs-string">&#x27;8&#x27;</span>,<span class="hljs-string">&#x27;9&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>);<br><span class="hljs-comment">//This blacklist is so stupid.</span><br><span class="hljs-variable">$blacklist</span> = array_merge(<span class="hljs-variable">$_</span>);<br><span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$blacklist</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$blacklisted</span>) &#123;<br>    <span class="hljs-keyword">if</span> (preg_match (<span class="hljs-string">&#x27;/&#x27;</span> . <span class="hljs-variable">$blacklisted</span> . <span class="hljs-string">&#x27;/im&#x27;</span>, <span class="hljs-variable">$code</span>)) &#123;<br>        <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;you are not smart&#x27;</span>);<br>    &#125;<br>&#125;<br><span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;echo(<span class="hljs-subst">$code</span>)&quot;</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<p>题目过滤了全部字母和数字和部分位运算符</p>
+<p>由http头X-Powered-By: PHP/7.3.21可知 服务器PHP版本为7.3.21</p>
+<p>需要构造无字母数字的playload</p></div>
+        
         <div class="meta">
           <div class="l">
             <div class="warp">
@@ -708,6 +733,8 @@ var _hmt = _hmt || [];
           <span class="iconfont icon-time-circle"></span>
           <span>20/08/15</span>
         </div>
+        
+        <div class="excerpt post-wrap"><p>前几天我把一个CVE写成EXP的时候遇到了一个问题<br>目标使用了直接拼接SQL语句的方法进行sql查询<br>而且使用的是UPDATE方法<br><code>sql_query(&quot;UPDATE users SET status = &#39;confirmed&#39;, editsecret = &#39;&#39; WHERE id IN (&quot; . implode(&quot;, &quot;, $_POST[conusr]) . &quot;) AND status=&#39;pending&#39;&quot;);</code><br>根据拼接的语句 我写出了这样的playload 准备读取数据库中用户表的密码hash</p></div>
         
         <div class="meta">
           <div class="l">

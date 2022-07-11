@@ -193,6 +193,9 @@ var _hmt = _hmt || [];
           <span>22/06/24</span>
         </div>
         
+        <div class="excerpt post-wrap"><p>测试环境 PHP 7.1.9</p>
+<p>php文件上传处理在 main/rfc1867.c 中的 rfc1867_post_handler函数</p></div>
+        
         <div class="meta">
           <div class="l">
             <div class="warp">
@@ -255,6 +258,9 @@ var _hmt = _hmt || [];
           <span>22/06/05</span>
         </div>
         
+        <div class="excerpt post-wrap"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前不久我遇到了一个关于获取CDN节点ip列表的问题:<br>如何快速获取一家CDN节点在全国的范围内的节点ip？</p>
+<p>为了解决这个问题，我分析了智能DNS的工作原理。根据原理，我写出了一个使用 Edns-Client-Subnet(ECS)  伪造客户端ip用于遍历cdn节点ip的小工具。</p></div>
+        
         <div class="meta">
           <div class="l">
             <div class="warp">
@@ -306,6 +312,8 @@ var _hmt = _hmt || [];
           <span class="iconfont icon-time-circle"></span>
           <span>22/05/30</span>
         </div>
+        
+        <div class="excerpt post-wrap"><p>author:白帽酱<br>题目给了后端源码  一道题利用了前不久出现的一个鸡肋洞 openssl c_rehash(CVE-2022-1292)  题目还是比较有意思的</p></div>
         
         <div class="meta">
           <div class="l">
@@ -364,6 +372,8 @@ var _hmt = _hmt || [];
           <span class="iconfont icon-time-circle"></span>
           <span>22/05/25</span>
         </div>
+        
+        <div class="excerpt post-wrap"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前不久p牛分享了一个<a target="_blank" rel="noopener" href="https://tttang.com/archive/1450/">利用环境变量注入劫持bash</a>的技巧.<br>当时我就在想这种环境变量的注入有没有什么比较通用的场景。一般遇到的环境变量注入基本上都是直接使用ld_preload解决问题。p牛的这种新的环境变量注入的利用技巧，有没有什么特殊的利用面呢。</p></div>
         
         <div class="meta">
           <div class="l">
@@ -482,6 +492,10 @@ var _hmt = _hmt || [];
           <span class="iconfont icon-time-circle"></span>
           <span>22/04/18</span>
         </div>
+        
+        <div class="excerpt post-wrap"><p>jsp中可以使用el表达式<br>所以我们可以使用和el表达式注入一样的方法构造webshell</p>
+<p>可以避免出现 &lt;%符号</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><code class="hljs plain">$&#123;Runtime.getRuntime().exec(param.a)&#125;<br></code></pre></td></tr></table></figure></div>
         
         <div class="meta">
           <div class="l">
@@ -651,6 +665,8 @@ var _hmt = _hmt || [];
           <span>22/01/25</span>
         </div>
         
+        <div class="excerpt post-wrap"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在最近的一次的src测试中遇到了ldap注入漏洞,目标是一个管理平台的单点登陆入口,漏洞存在于用户名存在判断处.<br>之前渗透测试的时候我也遇到过几个生产环境中ldap注入的漏洞,但是都只能获取到有限的敏感信息(用户名 手机号 邮箱) 危害程度与ldap匿名绑定相同.<br>在研究ldap查询语法时,我找到了一种可以外带ldap储存的用户密码的方法,实现了对ldap注入的进一步利用.</p></div>
+        
         <div class="meta">
           <div class="l">
             <div class="warp">
@@ -704,6 +720,14 @@ var _hmt = _hmt || [];
           <span class="iconfont icon-time-circle"></span>
           <span>21/12/28</span>
         </div>
+        
+        <div class="excerpt post-wrap"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>php是一种解释型脚本语言.<br>与编译型语言不同,php源代码不是直接翻译成机器语言.而是翻译成中间代码(OPCODE) ,再由解释器(ZEND引擎)对中间代码进行解释运行 .</p>
+<p>在php源代码的保护在原理可以分为3大类.</p>
+<ul>
+<li>源代码混淆(编码)</li>
+<li>OPCODE混淆(编码)</li>
+<li>修改解释引擎(虚拟机)</li>
+</ul></div>
         
         <div class="meta">
           <div class="l">

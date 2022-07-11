@@ -208,6 +208,8 @@ var _hmt = _hmt || [];
       </div>
     </div>
     <html><head></head><body><h1 id="前言">前言<a class="post-anchor" href="#前言"></a></h1><p>在最近的一次的src测试中遇到了ldap注入漏洞,目标是一个管理平台的单点登陆入口,漏洞存在于用户名存在判断处.<br>之前渗透测试的时候我也遇到过几个生产环境中ldap注入的漏洞,但是都只能获取到有限的敏感信息(用户名 手机号 邮箱) 危害程度与ldap匿名绑定相同.<br>在研究ldap查询语法时,我找到了一种可以外带ldap储存的用户密码的方法,实现了对ldap注入的进一步利用.</p>
+<span id="more"></span>
+
 <h1 id="ldap注入点判断">ldap注入点判断<a class="post-anchor" href="#ldap注入点判断"></a></h1><p>ldap注入是指ldap过滤器语句(filter)的注入<br>ldap过滤器的基本语法如下</p>
 <figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">=<br>&gt;=<br>&lt;=<br>|  或<br>&amp;  与<br>!  非<br>*  通配符<br>(语句)<br></code></pre></td></tr></tbody></table></figure>
 <p>例如一个简单的查询语句如下</p>

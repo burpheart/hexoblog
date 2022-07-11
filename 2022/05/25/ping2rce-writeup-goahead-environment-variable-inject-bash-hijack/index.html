@@ -231,6 +231,8 @@ var _hmt = _hmt || [];
       </div>
     </div>
     <html><head></head><body><h1 id="前言">前言<a class="post-anchor" href="#前言"></a></h1><p>前不久p牛分享了一个<a target="_blank" rel="noopener" href="https://tttang.com/archive/1450/">利用环境变量注入劫持bash</a>的技巧.<br>当时我就在想这种环境变量的注入有没有什么比较通用的场景。一般遇到的环境变量注入基本上都是直接使用ld_preload解决问题。p牛的这种新的环境变量注入的利用技巧，有没有什么特殊的利用面呢。</p>
+<span id="more"></span>
+
 <h1 id="GoAhead">GoAhead<a class="post-anchor" href="#GoAhead"></a></h1><p>   嵌入式设备常用的Web服务器 GoAhead 出现过环境变量注入漏洞 CVE-2017-17562 和 CVE-2021-42342。<br>漏洞的原理很简单：服务器会把收到的CGI请求参数直接写入到环境变量中。</p>
 <p>CVE-2017-17562 的修复方案也很简单：在写入的环境变量前加 CGI_前缀 添加黑名单过滤（实际上无效）。<br>但是这补丁并没有完全修复。<br>在 multipart 表单请求遗漏了请求参数的处理  黑名单也没起作用 所以就有了CVE-2021-42342<br>当时我在复现 CVE-2017-17562和CVE-2021-42342 时遇到了一个问题.<br>我在上传文件时发生了500错误  控制台无任何错误输出  阅读源码后我发现<br>GoAhead 上传文件时会向一个固定的临时文件夹写入临时文件  默认为–home参数提供的目录下的tmp目录<br>如果目录不存在 或者是无法写入文件，就无法完成上传流程。（在后来搜索漏洞分析的才发现了<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/goahead-en-injection-cve-2021-42342.html">p牛的文章</a>已经写过了我遇到的坑 还有一些其他的玄学问题）<br>在创建tmp目录后，我成功的完成了漏洞复现。<br><strong>这时我想到了一个问题：</strong><br> 嵌入式设备大多都是只读文件系统，即使是可写也没有创建这个临时目录。<br>那么，这个漏洞在实际的场景下应该很难利用。<br>当时没有其他方法只能止步于此。  直到我遇到了p牛的这篇文章。</p>
 <h1 id="GoAhead-bash">GoAhead + bash<a class="post-anchor" href="#GoAhead-bash"></a></h1><p>一些嵌入式设备会有执行系统命令的场景。<br>比如ping 路由跟踪 等等。<br>在这个场景下并结合p牛的bash劫持，就可以完美的完成命令执行目标。<br>随便构建一个cgi</p>

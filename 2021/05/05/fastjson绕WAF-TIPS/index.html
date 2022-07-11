@@ -223,6 +223,8 @@ var _hmt = _hmt || [];
       </div>
     </div>
     <html><head></head><body><h1 id="fastjson绕WAFのTIPS">fastjson绕WAFのTIPS<a class="post-anchor" href="#fastjson绕WAFのTIPS"></a></h1><h3 id="fastjson对字符串转义处理の特性">fastjson对字符串转义处理の特性<a class="post-anchor" href="#fastjson对字符串转义处理の特性"></a></h3><p>fast解析字符串支持\u Unicode转义和 \x HEX转义的字符串解码 (一般json仅支持Unicode转义 fastjson多了对十六进制转义的支持)<br>例如 字符串 driverClassLoader</p>
+<span id="more"></span>
+
 <p>Unicode转义 编码 \uxxxx(json通用)<br><code>\u0064\u0072\u0069\u0076\u0065\u0072\u0043\u006C\u0061\u0073\u0073\u004C\u006F\u0061\u0064\u0065\u0072</code><br>HEX转义编码 \x** (fastjson only)<br><code>\x64\x72\x69\x76\x65\x72\x43\x6C\x61\x73\x73\x4C\x6F\x61\x64\x65\x72</code><br>fastjson中两者可以混合使用<br>例:<br><code>\x64\u0072\x0069\u0076\x65\u0072\x43\x6C\u0061\u0073\x73\x4C\x006F\x61\x64\x65\u0072</code><br>使用CyberChef进行方便的编解码<br><a target="_blank" rel="noopener" href="https://i.loli.net/2021/05/05/utBrMP3bcCsSfeT.png" data-caption="" data-fancybox="images"><img src="https://i.loli.net/2021/05/05/utBrMP3bcCsSfeT.png" alt=""></a><br>这种方法可以绕过一些字符串规则匹配的waf 除此之外playload也可以加入%08%09这种空白字符扰乱waf对json匹配解析</p>
 </body></html>
 
