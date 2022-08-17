@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      LUKS 全盘加密的一个通用解密方法--从内存中提取LUKS MASTER KEY - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A0%B4%E8%A7%A3LUKS%E5%85%A8%E7%9B%98%E5%8A%A0%E5%AF%86"><span class="toc-text">破解LUKS全盘加密</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E5%86%85%E5%AD%98%E9%95%9C%E5%83%8F%E4%B8%AD%E6%8F%90%E5%8F%96MASTER-KEY"><span class="toc-text">从内存镜像中提取MASTER KEY</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5-%E5%88%A4%E6%96%AD%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="toc-text">第一步 判断加密算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5-DUMP-%E5%8C%85%E5%90%AB%E7%A7%98%E9%92%A5%E7%9A%84%E5%86%85%E5%AD%98"><span class="toc-text">第二步  DUMP 包含秘钥的内存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5-%E4%BB%8E%E5%86%85%E5%AD%98%E5%AF%BB%E6%89%BEaes-key"><span class="toc-text">第三步  从内存寻找aes key</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5-%E8%A7%A3%E5%AF%86%E5%88%86%E5%8C%BA"><span class="toc-text">第四步 解密分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5-%E8%A7%A3%E5%AF%86%E5%85%B6%E4%BB%96%E5%88%86%E5%8C%BA"><span class="toc-text">第五步 解密其他分区</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">LUKS 全盘加密的一个通用解密方法--从内存中提取LUKS MASTER KEY</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2022/08/17</span>
+        </span>
+
+        
+
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/LUKS">LUKS</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><p>作者:橙子酱</p>
+<h1 id="前言">前言<a class="post-anchor" href="#前言"></a></h1><p>之前的文章中提到了一种有启动分区的情况<br>磁盘主引导-&gt;引导分区-&gt;引导内核-&gt;系统启动-&gt;解密挂载分区 (一个引导分区 +一个主分区)<br>遇到这种情况就可以通过简单的提取文件系统中的秘钥解决.<br>但是运气不好还会遇到两种更变态的情况<br>磁盘主引导-&gt;引导分区-&gt;引导内核-&gt;引导内核中解密挂载分区-&gt;系统启动-&gt;解密挂载分区(只有一个引导分区)<br>磁盘主引导-&gt;磁盘引导程序-&gt;解密分区-&gt;引导-&gt;系统启动-&gt;解密其他分区 (一个明文分区都没有)<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660725503514-b1ffa230-7ec9-43e6-9df7-dc9011d9d365.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=398&amp;id=ufa2e97fd&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=497&amp;originWidth=1267&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=110114&amp;status=done&amp;style=none&amp;taskId=u0804bf49-e4ef-4b49-9fec-31af0569b23&amp;title=&amp;width=1013.6" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660725503514-b1ffa230-7ec9-43e6-9df7-dc9011d9d365.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=398&amp;id=ufa2e97fd&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=497&amp;originWidth=1267&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=110114&amp;status=done&amp;style=none&amp;taskId=u0804bf49-e4ef-4b49-9fec-31af0569b23&amp;title=&amp;width=1013.6" alt="图片.png"></a>这时,通常只能通过逆向引导程序来提取内核镜像.最终拿到镜像中的秘钥文件.<br>这个过程十分的繁琐. 在没有符号表的情况逆向魔改过的linux引导内核也非常困难.<br>那么有没有一个简单的方法解决这个问题呢?</p>
+<h1 id="破解LUKS全盘加密">破解LUKS全盘加密<a class="post-anchor" href="#破解LUKS全盘加密"></a></h1><p>luks 解密进行磁盘后硬盘上的数据实际仍然是加密的.<br>为了可以实时读写加密分区内的数据,加解密使用的秘钥一定存在于内存之中.<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660727113540-e4036be1-b341-43c8-91ae-89bbc75b44f2.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=346&amp;id=uc40cb572&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=433&amp;originWidth=566&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=true&amp;size=33756&amp;status=done&amp;style=none&amp;taskId=u3fd91d24-301d-493c-9d5f-f450f54ab20&amp;title=%E9%92%B1%E9%95%9C%E6%B4%81%EF%BC%8C%20%E9%AD%8F%E9%B9%8F%EF%BC%8C%20%E6%B2%88%E9%95%BF%E8%BE%BE.%20LUKS%E5%8A%A0%E5%AF%86%E5%8D%B7%E7%9A%84%E7%A6%BB%E7%BA%BF%E8%A7%A3%E5%AF%86%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90%5BJ%5D.%20%E4%BF%A1%E6%81%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%2C%202014%2C%2014%289%29%3A%20217-219.&amp;width=452.8" data-caption="钱镜洁， 魏鹏， 沈长达. LUKS加密卷的离线解密技术分析[J]. 信息网络安全, 2014, 14(9): 217-219." data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660727113540-e4036be1-b341-43c8-91ae-89bbc75b44f2.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=346&amp;id=uc40cb572&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=433&amp;originWidth=566&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=true&amp;size=33756&amp;status=done&amp;style=none&amp;taskId=u3fd91d24-301d-493c-9d5f-f450f54ab20&amp;title=%E9%92%B1%E9%95%9C%E6%B4%81%EF%BC%8C%20%E9%AD%8F%E9%B9%8F%EF%BC%8C%20%E6%B2%88%E9%95%BF%E8%BE%BE.%20LUKS%E5%8A%A0%E5%AF%86%E5%8D%B7%E7%9A%84%E7%A6%BB%E7%BA%BF%E8%A7%A3%E5%AF%86%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90%5BJ%5D.%20%E4%BF%A1%E6%81%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%2C%202014%2C%2014%289%29%3A%20217-219.&amp;width=452.8" alt="钱镜洁， 魏鹏， 沈长达. LUKS加密卷的离线解密技术分析[J]. 信息网络安全, 2014, 14(9): 217-219."></a></p>
+<h2 id="从内存镜像中提取MASTER-KEY">从内存镜像中提取MASTER KEY<a class="post-anchor" href="#从内存镜像中提取MASTER-KEY"></a></h2><h4 id="第一步-判断加密算法">第一步 判断加密算法<a class="post-anchor" href="#第一步-判断加密算法"></a></h4><p>挂载硬盘 使用cryptsetup luksDump  判断分区使用的加密算法<br>本文使用的是 AES 256 加密 (默认加密算法)</p>
+<h4 id="第二步-DUMP-包含秘钥的内存">第二步  DUMP 包含秘钥的内存<a class="post-anchor" href="#第二步-DUMP-包含秘钥的内存"></a></h4><p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660727406450-102a8a91-3695-49c7-b357-ce31ffbb758a.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=398&amp;id=u28924e48&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=498&amp;originWidth=1004&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=33960&amp;status=done&amp;style=none&amp;taskId=u1e4ada8c-3c0a-4e8b-b666-d964dc21fc9&amp;title=&amp;width=803.2" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660727406450-102a8a91-3695-49c7-b357-ce31ffbb758a.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=398&amp;id=u28924e48&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=498&amp;originWidth=1004&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=33960&amp;status=done&amp;style=none&amp;taskId=u1e4ada8c-3c0a-4e8b-b666-d964dc21fc9&amp;title=&amp;width=803.2" alt="图片.png"></a>在虚拟机第一个分区完成解密后,dump虚拟机完整内存 (快照 暂停 命令行 均可)</p>
+<h4 id="第三步-从内存寻找aes-key">第三步  从内存寻找aes key<a class="post-anchor" href="#第三步-从内存寻找aes-key"></a></h4><p>使用工具从内存寻找aes key<br><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/findaes/">https://sourceforge.net/projects/findaes/</a><br><a target="_blank" rel="noopener" href="https://github.com/mmozeiko/aes-finder">https://github.com/mmozeiko/aes-finder</a><br><a target="_blank" rel="noopener" href="https://www.kali.org/tools/aeskeyfind/">https://www.kali.org/tools/aeskeyfind/</a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660728172311-59456842-8528-4715-b17c-ae4df0828abf.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=629&amp;id=u254e6f88&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=786&amp;originWidth=1154&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=161471&amp;status=done&amp;style=none&amp;taskId=u6bb754a5-5ede-4e3e-8c0b-ec1340b055f&amp;title=&amp;width=923.2" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660728172311-59456842-8528-4715-b17c-ae4df0828abf.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=629&amp;id=u254e6f88&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=786&amp;originWidth=1154&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=161471&amp;status=done&amp;style=none&amp;taskId=u6bb754a5-5ede-4e3e-8c0b-ec1340b055f&amp;title=&amp;width=923.2" alt="图片.png"></a>选择对应长度的key  hex转成raw文件作为key</p>
+<h4 id="第四步-解密分区">第四步 解密分区<a class="post-anchor" href="#第四步-解密分区"></a></h4><p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660728386539-4e1cd230-1228-4434-a998-3af63288d293.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=549&amp;id=u25e2955f&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=686&amp;originWidth=1026&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=477002&amp;status=done&amp;style=none&amp;taskId=u73f3b009-2663-4fa2-9976-596c2d1ead2&amp;title=&amp;width=820.8" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660728386539-4e1cd230-1228-4434-a998-3af63288d293.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=549&amp;id=u25e2955f&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=686&amp;originWidth=1026&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=477002&amp;status=done&amp;style=none&amp;taskId=u73f3b009-2663-4fa2-9976-596c2d1ead2&amp;title=&amp;width=820.8" alt="图片.png"></a>ryptsetup luksOpen 加密的分区 –master-key-file key文件  挂载名<br>依次尝试各个分区和各个秘钥的组合 无错误返回即为解密成功.</p>
+<h4 id="第五步-解密其他分区">第五步 解密其他分区<a class="post-anchor" href="#第五步-解密其他分区"></a></h4><p>挂载解密后的分区,在解密后寻找自动挂载文件  /etc/crypttab<br>得到其他秘钥位置.<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660728417764-bc7d672e-5ad5-4014-9117-5990805526ad.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=ue200ec84&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=142&amp;originWidth=841&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=47771&amp;status=done&amp;style=none&amp;taskId=u0171ee8c-5d34-457d-9ff9-c4fc9e7069f&amp;title=" data-caption="image.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1660728417764-bc7d672e-5ad5-4014-9117-5990805526ad.png#clientId=ued3e38dd-9d43-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=ue200ec84&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=142&amp;originWidth=841&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=47771&amp;status=done&amp;style=none&amp;taskId=u0171ee8c-5d34-457d-9ff9-c4fc9e7069f&amp;title=" alt="image.png"></a>之后的步骤就按照之前的文章操作</p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2022/06/24/php-upload-bypass-waf/">php在流量层面绕waf的一些姿势-php文件上传处理流程简单分析</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/">https://rce.moe/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true
+    }).render('gitalk-container')
+</script>
+        <footer>
+          <div class="copyright">
+            ©2022
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 

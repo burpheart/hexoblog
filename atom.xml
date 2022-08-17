@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-07-11T03:20:30.521Z</updated>
+  <updated>2022-08-17T09:37:27.884Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>LUKS 全盘加密的一个通用解密方法--从内存中提取LUKS MASTER KEY</title>
+    <link href="https://rce.moe/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/"/>
+    <id>https://rce.moe/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/</id>
+    <published>2022-08-17T09:34:50.000Z</published>
+    <updated>2022-08-17T09:37:27.884Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;作者:橙子酱&lt;/p&gt;
+&lt;h1 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;之前的文章中提到了一种有启动分区的情况&lt;br&gt;磁盘主引导-&amp;gt;引导分区-&amp;gt</summary>
+      
+    
+    
+    
+    
+    <category term="LUKS" scheme="https://rce.moe/tags/LUKS/"/>
+    
+  </entry>
   
   <entry>
     <title>php在流量层面绕waf的一些姿势-php文件上传处理流程简单分析</title>
@@ -408,23 +429,6 @@
     <category term="CTF" scheme="https://rce.moe/tags/CTF/"/>
     
     <category term="WRITEUP" scheme="https://rce.moe/tags/WRITEUP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>记一次mysql盲注遇到的问题</title>
-    <link href="https://rce.moe/2020/08/15/%E8%AE%B0%E4%B8%80%E6%AC%A1mysql%E7%9B%B2%E6%B3%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
-    <id>https://rce.moe/2020/08/15/%E8%AE%B0%E4%B8%80%E6%AC%A1mysql%E7%9B%B2%E6%B3%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</id>
-    <published>2020-08-14T16:00:00.000Z</published>
-    <updated>2022-07-11T03:25:55.169Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;前几天我把一个CVE写成EXP的时候遇到了一个问题&lt;br&gt;目标使用了直接拼接SQL语句的方法进行sql查询&lt;br&gt;而且使用的是UPDATE方法&lt;br&gt;&lt;code&gt;sql_query(&amp;quot;UPDATE users SET status = &amp;#39;confirmed&amp;#39;, editsecret = &amp;#39;&amp;#39; WHERE id IN (&amp;quot; . implode(&amp;quot;, &amp;quot;, $_POST[conusr]) . &amp;quot;) AND status=&amp;#39;pending&amp;#39;&amp;quot;);&lt;/code&gt;&lt;br&gt;根据拼接的语句 我写出了这样的playload 准备读取数据库中用户表的密码hash&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="笔记" scheme="https://rce.moe/tags/%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
