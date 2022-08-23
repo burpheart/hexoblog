@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-08-23T02:06:37.714Z</updated>
+  <updated>2022-08-23T02:17:27.971Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://rce.moe/2022/08/23/WMCTF-2022-WRITEUP/"/>
     <id>https://rce.moe/2022/08/23/WMCTF-2022-WRITEUP/</id>
     <published>2022-08-23T02:04:16.000Z</published>
-    <updated>2022-08-23T02:06:37.714Z</updated>
+    <updated>2022-08-23T02:17:27.971Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;这次WMCTF拿了3个一血&lt;br&gt;题目设计非常有趣  其中还有几个0day  很多实际渗透遇到的问题也考虑到了&lt;/p&gt;</summary>
