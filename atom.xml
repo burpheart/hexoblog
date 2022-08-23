@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2022-08-17T09:37:27.884Z</updated>
+  <updated>2022-08-23T02:06:37.714Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -17,18 +17,34 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>WMCTF 2022 部分 WRITEUP</title>
+    <link href="https://rce.moe/2022/08/23/WMCTF-2022-WRITEUP/"/>
+    <id>https://rce.moe/2022/08/23/WMCTF-2022-WRITEUP/</id>
+    <published>2022-08-23T02:04:16.000Z</published>
+    <updated>2022-08-23T02:06:37.714Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;这次WMCTF拿了3个一血&lt;br&gt;题目设计非常有趣  其中还有几个0day  很多实际渗透遇到的问题也考虑到了&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="writeup" scheme="https://rce.moe/categories/writeup/"/>
+    
+    
+    <category term="writeup" scheme="https://rce.moe/tags/writeup/"/>
+    
+  </entry>
+  
+  <entry>
     <title>LUKS 全盘加密的一个通用解密方法--从内存中提取LUKS MASTER KEY</title>
     <link href="https://rce.moe/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/"/>
     <id>https://rce.moe/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/</id>
     <published>2022-08-17T09:34:50.000Z</published>
-    <updated>2022-08-17T09:37:27.884Z</updated>
+    <updated>2022-08-23T02:05:59.683Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;作者:橙子酱&lt;/p&gt;
-&lt;h1 id=&quot;前言&quot;&gt;前言&lt;a class=&quot;post-anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;之前的文章中提到了一种有启动分区的情况&lt;br&gt;磁盘主引导-&amp;gt;引导分区-&amp;gt</summary>
-      
+    <summary type="html">&lt;p&gt;作者:橙子酱&lt;/p&gt;
+&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;之前的文章中提到了一种有启动分区的情况&lt;br&gt;磁盘主引导-&amp;gt;引导分区-&amp;gt;引导内核-&amp;gt;系统启动-&amp;gt;解密挂载分区 (一个引导分区 +一个主分区)&lt;br&gt;遇到这种情况就可以通过简单的提取文件系统中的秘钥解决.&lt;br&gt;但是运气不好还会遇到两种更变态的情况&lt;/p&gt;</summary>
     
     
     
@@ -406,29 +422,6 @@
     <category term="笔记" scheme="https://rce.moe/tags/%E7%AC%94%E8%AE%B0/"/>
     
     <category term="fastjson" scheme="https://rce.moe/tags/fastjson/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2020安恒DASCTF八月浪漫七夕战 ezrce Writeup</title>
-    <link href="https://rce.moe/2020/08/25/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-writeup/"/>
-    <id>https://rce.moe/2020/08/25/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-writeup/</id>
-    <published>2020-08-24T16:00:00.000Z</published>
-    <updated>2022-07-11T03:25:45.093Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;早上有点事 差点忘了有比赛233&lt;/p&gt;
-&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs php&quot;&gt;&lt;span class=&quot;hljs-meta&quot;&gt;&amp;lt;?php&lt;/span&gt;&lt;br&gt;error_reporting(&lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;);&lt;br&gt;show_source(&lt;span class=&quot;hljs-keyword&quot;&gt;__FILE__&lt;/span&gt;);&lt;br&gt;&lt;span class=&quot;hljs-variable&quot;&gt;$code&lt;/span&gt;=&lt;span class=&quot;hljs-variable&quot;&gt;$_POST&lt;/span&gt;[&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;code&amp;#x27;&lt;/span&gt;];&lt;br&gt;&lt;span class=&quot;hljs-variable&quot;&gt;$_&lt;/span&gt;=&lt;span class=&quot;hljs-keyword&quot;&gt;array&lt;/span&gt;(&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;a&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;b&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;c&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;d&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;e&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;f&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;g&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;h&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;i&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;j&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;k&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;m&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;n&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;l&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;o&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;p&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;q&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;r&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;s&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;t&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;u&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;v&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;w&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;x&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;y&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;z&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;@&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\~&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\^&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\[&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\]&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\&amp;amp;&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\?&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\&amp;lt;&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\&amp;gt;&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;\*&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;1&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;2&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;3&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;4&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;5&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;6&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;7&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;8&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;9&amp;#x27;&lt;/span&gt;,&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;0&amp;#x27;&lt;/span&gt;);&lt;br&gt;&lt;span class=&quot;hljs-comment&quot;&gt;//This blacklist is so stupid.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;hljs-variable&quot;&gt;$blacklist&lt;/span&gt; = array_merge(&lt;span class=&quot;hljs-variable&quot;&gt;$_&lt;/span&gt;);&lt;br&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;foreach&lt;/span&gt; (&lt;span class=&quot;hljs-variable&quot;&gt;$blacklist&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;hljs-variable&quot;&gt;$blacklisted&lt;/span&gt;) &amp;#123;&lt;br&gt;    &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (preg_match (&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;/&amp;#x27;&lt;/span&gt; . &lt;span class=&quot;hljs-variable&quot;&gt;$blacklisted&lt;/span&gt; . &lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;/im&amp;#x27;&lt;/span&gt;, &lt;span class=&quot;hljs-variable&quot;&gt;$code&lt;/span&gt;)) &amp;#123;&lt;br&gt;        &lt;span class=&quot;hljs-keyword&quot;&gt;die&lt;/span&gt;(&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;you are not smart&amp;#x27;&lt;/span&gt;);&lt;br&gt;    &amp;#125;&lt;br&gt;&amp;#125;&lt;br&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;eval&lt;/span&gt;(&lt;span class=&quot;hljs-string&quot;&gt;&amp;quot;echo(&lt;span class=&quot;hljs-subst&quot;&gt;$code&lt;/span&gt;)&amp;quot;&lt;/span&gt;);&lt;br&gt;&lt;span class=&quot;hljs-meta&quot;&gt;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;题目过滤了全部字母和数字和部分位运算符&lt;/p&gt;
-&lt;p&gt;由http头X-Powered-By: PHP/7.3.21可知 服务器PHP版本为7.3.21&lt;/p&gt;
-&lt;p&gt;需要构造无字母数字的playload&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="CTF" scheme="https://rce.moe/tags/CTF/"/>
-    
-    <category term="WRITEUP" scheme="https://rce.moe/tags/WRITEUP/"/>
     
   </entry>
   
