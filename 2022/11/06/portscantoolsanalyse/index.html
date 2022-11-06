@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      常见安全工具的扫描流量特征分析与检测 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%AB%E6%8F%8F%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-text">扫描流量分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-nmap"><span class="toc-text">1. nmap</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SYN%E6%89%AB%E6%8F%8F%E6%B5%81%E9%87%8F"><span class="toc-text">SYN扫描流量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E6%B4%BB%E6%A3%80%E6%B5%8B"><span class="toc-text">存活检测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#masscan"><span class="toc-text">masscan</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SYN-%E6%89%AB%E6%8F%8F%E6%B5%81%E9%87%8F"><span class="toc-text">SYN 扫描流量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E6%B4%BB%E6%A3%80%E6%B5%8B-1"><span class="toc-text">存活检测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GOBY"><span class="toc-text">GOBY</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SYN-%E6%89%AB%E6%8F%8F%E6%B5%81%E9%87%8F-1"><span class="toc-text">SYN 扫描流量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E6%B4%BB%E6%A3%80%E6%B5%8B-2"><span class="toc-text">存活检测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gorailgun"><span class="toc-text">gorailgun</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SYN-%E6%89%AB%E6%8F%8F%E6%B5%81%E9%87%8F-2"><span class="toc-text">SYN 扫描流量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E6%B4%BB%E6%A3%80%E6%B5%8B-3"><span class="toc-text">存活检测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#yakit"><span class="toc-text">yakit</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SYN-%E6%89%AB%E6%8F%8F%E6%B5%81%E9%87%8F-3"><span class="toc-text">SYN 扫描流量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E6%B4%BB%E6%A3%80%E6%B5%8B-4"><span class="toc-text">存活检测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fscan"><span class="toc-text">fscan</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SYN-%E6%89%AB%E6%8F%8F%E6%B5%81%E9%87%8F-4"><span class="toc-text">SYN 扫描流量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E6%B4%BB%E6%A3%80%E6%B5%8B-5"><span class="toc-text">存活检测</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%AB%E6%8F%8F%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B"><span class="toc-text">扫描流量检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A3%80%E6%B5%8B%E8%A7%84%E5%88%99%E7%BC%96%E5%86%99"><span class="toc-text">检测规则编写</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#iptables-%E8%A7%84%E5%88%99-%E9%98%BB%E6%96%AD%E9%9C%80%E8%B0%A8%E6%85%8E-%E5%8F%AF%E8%83%BD%E6%9C%89%E8%AF%AF%E6%8A%A5"><span class="toc-text">iptables 规则(阻断需谨慎 可能有误报)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#suricata-%E6%A3%80%E6%B5%8B%E8%A7%84%E5%88%99"><span class="toc-text">suricata 检测规则</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%84%E5%88%99%E7%94%A8%E9%80%94"><span class="toc-text">规则用途</span></a></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">常见安全工具的扫描流量特征分析与检测</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2022/11/06</span>
+        </span>
+
+        
+
+        
+        
+        
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="前言">前言<a class="post-anchor" href="#前言"></a></h1><p>端口扫描在红队渗透中是非常重要的一个环,日常使用的很多工具都具有端口扫描功能.<br>这篇文章会横向比较不同工具在端口扫描时的流量包特征和扫描器的扫描探活方法.从中提取出IDS和防火墙规则,达到拦截或检测网络中的扫描流量的目的.<br>*本文不讨论高频发包和异常连接等行为上的检测.</p>
+<h1 id="扫描流量分析">扫描流量分析<a class="post-anchor" href="#扫描流量分析"></a></h1><h2 id="1-nmap">1. nmap<a class="post-anchor" href="#1-nmap"></a></h2><h4 id="SYN扫描流量">SYN扫描流量<a class="post-anchor" href="#SYN扫描流量"></a></h4><p>nmap 默认使用TCP 半连接扫描方法<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667559323407-46234c3a-8a7c-4819-a492-ba4f6ddfe75d.png#averageHue=%23d4d2cb&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=u3db2d522&amp;margin=%5Bobject%20Object%5D&amp;originHeight=157&amp;originWidth=720&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;taskId=uad726f6d-9c1d-49c7-88fe-f4136980082&amp;title=" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667559323407-46234c3a-8a7c-4819-a492-ba4f6ddfe75d.png#averageHue=%23d4d2cb&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;id=u3db2d522&amp;margin=%5Bobject%20Object%5D&amp;originHeight=157&amp;originWidth=720&amp;originalType=url&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;taskId=uad726f6d-9c1d-49c7-88fe-f4136980082&amp;title=" alt=""></a><br>发送一个SYN包 如果端口开放则回返回ACK<br>如果收到RST则端口没有开放 (间接证明主机存活)<br> 这种扫描方法没有阻塞，速度快. 只需要发syn包之后等待返回包即可 不需要建立会话<br>且因为没有建立完整连接,扫描不会被记录连接日志.</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667542227340-f8d8d0b2-62c4-4e42-a882-47eacf0602e9.png#averageHue=%232a364a&amp;clientId=ufe00f31a-352d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=658&amp;id=u1404edeb&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=823&amp;originWidth=1222&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=271643&amp;status=done&amp;style=none&amp;taskId=u8a4911e5-51dc-47ac-95c4-6b73fe61a81&amp;title=&amp;width=977.6" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667542227340-f8d8d0b2-62c4-4e42-a882-47eacf0602e9.png#averageHue=%232a364a&amp;clientId=ufe00f31a-352d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=658&amp;id=u1404edeb&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=823&amp;originWidth=1222&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=271643&amp;status=done&amp;style=none&amp;taskId=u8a4911e5-51dc-47ac-95c4-6b73fe61a81&amp;title=&amp;width=977.6" alt="图片.png"></a><br>NMAP 使用了固定的窗口大小(1024)<br>同时也使用了固定的TCP OPTIONS (02 04 05 b4  TCP中最短的OPTIONS长度)<br>这种短OPTIONS 在日常使用的操作系统并不常见<br>猜测nmap可能是为了尽量减少包的大小才设置为最短options<br><a target="_blank" rel="noopener" href="https://github.com/nmap/nmap/blob/master/nmap.h#L165">https://github.com/nmap/nmap/blob/master/nmap.h#L165</a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667546052917-a6c7f46a-ee7a-46c5-ae4e-f7d39a4a85a3.png#averageHue=%23fefaea&amp;clientId=ufe00f31a-352d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=65&amp;id=vOyis&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=81&amp;originWidth=641&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=8551&amp;status=done&amp;style=none&amp;taskId=ue111dee3-ccaa-4227-b34d-ce3718342ce&amp;title=&amp;width=512.8" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667546052917-a6c7f46a-ee7a-46c5-ae4e-f7d39a4a85a3.png#averageHue=%23fefaea&amp;clientId=ufe00f31a-352d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=65&amp;id=vOyis&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=81&amp;originWidth=641&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=8551&amp;status=done&amp;style=none&amp;taskId=ue111dee3-ccaa-4227-b34d-ce3718342ce&amp;title=&amp;width=512.8" alt="图片.png"></a><br>注: nmap在收到SYN ACK后,会立即发送RST 重置连接.</p>
+<h4 id="存活检测">存活检测<a class="post-anchor" href="#存活检测"></a></h4><p>在大规模扫描中 存活检测也是一个非常重要的技术<br>在面对大量主机扫描时如果事先探测存活主机 之后仅对存活主机扫描 就防止在非存活主机上消耗不必要的探测时间</p>
+<p>nmap 默认使用了4种存活探测方法<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667546104183-6c64d9cf-d9ed-4a5f-b360-0b1c62a6351a.png#averageHue=%2329384c&amp;clientId=ufe00f31a-352d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=574&amp;id=JEFvM&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=718&amp;originWidth=1336&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=278014&amp;status=done&amp;style=none&amp;taskId=u39be2ed7-2074-4e4b-b11a-204cc10b1e8&amp;title=&amp;width=1068.8" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667546104183-6c64d9cf-d9ed-4a5f-b360-0b1c62a6351a.png#averageHue=%2329384c&amp;clientId=ufe00f31a-352d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=574&amp;id=JEFvM&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=718&amp;originWidth=1336&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=278014&amp;status=done&amp;style=none&amp;taskId=u39be2ed7-2074-4e4b-b11a-204cc10b1e8&amp;title=&amp;width=1068.8" alt="图片.png"></a></p>
+<ol>
+<li><strong>ICMP  ECHO 请求</strong></li>
+</ol>
+<p>这就是常见的ping 请求<br>特征: nmap为了减少包大小 icmp请求没有额外的数据负载<br>横向比较下 各个系统ICMP 负载</p>
+<p>windows系统 icmp echo<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667560532911-38d87aeb-c9e9-440f-b11b-41ffe4cfa99e.png#averageHue=%23dbb67c&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=254&amp;id=u6144f4f8&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=317&amp;originWidth=895&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=25842&amp;status=done&amp;style=none&amp;taskId=ub88995ac-0e63-4104-98a9-c1832d1acde&amp;title=&amp;width=716" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667560532911-38d87aeb-c9e9-440f-b11b-41ffe4cfa99e.png#averageHue=%23dbb67c&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=254&amp;id=u6144f4f8&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=317&amp;originWidth=895&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=25842&amp;status=done&amp;style=none&amp;taskId=ub88995ac-0e63-4104-98a9-c1832d1acde&amp;title=&amp;width=716" alt="图片.png"></a><br>linux icmp<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667560590373-67b9fa2a-ad14-4245-bde4-2af1f4ff6a28.png#averageHue=%23293040&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=372&amp;id=u50a5a3a2&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=465&amp;originWidth=873&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=91504&amp;status=done&amp;style=none&amp;taskId=u78421890-6662-4ae4-9ec1-2a0a829082a&amp;title=&amp;width=698.4" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667560590373-67b9fa2a-ad14-4245-bde4-2af1f4ff6a28.png#averageHue=%23293040&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=372&amp;id=u50a5a3a2&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=465&amp;originWidth=873&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=91504&amp;status=done&amp;style=none&amp;taskId=u78421890-6662-4ae4-9ec1-2a0a829082a&amp;title=&amp;width=698.4" alt="图片.png"></a><br>nmap的icmp请求<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667560564504-e3977c18-a705-4378-986c-a57680202a21.png#averageHue=%23283245&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=273&amp;id=u4cb3f93e&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=341&amp;originWidth=786&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=67322&amp;status=done&amp;style=none&amp;taskId=u10eae1d6-84ab-4760-a1c0-5c3f25bf67d&amp;title=&amp;width=628.8" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667560564504-e3977c18-a705-4378-986c-a57680202a21.png#averageHue=%23283245&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=273&amp;id=u4cb3f93e&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=341&amp;originWidth=786&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=67322&amp;status=done&amp;style=none&amp;taskId=u10eae1d6-84ab-4760-a1c0-5c3f25bf67d&amp;title=&amp;width=628.8" alt="图片.png"></a></p>
+<ol start="2">
+<li><strong>ICMP  时间戳 请求</strong></li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667560662859-7d3943d3-b478-4632-ac7a-5a4f30044f80.png#averageHue=%23293348&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=420&amp;id=uc3819140&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=525&amp;originWidth=1020&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=113267&amp;status=done&amp;style=none&amp;taskId=udd4dbd55-eafb-498d-9acc-2342207bf93&amp;title=&amp;width=816" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667560662859-7d3943d3-b478-4632-ac7a-5a4f30044f80.png#averageHue=%23293348&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=420&amp;id=uc3819140&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=525&amp;originWidth=1020&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=113267&amp;status=done&amp;style=none&amp;taskId=udd4dbd55-eafb-498d-9acc-2342207bf93&amp;title=&amp;width=816" alt="图片.png"></a><strong>注意: 上面这两个ICMP 包的类型不一样 配置防火墙时要同时丢弃两种请求</strong></p>
+<ol start="3">
+<li><strong>ACK 诱导 RST</strong></li>
+</ol>
+<p>发送ACK数据包到服务器后,如果连接被重置或者连接会话不存在时会返回RST数据包<br>这个过程是由操作系统处理的 所以一般情况下返回RST就说明主机存活</p>
+<ol start="4">
+<li><strong>常见端口 SYN ACK or RST</strong></li>
+</ol>
+<p>nmap默认会在80和443端口尝试SYN半连接<br>以是否有返回包判断主机存活</p>
+<h3 id="masscan">masscan<a class="post-anchor" href="#masscan"></a></h3><h4 id="SYN-扫描流量">SYN 扫描流量<a class="post-anchor" href="#SYN-扫描流量"></a></h4><p>同nmap<br>SYN包模板位置<br><a target="_blank" rel="noopener" href="https://github.com/robertdavidgraham/masscan/blob/144c527ed55275ee9fbb80bb14fbb5e3fcff3b7e/src/templ-pkt.c#L51">https://github.com/robertdavidgraham/masscan/blob/144c527ed55275ee9fbb80bb14fbb5e3fcff3b7e/src/templ-pkt.c#L51</a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667546040288-b29db064-eeed-4d30-bb43-5451d9e60c87.png#averageHue=%23fefdfa&amp;clientId=ufe00f31a-352d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=496&amp;id=QKRSZ&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=620&amp;originWidth=475&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=36728&amp;status=done&amp;style=none&amp;taskId=uf84a7339-f52e-4952-9117-67e2e80a9a7&amp;title=&amp;width=380" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667546040288-b29db064-eeed-4d30-bb43-5451d9e60c87.png#averageHue=%23fefdfa&amp;clientId=ufe00f31a-352d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=496&amp;id=QKRSZ&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=620&amp;originWidth=475&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=36728&amp;status=done&amp;style=none&amp;taskId=uf84a7339-f52e-4952-9117-67e2e80a9a7&amp;title=&amp;width=380" alt="图片.png"></a></p>
+<h4 id="存活检测-1">存活检测<a class="post-anchor" href="#存活检测-1"></a></h4><p>MASSCAN默认没有存活检测</p>
+<h3 id="GOBY">GOBY<a class="post-anchor" href="#GOBY"></a></h3><p>测试版本 goby 2.0.5 beta 企业版  默认配置</p>
+<h4 id="SYN-扫描流量-1">SYN 扫描流量<a class="post-anchor" href="#SYN-扫描流量-1"></a></h4><p>同NMAP MASSCAN<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667561803289-be88af97-7e5e-43a4-8625-f58c69434ddf.png#averageHue=%23f4f3f1&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=345&amp;id=u35e1363c&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=431&amp;originWidth=898&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=32917&amp;status=done&amp;style=none&amp;taskId=u55978420-26dd-48a8-8735-721b335fb58&amp;title=&amp;width=718.4" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667561803289-be88af97-7e5e-43a4-8625-f58c69434ddf.png#averageHue=%23f4f3f1&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=345&amp;id=u35e1363c&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=431&amp;originWidth=898&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=32917&amp;status=done&amp;style=none&amp;taskId=u55978420-26dd-48a8-8735-721b335fb58&amp;title=&amp;width=718.4" alt="图片.png"></a></p>
+<h4 id="存活检测-2">存活检测<a class="post-anchor" href="#存活检测-2"></a></h4><p>UDP 探活<br>发送数据到不存在的端口 返回一个端口不可达的ICMP包<br>固定端口 数据 去特征<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667562244155-3e5aca0b-b54e-43d5-807f-9f42db6012b0.png#averageHue=%23f7f6f5&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=134&amp;id=u093472a7&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=167&amp;originWidth=760&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9090&amp;status=done&amp;style=none&amp;taskId=u74432c11-cd1b-4113-a645-e3e5bdb9efc&amp;title=&amp;width=608" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667562244155-3e5aca0b-b54e-43d5-807f-9f42db6012b0.png#averageHue=%23f7f6f5&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=134&amp;id=u093472a7&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=167&amp;originWidth=760&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9090&amp;status=done&amp;style=none&amp;taskId=u74432c11-cd1b-4113-a645-e3e5bdb9efc&amp;title=&amp;width=608" alt="图片.png"></a></p>
+<h3 id="gorailgun">gorailgun<a class="post-anchor" href="#gorailgun"></a></h3><h4 id="SYN-扫描流量-2">SYN 扫描流量<a class="post-anchor" href="#SYN-扫描流量-2"></a></h4><p>tcp 全连接扫描 无特征<br>会主动发起http探测<br>UA “Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36”<br>Accept “text/html, image/gif, image/jpeg, *; q=.2, <em>/</em>; q=.2”</p>
+<h4 id="存活检测-3">存活检测<a class="post-anchor" href="#存活检测-3"></a></h4><p>只有ICMP ECHO<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667562625099-2cc005b2-3b9f-4859-9652-9004e57d7ee9.png#averageHue=%23d9c4a0&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=267&amp;id=u0de7872d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=334&amp;originWidth=923&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=32723&amp;status=done&amp;style=none&amp;taskId=ub34e049c-32f5-49b0-8fda-f6d03a2f9de&amp;title=&amp;width=738.4" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667562625099-2cc005b2-3b9f-4859-9652-9004e57d7ee9.png#averageHue=%23d9c4a0&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=267&amp;id=u0de7872d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=334&amp;originWidth=923&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=32723&amp;status=done&amp;style=none&amp;taskId=ub34e049c-32f5-49b0-8fda-f6d03a2f9de&amp;title=&amp;width=738.4" alt="图片.png"></a><br>强特征<br>476f20476f204761646765742050696e67212121476f20476f204761646765742050696e67212121476f20476f204761646765742050696e67212121</p>
+<h3 id="yakit">yakit<a class="post-anchor" href="#yakit"></a></h3><h4 id="SYN-扫描流量-3">SYN 扫描流量<a class="post-anchor" href="#SYN-扫描流量-3"></a></h4><p>操作系统TCP 全连接 非半连接<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667563143682-f34d36fe-2f04-4102-a4e0-f3de54fbcddf.png#averageHue=%23faf8f7&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=198&amp;id=u0534001d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=247&amp;originWidth=1348&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=25213&amp;status=done&amp;style=none&amp;taskId=uf1764b9f-58b3-4f54-a371-0b78177d26c&amp;title=&amp;width=1078.4" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667563143682-f34d36fe-2f04-4102-a4e0-f3de54fbcddf.png#averageHue=%23faf8f7&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=198&amp;id=u0534001d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=247&amp;originWidth=1348&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=25213&amp;status=done&amp;style=none&amp;taskId=uf1764b9f-58b3-4f54-a371-0b78177d26c&amp;title=&amp;width=1078.4" alt="图片.png"></a></p>
+<h4 id="存活检测-4">存活检测<a class="post-anchor" href="#存活检测-4"></a></h4><p>ICMP ECHO + TCP 扫描(80 22 443)<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667562953710-1378aae3-881f-461d-b0c8-e0cd577136ef.png#averageHue=%23f8f7f6&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=195&amp;id=u864c3bb6&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=244&amp;originWidth=856&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=17582&amp;status=done&amp;style=none&amp;taskId=u4288e801-1c25-4560-b9bc-e5c7dc7b8c9&amp;title=&amp;width=684.8" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667562953710-1378aae3-881f-461d-b0c8-e0cd577136ef.png#averageHue=%23f8f7f6&amp;clientId=ube15868f-4061-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=195&amp;id=u864c3bb6&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=244&amp;originWidth=856&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=17582&amp;status=done&amp;style=none&amp;taskId=u4288e801-1c25-4560-b9bc-e5c7dc7b8c9&amp;title=&amp;width=684.8" alt="图片.png"></a><br>icmp 随机填充定长数据</p>
+<h3 id="fscan">fscan<a class="post-anchor" href="#fscan"></a></h3><h4 id="SYN-扫描流量-4">SYN 扫描流量<a class="post-anchor" href="#SYN-扫描流量-4"></a></h4><p>操作系统 TCP 全连接 非半连接</p>
+<h4 id="存活检测-5">存活检测<a class="post-anchor" href="#存活检测-5"></a></h4><p>ICMP ECHO<br>无负载 同nmap</p>
+<h1 id="扫描流量检测">扫描流量检测<a class="post-anchor" href="#扫描流量检测"></a></h1><p>检测窗口 大小是否为1024<br>TCP OPTIONS 长度是否为4 (02 04 05 b4)</p>
+<h2 id="检测规则编写">检测规则编写<a class="post-anchor" href="#检测规则编写"></a></h2><h3 id="iptables-规则-阻断需谨慎-可能有误报">iptables 规则(阻断需谨慎 可能有误报)<a class="post-anchor" href="#iptables-规则-阻断需谨慎-可能有误报"></a></h3><p>iptables -I INPUT -p tcp –syn -m length  –length 44 -j REJECT –reject-with tcp-reset<br>阻断 TCP OPTIONS 长度为4 的syn 包  IP  固定 20 + TCP 固定 20+OPTIONS 4</p>
+<h3 id="suricata-检测规则">suricata 检测规则<a class="post-anchor" href="#suricata-检测规则"></a></h3><p>匹配结尾为02 04 05 b4 的TCP SYN包<br>alert tcp any any -&gt; any any (msg:”SYN PORT SCAN (nmap masscan like)”;lags:S;tcp.hdr;content:”|02 04 05 b4|”; endswith; rev:1; sid:23330001; metadata:by burpheart;)<br>匹配长度为24 的TCP SYN包 (20+4)<br>alert tcp any any -&gt; any any (msg:”SYN PORT SCAN nmap  masscan like”;flags:S;tcp.hdr;bsize:24;rev:1; sid:23330002; metadata:by burpheart;)<br>有时间可能会写一篇 suricata 安装和检测规则编写的教程 x)</p>
+<h1 id="规则用途">规则用途<a class="post-anchor" href="#规则用途"></a></h1><p><strong>内网扫描流量感知</strong> 对匹配到的扫描流量发出告警 (IDS)<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667565933095-67540ce4-16ce-4d9f-86f6-6f6d6eac38aa.png#averageHue=%23b6d5dc&amp;clientId=ue04d417f-8b4d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=53&amp;id=ue94d271d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=66&amp;originWidth=1825&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=11531&amp;status=done&amp;style=none&amp;taskId=uaa6439a9-02ea-4adc-8aec-a15c0549934&amp;title=&amp;width=1460" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667565933095-67540ce4-16ce-4d9f-86f6-6f6d6eac38aa.png#averageHue=%23b6d5dc&amp;clientId=ue04d417f-8b4d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=53&amp;id=ue94d271d&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=66&amp;originWidth=1825&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=11531&amp;status=done&amp;style=none&amp;taskId=uaa6439a9-02ea-4adc-8aec-a15c0549934&amp;title=&amp;width=1460" alt="图片.png"></a></p>
+<p><strong>公网扫描流量分析</strong> 收集攻击IP 统计公网扫描信息 作为威胁情报&amp;防火墙黑名单使用<br>做了一个简易公网探针用来收集扫描信息<br>探针 suricata 检测流量生成日志-&gt;探针 Filebeat 收集日志-&gt;rabbit MQ 暂存-&gt;数据分析机 Filebeat 消费日志 -&gt;ES -&gt;KIBANA展示<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667566368868-a1f47be3-5bb9-4a42-b6b8-9a144ca1532a.png#averageHue=%23fcfdcc&amp;clientId=ue04d417f-8b4d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=508&amp;id=udbcd5677&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=635&amp;originWidth=1902&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=124800&amp;status=done&amp;style=none&amp;taskId=u1ee94950-d403-42bc-8124-76c731c62c8&amp;title=&amp;width=1521.6" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667566368868-a1f47be3-5bb9-4a42-b6b8-9a144ca1532a.png#averageHue=%23fcfdcc&amp;clientId=ue04d417f-8b4d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=508&amp;id=udbcd5677&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=635&amp;originWidth=1902&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=124800&amp;status=done&amp;style=none&amp;taskId=u1ee94950-d403-42bc-8124-76c731c62c8&amp;title=&amp;width=1521.6" alt="图片.png"></a><br>下面这张图是几个公网流量探针最近收集到的告警数据<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667546393248-44715909-83b1-4e08-a303-211244c1edfd.png#averageHue=%23b9d981&amp;clientId=ufe00f31a-352d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=770&amp;id=u45e571d9&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=962&amp;originWidth=1673&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=217486&amp;status=done&amp;style=none&amp;taskId=ua2590dde-b26c-413b-b571-99f23ea3f17&amp;title=&amp;width=1338.4" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667546393248-44715909-83b1-4e08-a303-211244c1edfd.png#averageHue=%23b9d981&amp;clientId=ufe00f31a-352d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=770&amp;id=u45e571d9&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=962&amp;originWidth=1673&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=217486&amp;status=done&amp;style=none&amp;taskId=ua2590dde-b26c-413b-b571-99f23ea3f17&amp;title=&amp;width=1338.4" alt="图片.png"></a>由于探针较少 所以数据量也非常少<br>参考 360 NATLAB 的监控数据<br>果然23端口扫的最多 )<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667564404284-a6bb581f-0584-4aed-94a0-8be8ce1dd378.png#averageHue=%23ebe3e2&amp;clientId=ue04d417f-8b4d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=623&amp;id=u7881683f&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=779&amp;originWidth=1733&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=258017&amp;status=done&amp;style=none&amp;taskId=ud608e2bc-bbed-4dd3-a9bd-35415503178&amp;title=&amp;width=1386.4" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2022/png/25577536/1667564404284-a6bb581f-0584-4aed-94a0-8be8ce1dd378.png#averageHue=%23ebe3e2&amp;clientId=ue04d417f-8b4d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=623&amp;id=u7881683f&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=779&amp;originWidth=1733&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=258017&amp;status=done&amp;style=none&amp;taskId=ud608e2bc-bbed-4dd3-a9bd-35415503178&amp;title=&amp;width=1386.4" alt="图片.png"></a></p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2022/10/18/PWN-BASIC-1/">PWN 入门 (一)</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2022/11/06/portscantoolsanalyse/">https://rce.moe/2022/11/06/portscantoolsanalyse/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true,
+        proxy: 'https://servelesscors.rce.moe/api/cors?url=https://github.com/login/oauth/access_token'
+    }).render('gitalk-container')
+</script>
+        <footer>
+          <div class="copyright">
+            ©2022
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
