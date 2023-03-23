@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      koko-moni 一个网络空间搜索引擎监控平台 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#KOKO-MONI"><span class="toc-text">KOKO-MONI</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD"><span class="toc-text">功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UI"><span class="toc-text">UI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E8%AF%AD%E6%B3%95"><span class="toc-text">搜索语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E8%BF%90%E7%AE%97"><span class="toc-text">简单运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-text">强制类型转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-text">常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F"><span class="toc-text">排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#in"><span class="toc-text">in</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="toc-text">聚合查询</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1%E8%AE%A1%E6%95%B0"><span class="toc-text">统计计数</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TOOD"><span class="toc-text">TOOD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%B2%E7%9F%A5%E9%97%AE%E9%A2%98"><span class="toc-text">已知问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#API"><span class="toc-text">API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8F%82%E6%95%B0"><span class="toc-text">全局参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E6%8E%A8%E9%80%81"><span class="toc-text">测试推送</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E6%9F%A5%E8%AF%A2-1"><span class="toc-text">聚合查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2"><span class="toc-text">搜索</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">koko-moni 一个网络空间搜索引擎监控平台</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2023/03/23</span>
+        </span>
+
+        
+
+        
+        
+        
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><p>这个项目其实是我自己写的一个测绘平台的其中的一个小模块 先开放出来给大家试用一下 <del>前端太难写了</del></p>
+<h1 id="KOKO-MONI">KOKO-MONI<a class="post-anchor" href="#KOKO-MONI"></a></h1><p><a target="_blank" rel="noopener" href="https://github.com/burpheart/koko-moni/">https://github.com/burpheart/koko-moni/</a></p>
+<h2 id="介绍">介绍<a class="post-anchor" href="#介绍"></a></h2><p>本项目是一个网络空间搜索引擎监控平台，本项目聚合了 Fofa、Hunter、Quake、Zoomeye 和 Threatbook 的数据源，并对获取到的数据进行去重与清洗。</p>
+<span id="more"></span>
+
+<p>该项目可以用于蓝方监控自身资产公网暴露以及 SRC 项目新增资产进行监控。</p>
+<h2 id="功能">功能<a class="post-anchor" href="#功能"></a></h2><ul>
+<li>聚合 Fofa、Hunter、Quake、Zoomeye 和 Threatbook 的数据源，快速查询相关资产信息。</li>
+<li>自动化监控，可定时进行资产信息爬取，及时发现新增资产。</li>
+<li>支持钉钉，推送加消息提醒，让您能够及时发现异常情况。</li>
+<li>提供 Web 检索界面，使得查询操作更加方便。<h2 id="安装">安装<a class="post-anchor" href="#安装"></a></h2>解压安装包</li>
+</ul>
+<p>按照config.demo.yaml 内的注释填写配置项 保存为config.yaml</p>
+<p>示例配置</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">global:</span> <span class="hljs-comment">#全局配置 启动时会触发一次所有的任务</span><br>  <span class="hljs-attr">hunter_key:</span> <span class="hljs-string">""</span> <span class="hljs-comment">#hunter API key 注意用量  留空不采集</span><br>  <span class="hljs-attr">zoomeye_key:</span> <span class="hljs-string">""</span><br>  <span class="hljs-attr">quake_cookies:</span> <span class="hljs-string">""</span> <span class="hljs-comment">#quake登陆后 cookies</span><br>  <span class="hljs-attr">threatbook_cookies:</span> <span class="hljs-string">""</span> <span class="hljs-comment">#微步登陆后  cookies  注意用量 频繁会触发验证码 强制退出登陆</span><br>  <span class="hljs-attr">fofa_email:</span> <span class="hljs-string">""</span> <span class="hljs-comment">#  FOFA 邮箱</span><br>  <span class="hljs-attr">fofa_key:</span> <span class="hljs-string">""</span> <span class="hljs-comment">#  FOFA KEY</span><br>  <span class="hljs-attr">save_path:</span> <span class="hljs-string">"./data"</span> <span class="hljs-comment">#数据保存位置</span><br>  <span class="hljs-attr">ip:</span> <span class="hljs-string">"127.0.0.1"</span> <span class="hljs-comment">#api 监听ip</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-string">"12347"</span> <span class="hljs-comment">#api 端口</span><br>  <span class="hljs-attr">secret_key:</span> <span class="hljs-string">"123456"</span> <span class="hljs-comment">#api key 一定要修改</span><br>  <span class="hljs-attr">plus_push_key:</span>  <span class="hljs-string">""</span> <span class="hljs-comment">#推送加 key 有新增资产会推送</span><br>  <span class="hljs-attr">ding_push_key:</span>  <span class="hljs-string">""</span> <span class="hljs-comment">#钉钉HOOK推送key</span><br>  <span class="hljs-attr">scan_on_start:</span> <span class="hljs-literal">true</span> <span class="hljs-comment">#启动时是否触发一次爬取</span><br><br><span class="hljs-attr">jobs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">"one-ip"</span> <span class="hljs-comment">#任务名 推送用</span><br>  <span class="hljs-attr">schedule:</span> <span class="hljs-string">"@daily"</span> <span class="hljs-comment">#定时采集  支持cron语法 示例 @daily 每天一次 (半夜0点触发 系统时间和时区一定要设置好) 参考 https://pkg.go.dev/github.com/robfig/cron?utm_source=godoc</span><br>  <span class="hljs-attr">hunter_query:</span> <span class="hljs-string">"ip=\"1.1.1.1/24\""</span> <span class="hljs-comment"># hunter搜索语法 (ps: hunter api获取的banner有问题 )特殊字符注意转义 注意不同搜索引擎使用不同的语法 留空不采集</span><br>  <span class="hljs-attr">hunter_page:</span> <span class="hljs-number">10</span> <span class="hljs-comment">#最大爬取页数 每页10条</span><br>  <span class="hljs-attr">quake_query:</span> <span class="hljs-string">"ip: \"1.1.1.1/24\""</span><br>  <span class="hljs-attr">quake_page:</span> <span class="hljs-number">50</span><br>  <span class="hljs-attr">threatbook_query:</span> <span class="hljs-string">"ip=1.1.1.1/24"</span><br>  <span class="hljs-attr">threatbook_page:</span> <span class="hljs-number">50</span><br>  <span class="hljs-attr">zoomeye_query:</span> <span class="hljs-string">"1.1.1.1/24"</span><br>  <span class="hljs-attr">zoomeye_page:</span> <span class="hljs-number">10</span>  <span class="hljs-comment">#最大爬取页数  每页20条</span><br>  <span class="hljs-attr">fofa_query:</span> <span class="hljs-string">"ip=\"1.1.1.1/24\""</span><br>  <span class="hljs-attr">fofa_page:</span> <span class="hljs-number">10</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">"哔哩哔哩-域名"</span><br>  <span class="hljs-attr">schedule:</span> <span class="hljs-string">"@daily"</span><br>  <span class="hljs-attr">hunter_query:</span> <span class="hljs-string">"domain=\"bilibili.com\""</span><br>  <span class="hljs-attr">hunter_page:</span> <span class="hljs-number">10</span><br>  <span class="hljs-attr">quake_query:</span> <span class="hljs-string">"domain: \"bilibili.com\""</span><br>  <span class="hljs-attr">quake_page:</span> <span class="hljs-number">50</span><br>  <span class="hljs-attr">threatbook_query:</span> <span class="hljs-string">"root_domain=bilibili.com"</span><br>  <span class="hljs-attr">threatbook_page:</span> <span class="hljs-number">50</span><br>  <span class="hljs-attr">zoomeye_query:</span> <span class="hljs-string">"site:bilibili.com"</span><br>  <span class="hljs-attr">zoomeye_page:</span> <span class="hljs-number">10</span><br>  <span class="hljs-attr">fofa_query:</span> <span class="hljs-string">"domain=\"bilibili.com\""</span><br>  <span class="hljs-attr">fofa_page:</span> <span class="hljs-number">10</span><br></code></pre></td></tr></tbody></table></figure>
+
+
+<p>启动 ./koko-moni</p>
+<h2 id="UI">UI<a class="post-anchor" href="#UI"></a></h2><p>注: web无登陆界面 直接访问 <code>/?key=secret_key</code> 鉴权  secret_key不正确时被RST连接为正常现象 key不正确触发反测绘</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/burpheart/koko-moni/raw/main/img/1.png" data-caption="图片.png" data-fancybox="images"><img src="https://github.com/burpheart/koko-moni/raw/main/img/1.png" alt="图片.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/burpheart/koko-moni/raw/main/img/2.png" data-caption="图片.png" data-fancybox="images"><img src="https://github.com/burpheart/koko-moni/raw/main/img/2.png" alt="图片.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/burpheart/koko-moni/raw/main/img/2.jpg" data-caption="图片.png" data-fancybox="images"><img src="https://github.com/burpheart/koko-moni/raw/main/img/2.jpg" alt="图片.png"></a></p>
+<h2 id="搜索语法">搜索语法<a class="post-anchor" href="#搜索语法"></a></h2><p>本项目使用了 <a target="_blank" rel="noopener" href="https://github.com/brimdata/zed">ZED</a> 作为结构化数据搜索引擎<br>可参考<a target="_blank" rel="noopener" href="https://zed.brimdata.io/docs/language/overview">zed官方文档</a><br>字段见输出文件</p>
+<h3 id="简单运算">简单运算<a class="post-anchor" href="#简单运算"></a></h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">int<br>tlen &gt;= 0<br><br>时间<br>timestamp &gt;= 2023-01-08T05:55:22.200Z<br><br>字符串<br>title=="404"<br><br><br></code></pre></td></tr></tbody></table></figure>
+<p>如果带有特殊符号(中文)的键 根下可以使用 <code>this[""]</code> 引用</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">this["status-code"] &gt;10<br>this["content-length"]==158<br>非根<br>abc["测试"]=="123456"<br><br>多层复杂json结构<br>{"a":{"b":{"c":"123"}}}<br>this["a"].b.c=="123"<br>{"a":{"b":["123","456"]}}<br>this["a"].b[0]=="123"<br></code></pre></td></tr></tbody></table></figure>
+
+<h3 id="强制类型转换">强制类型转换<a class="post-anchor" href="#强制类型转换"></a></h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain"><br>cast(数据,&lt;类型&gt;)<br><br>字符串日期转time<br><br>cast("2022-09-19T18:11:05.545961703+08:00",&lt;time&gt;)<br><br>字符串ip转ip<br><br>cast("1.1.1.1",&lt;ip&gt;)<br><br>也可以简写成<br><br>time("2022-09-19T18:11:05.545961703+08:00")<br>ip("1.1.1.1")<br><br>用例<br><br>cidr_match(1.1.0.0/16,ip(host))  //匹配ip是否在cidr内<br><br><br>time(timestamp) &gt;= 2022-01-08T05:55:22.200Z<br></code></pre></td></tr></tbody></table></figure>
+<h3 id="常用操作">常用操作<a class="post-anchor" href="#常用操作"></a></h3><h4 id="排序">排序<a class="post-anchor" href="#排序"></a></h4><p>升序排序<br><code>sort dns_names</code><br>降序排序<br><code>sort -r dns_names</code></p>
+<h4 id="in">in<a class="post-anchor" href="#in"></a></h4><p>判断某个值是否在数组内</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">{"test":[301,200]}<br>200 in test<br></code></pre></td></tr></tbody></table></figure>
+
+
+<h4 id="聚合查询">聚合查询<a class="post-anchor" href="#聚合查询"></a></h4><h5 id="统计计数">统计计数<a class="post-anchor" href="#统计计数"></a></h5><p><code>count() by key</code><br>输出  <code>key,count()</code><br>与sort组合使用<br><code>count() by title|sort -r count</code></p>
+<h2 id="TOOD">TOOD<a class="post-anchor" href="#TOOD"></a></h2><ul>
+<li><input checked="" disabled="" type="checkbox"> fofa API 支持</li>
+<li><input checked="" disabled="" type="checkbox"> Hunter API 支持</li>
+<li><input checked="" disabled="" type="checkbox"> Zoomeye API 支持</li>
+<li><input checked="" disabled="" type="checkbox"> Quake 支持</li>
+<li><input checked="" disabled="" type="checkbox"> Threatbook 支持</li>
+<li><input checked="" disabled="" type="checkbox"> WEB数据清洗</li>
+<li><input disabled="" type="checkbox"> 非WEB数据清洗</li>
+<li><input disabled="" type="checkbox"> WEB UI<ul>
+<li><input checked="" disabled="" type="checkbox"> 搜索</li>
+<li><input disabled="" type="checkbox"> 任务管理</li>
+<li><input disabled="" type="checkbox"> 系统设置</li>
+<li><input disabled="" type="checkbox"> 资产统计</li>
+</ul>
+</li>
+</ul>
+<h2 id="已知问题">已知问题<a class="post-anchor" href="#已知问题"></a></h2><ul>
+<li>示例配置文件 fofa_key: “”后少一个空格</li>
+<li>hunter web banner 异常 api返回到的不是对应host的返回(hunter的问题)</li>
+</ul>
+<h2 id="API">API<a class="post-anchor" href="#API"></a></h2><h3 id="全局参数">全局参数<a class="post-anchor" href="#全局参数"></a></h3><p>鉴权url参数 <code>key</code> </p>
+<p>在配置文件中设置(secret_key)</p>
+<h3 id="测试推送">测试推送<a class="post-anchor" href="#测试推送"></a></h3><p>请求方式: GET</p>
+<p>请求URL: <code>/api/testpush</code></p>
+<p>请求参数: 无</p>
+<h3 id="聚合查询-1">聚合查询<a class="post-anchor" href="#聚合查询-1"></a></h3><p>请求方式: GET</p>
+<p>请求URL: <code>/api/aggregate</code></p>
+<p>请求参数: </p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>必选</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>query</td>
+<td>是</td>
+<td>string</td>
+<td>ZQ查询语句</td>
+</tr>
+</tbody></table>
+<p>响应格式: JSON</p>
+<p>响应示例: </p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">{<br>  "data": {<br>    "count": 92,<br>    "elapsed": 226,<br>    "finger": [<br>      {<br>        "finger": "Fofa",<br>        "count": 75<br>      },<br>      {<br>        "finger": "Hunter",<br>        "count": 17<br>      },<br>      {<br>        "finger": "Nginx",<br>        "count": 7<br>      },<br>      {<br>        "finger": "Lua",<br>        "count": 7<br>      }<br>    ],<br>    "ipcount": 77,<br>    "port": [<br>      {<br>        "port": "443",<br>        "count": 57<br>      },<br>      {<br>        "port": "80",<br>        "count": 26<br>      }<br>    ],<br>    "title": [<br>      {<br>        "count": 29<br>      },<br>      {<br>        "title": "301 Moved Permanently",<br>        "count": 16<br>      },<br>      {<br>        "title": "302 Found",<br>        "count": 11<br>      }<br>    ]<br>  },<br>  "message": "ok",<br>  "success": true<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h3 id="搜索">搜索<a class="post-anchor" href="#搜索"></a></h3><p>请求方式: GET</p>
+<p>请求URL: <code>/api/search</code></p>
+<p>请求参数: </p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>必选</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>current</td>
+<td>是</td>
+<td>int</td>
+<td>当前页数</td>
+</tr>
+<tr>
+<td>pageSize</td>
+<td>是</td>
+<td>int</td>
+<td>每页数据量</td>
+</tr>
+<tr>
+<td>query</td>
+<td>是</td>
+<td>string</td>
+<td>ZQ查询语句</td>
+</tr>
+</tbody></table>
+<p>响应格式: JSON</p>
+<p>响应示例: </p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">{<br>	"data": [{<br>		"banner": "HTTP/1.1 403 Forbidden\r\nConnection: close\r\nContent-Length: 9\r\nContent-Type: application/octet-stream\r\nDate: Thu, 16 Feb 2023 17:11:21 GMT\r\nServer: Tengine\r\n\r\n\r\n",<br>		"body_length": 9,<br>		"commonname": "",<br>		"date": "2023-03-13 21:59:41",<br>		"dnsnames": "",<br>		"fingerprint": ["Fofa"],<br>		"host": "1.1.com",<br>		"ip": "1.1.1.1",<br>		"loc": "[中国 上海 上海]",<br>		"organization": "Huawei Cloud Service data center",<br>		"port": "443",<br>		"status_code": 403,<br>		"title": "",<br>		"tls": "Version:  v3\nSerial Number: 123456546\nSignature Algorithm: SHA256-RSA",<br>		"url": "https://1.1.com:443/"<br>	}],<br>	"message": "ok",<br>	"success": true,<br>	"total": 92<br>}<br></code></pre></td></tr></tbody></table></figure></body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2023/03/23/Cacti-RCE-CVE-2022-46169/">Cacti的命令注入(CVE-2022-46169) 回显poc构造</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2023/03/23/koko-moni/">https://rce.moe/2023/03/23/koko-moni/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true,
+        proxy: 'https://servelesscors.rce.moe/api/cors?url=https://github.com/login/oauth/access_token'
+    }).render('gitalk-container')
+</script>
+        <footer>
+          <div class="copyright">
+            ©2023
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
