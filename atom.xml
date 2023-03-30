@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2023-03-23T13:28:53.454Z</updated>
+  <updated>2023-03-25T04:51:46.538Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一个隐藏在Go语言标准库中的目录穿越漏洞 CVE-2022-29804</title>
+    <link href="https://rce.moe/2023/03/25/CVE-2022-29804/"/>
+    <id>https://rce.moe/2023/03/25/CVE-2022-29804/</id>
+    <published>2023-03-25T04:47:41.000Z</published>
+    <updated>2023-03-25T04:51:46.538Z</updated>
+    
+    
+    <summary type="html">&lt;h6 id=&quot;作者-橙子酱&quot;&gt;&lt;a href=&quot;#作者-橙子酱&quot; class=&quot;headerlink&quot; title=&quot;作者:橙子酱&quot;&gt;&lt;/a&gt;作者:&lt;a href=&quot;https://rce.moe/&quot;&gt;橙子酱&lt;/a&gt;&lt;/h6&gt;&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;这是半年前我在 Go 语言中发现的一个目录穿越漏洞（虽然被人抢先发现了）。&lt;br&gt;Go 语言支持非常方便的交叉编译，但是在不同平台下，操作系统对某些功能的实现有所差异。这些差异可能会导致一些安全问题。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="漏洞分析" scheme="https://rce.moe/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"/>
+    
+    
+    <category term="WEB" scheme="https://rce.moe/tags/WEB/"/>
+    
+    <category term="CVE" scheme="https://rce.moe/tags/CVE/"/>
+    
+    <category term="0DAY" scheme="https://rce.moe/tags/0DAY/"/>
+    
+  </entry>
   
   <entry>
     <title>koko-moni 一个网络空间搜索引擎监控平台</title>
@@ -393,29 +416,6 @@
     <category term="笔记" scheme="https://rce.moe/tags/%E7%AC%94%E8%AE%B0/"/>
     
     <category term="PHP" scheme="https://rce.moe/tags/PHP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>第五届强网杯全国网络安全挑战赛WEB-部分writeup-强网杯2021</title>
-    <link href="https://rce.moe/2021/06/14/QWB-2021-WEB-WP/"/>
-    <id>https://rce.moe/2021/06/14/QWB-2021-WEB-WP/</id>
-    <published>2021-06-14T13:00:33.000Z</published>
-    <updated>2022-07-11T03:24:33.306Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;EASYWEB&quot;&gt;&lt;a href=&quot;#EASYWEB&quot; class=&quot;headerlink&quot; title=&quot;EASYWEB&quot;&gt;&lt;/a&gt;EASYWEB&lt;/h1&gt;&lt;p&gt; &lt;img src=&quot;https://i.loli.net/2021/06/14/IEzFq6ue2vtodgn.png&quot; alt=&quot;LZYFHP@LAC_IENMHL__OT8M.png&quot;&gt;&lt;br&gt;</summary>
-    
-    
-    
-    <category term="CTF" scheme="https://rce.moe/categories/CTF/"/>
-    
-    
-    <category term="CTF" scheme="https://rce.moe/tags/CTF/"/>
-    
-    <category term="WRITEUP" scheme="https://rce.moe/tags/WRITEUP/"/>
-    
-    <category term="强网杯" scheme="https://rce.moe/tags/%E5%BC%BA%E7%BD%91%E6%9D%AF/"/>
     
   </entry>
   
