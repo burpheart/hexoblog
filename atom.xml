@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2023-04-11T01:39:40.404Z</updated>
+  <updated>2023-05-25T10:02:27.162Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Gitlab CVE-2023-2825 一个罕见的目录穿越漏洞</title>
+    <link href="https://rce.moe/2023/05/25/Gitlab-CVE-2023-2825/"/>
+    <id>https://rce.moe/2023/05/25/Gitlab-CVE-2023-2825/</id>
+    <published>2023-05-25T10:00:26.000Z</published>
+    <updated>2023-05-25T10:02:27.162Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt; 昨天 GitLab 出了一个版本目录穿越漏洞(CVE-2023-2825)，可以任意读取文件。当时我进行了黑盒测试并复现了该漏洞。  &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“ An unauthenticated malicious user can use a path traversal vulnerability to read arbitrary files on the server when an attachment exists in a public project nested within at least five groups. “&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt; 这个漏洞的利用条件非常特殊,需要一个至少嵌套了五层group的公开项目”。&lt;br&gt; 看到这个描述，我就觉得这个漏洞非常有趣。很容易想到一种奇怪的情况，即构造五层目录后，再利用五次”../“，恰好到达根目录。&lt;br&gt;修复漏洞的commit:&lt;br&gt;&lt;a href=&quot;https://gitlab.com/gitlab-org/gitlab/-/commit/2ddbf5464954addce7b8c82102377f0f137b604f&quot;&gt;https://gitlab.com/gitlab-org/gitlab/-/commit/2ddbf5464954addce7b8c82102377f0f137b604f&lt;/a&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="web" scheme="https://rce.moe/categories/web/"/>
+    
+    <category term="EXP" scheme="https://rce.moe/categories/web/EXP/"/>
+    
+    
+    <category term="WEB" scheme="https://rce.moe/tags/WEB/"/>
+    
+  </entry>
   
   <entry>
     <title>联网大语言模型的prompt注入问题：一个隐藏的危机</title>
@@ -394,28 +419,6 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
     
     <category term="笔记" scheme="https://rce.moe/categories/%E7%AC%94%E8%AE%B0/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>《PHP代码审计入门指南》</title>
-    <link href="https://rce.moe/2021/12/02/shenjizhinan/"/>
-    <id>https://rce.moe/2021/12/02/shenjizhinan/</id>
-    <published>2021-12-02T07:03:08.000Z</published>
-    <updated>2021-12-02T07:12:28.424Z</updated>
-    
-    
-      
-      
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h4 id=&quot;这本指南包含了我在学习PHP代码审计过程中整理出的一些技巧和对漏洞的一些理解&quot;&gt;这本指南包含了我在学习PHP代码审计过程中整理出的一些技巧和对漏洞的一些理解&lt;a class=&quot;post-anchor&quot; href=&quot;</summary>
-      
-    
-    
-    
-    <category term="笔记" scheme="https://rce.moe/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="笔记" scheme="https://rce.moe/tags/%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   

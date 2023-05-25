@@ -186,6 +186,70 @@ var _hmt = _hmt || [];
       
       <div class="describe">
         <div class="title">
+          <a href="/2023/05/25/Gitlab-CVE-2023-2825/">Gitlab CVE-2023-2825 一个罕见的目录穿越漏洞</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>23/05/25</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p> 昨天 GitLab 出了一个版本目录穿越漏洞(CVE-2023-2825)，可以任意读取文件。当时我进行了黑盒测试并复现了该漏洞。  </p>
+<blockquote>
+<p>“ An unauthenticated malicious user can use a path traversal vulnerability to read arbitrary files on the server when an attachment exists in a public project nested within at least five groups. “</p>
+</blockquote>
+<p> 这个漏洞的利用条件非常特殊,需要一个至少嵌套了五层group的公开项目”。<br> 看到这个描述，我就觉得这个漏洞非常有趣。很容易想到一种奇怪的情况，即构造五层目录后，再利用五次”../“，恰好到达根目录。<br>修复漏洞的commit:<br><a target="_blank" rel="noopener" href="https://gitlab.com/gitlab-org/gitlab/-/commit/2ddbf5464954addce7b8c82102377f0f137b604f">https://gitlab.com/gitlab-org/gitlab/-/commit/2ddbf5464954addce7b8c82102377f0f137b604f</a></p></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                 
+                <a href="/categories/web">web</a>
+                  
+                <a href="/categories/EXP">EXP</a>
+                 
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                 
+                <a href="/tags/WEB">WEB</a>
+                 
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2023/05/25/Gitlab-CVE-2023-2825/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2023/05/25/Gitlab-CVE-2023-2825/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2023/05/25/Gitlab-CVE-2023-2825/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
           <a href="/2023/04/11/untitled-1681175333602/">联网大语言模型的prompt注入问题：一个隐藏的危机</a>
         </div>
         <div class="date">
@@ -701,67 +765,12 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
         </div>
       </div>
     </li>
-     
-
-    
-
-  <li class="item">
-
-      
-
-      
-      <div class="describe">
-        <div class="title">
-          <a href="/2022/06/05/cdnlookup/">cdnlookup 一个使用 ECS 遍历智能DNS节点IP地址的工具</a>
-        </div>
-        <div class="date">
-          <span class="iconfont icon-time-circle"></span>
-          <span>22/06/05</span>
-        </div>
-        
-        <div class="excerpt post-wrap"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前不久我遇到了一个关于获取CDN节点ip列表的问题:<br>如何快速获取一家CDN节点在全国的范围内的节点ip？</p>
-<p>为了解决这个问题，我分析了智能DNS的工作原理。根据原理，我写出了一个使用 Edns-Client-Subnet(ECS)  伪造客户端ip用于遍历cdn节点ip的小工具。</p></div>
-        
-        <div class="meta">
-          <div class="l">
-            <div class="warp">
-              
-              <span class="iconfont icon-folder"></span>
-              <span class="desp">
-                
-              </span>
-              
-            </div>
-
-            
-            <div class="warp">
-              <span class="iconfont icon-tag1"></span>
-              <span class="desp">
-                
-              </span>
-            </div>
-            
-            <div class="warp">
-              <div class="share" data-url="/2022/06/05/cdnlookup/">
-                <span class="iconfont icon-share"></span>
-              </div>
-              <div class="desp share" data-url="/2022/06/05/cdnlookup/">
-                <a href="#">分享</a>
-              </div>
-            </div>
-          </div>
-          <div class="r">
-            <a href="/2022/06/05/cdnlookup/">Read More</a>
-          </div>
-        </div>
-      </div>
-    </li>
     
   </ul>
 </div>
 
 <div class="paginator">
-  <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a>
+  <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a>
 </div>
 
         <footer>
