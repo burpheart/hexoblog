@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2023-05-25T10:02:27.162Z</updated>
+  <updated>2023-07-28T09:49:19.469Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Metabase 远程代码执行漏洞分析  &amp; 一种补丁绕过方法  CVE-2023-38646</title>
+    <link href="https://rce.moe/2023/07/28/Metabase-CVE-2023-38646/"/>
+    <id>https://rce.moe/2023/07/28/Metabase-CVE-2023-38646/</id>
+    <published>2023-07-28T09:47:23.000Z</published>
+    <updated>2023-07-28T09:49:19.469Z</updated>
+    
+    
+    <summary type="html">&lt;h6 id=&quot;作者-橙子酱&quot;&gt;&lt;a href=&quot;#作者-橙子酱&quot; class=&quot;headerlink&quot; title=&quot;作者:橙子酱&quot;&gt;&lt;/a&gt;作者:&lt;a href=&quot;https://rce.moe/&quot;&gt;橙子酱&lt;/a&gt;&lt;/h6&gt;&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;  一开始，我按照平时在仓库中查找历史commit的方式进行查找，但是没有发现修复漏洞的地方。&lt;br&gt;我猜测代码仓库内没有对漏洞进行修复。&lt;br&gt; 此外，官方在已修复漏洞的版本中删除了发布出的fatjar内的clj源码, 历史版本的源码是存在的。&lt;br&gt;Metabase这个项目使用了Lisp语言Clojure进行开发，因此编译出的二进制文件很难进行diff, 看来只能从历史源码找了。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="web" scheme="https://rce.moe/categories/web/"/>
+    
+    
+    <category term="WEB" scheme="https://rce.moe/tags/WEB/"/>
+    
+    <category term="bypass" scheme="https://rce.moe/tags/bypass/"/>
+    
+  </entry>
   
   <entry>
     <title>Gitlab CVE-2023-2825 一个罕见的目录穿越漏洞</title>
@@ -396,28 +417,6 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
     
     
     <category term="PHP" scheme="https://rce.moe/categories/PHP/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>记一次审计时遇到的加密分区解密</title>
-    <link href="https://rce.moe/2021/12/28/jycjmfqjm/"/>
-    <id>https://rce.moe/2021/12/28/jycjmfqjm/</id>
-    <published>2021-12-28T09:03:40.000Z</published>
-    <updated>2022-07-11T03:23:39.665Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;最近拿到了一个商业产品的qcow2 镜像 准备试一试代码审计&lt;br&gt;首先用qemu-img 转换成vmdk 镜像 &lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs plain&quot;&gt;qemu-img convert -f qcow2 123.qcow2 -O vmdk 123.vmdk&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-
-&lt;p&gt;&lt;img src=&quot;https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605980043-744183b4-7855-4f05-975b-7022a74ee567.png#clientId=u0ac4a771-50e4-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=46&amp;id=u4a0541fe&amp;margin=%5Bobject%20Object%5D&amp;name=%E5%9B%BE%E7%89%87.png&amp;originHeight=91&amp;originWidth=1190&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9996&amp;status=done&amp;style=none&amp;taskId=u5bca7c69-2dc3-484f-8b5d-b1d8e9298ea&amp;title=&amp;width=595&quot; alt=&quot;图片.png&quot;&gt;&lt;br&gt;转换遇到错误 网上搜索只有一个其他项目的issue 没有解决方案&lt;br&gt;阅读qemu源代码 发现是在2017-02-15版本引入了这个特性&lt;br&gt;&lt;a href=&quot;https://lists.gnu.org/archive/html/qemu-devel/2017-02/msg03173.html&quot;&gt;https://lists.gnu.org/archive/html/qemu-devel/2017-02/msg03173.html&lt;/a&gt;&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs plain&quot;&gt;bitmaps_ext: Invalid extension length: Unknown error&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
-    
-    
-    
-    <category term="笔记" scheme="https://rce.moe/categories/%E7%AC%94%E8%AE%B0/"/>
     
     
   </entry>

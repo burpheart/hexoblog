@@ -186,6 +186,67 @@ var _hmt = _hmt || [];
       
       <div class="describe">
         <div class="title">
+          <a href="/2021/12/28/jycjmfqjm/">记一次审计时遇到的加密分区解密</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>21/12/28</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近拿到了一个商业产品的qcow2 镜像 准备试一试代码审计<br>首先用qemu-img 转换成vmdk 镜像 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><code class="hljs plain">qemu-img convert -f qcow2 123.qcow2 -O vmdk 123.vmdk<br></code></pre></td></tr></table></figure>
+
+
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/25577536/1640605980043-744183b4-7855-4f05-975b-7022a74ee567.png#clientId=u0ac4a771-50e4-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=46&id=u4a0541fe&margin=%5Bobject%20Object%5D&name=%E5%9B%BE%E7%89%87.png&originHeight=91&originWidth=1190&originalType=binary&ratio=1&rotation=0&showTitle=false&size=9996&status=done&style=none&taskId=u5bca7c69-2dc3-484f-8b5d-b1d8e9298ea&title=&width=595" alt="图片.png"><br>转换遇到错误 网上搜索只有一个其他项目的issue 没有解决方案<br>阅读qemu源代码 发现是在2017-02-15版本引入了这个特性<br><a target="_blank" rel="noopener" href="https://lists.gnu.org/archive/html/qemu-devel/2017-02/msg03173.html">https://lists.gnu.org/archive/html/qemu-devel/2017-02/msg03173.html</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><code class="hljs plain">bitmaps_ext: Invalid extension length: Unknown error<br></code></pre></td></tr></table></figure></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                 
+                <a href="/categories/笔记">笔记</a>
+                 
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2021/12/28/jycjmfqjm/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2021/12/28/jycjmfqjm/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2021/12/28/jycjmfqjm/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
           <a href="/2021/12/02/shenjizhinan/">《PHP代码审计入门指南》</a>
         </div>
         <div class="date">
@@ -707,66 +768,6 @@ var _hmt = _hmt || [];
           </div>
           <div class="r">
             <a href="/2020/08/15/%E8%AE%B0%E4%B8%80%E6%AC%A1mysql%E7%9B%B2%E6%B3%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">Read More</a>
-          </div>
-        </div>
-      </div>
-    </li>
-     
-
-    
-
-  <li class="item">
-
-      
-
-      
-      <div class="describe">
-        <div class="title">
-          <a href="/2020/07/14/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-witeup/">GeekPwn 2020 云上挑战赛 cosplay! writeup</a>
-        </div>
-        <div class="date">
-          <span class="iconfont icon-time-circle"></span>
-          <span>20/07/14</span>
-        </div>
-        
-        <div class="excerpt post-wrap"><p>学生党 业余挖洞 只会点web</p>
-<p>第一次写writeup，不大会写，请多关照。</p>
-<p>看到这个题目cosplay! 就先看了眼这道题 居然拿到了个一血 0.0<br><img src="https://i.loli.net/2020/07/14/ZDQoWaTYzqRGbOc.jpg"><br>尝试上传文件<br><img src="https://i.loli.net/2020/07/14/7Ba4fpxtmDoNrkU.png"><br>发现是通过COS(腾讯的对象云储存)上传文件</p></div>
-        
-        <div class="meta">
-          <div class="l">
-            <div class="warp">
-              
-              <span class="iconfont icon-folder"></span>
-              <span class="desp">
-                
-              </span>
-              
-            </div>
-
-            
-            <div class="warp">
-              <span class="iconfont icon-tag1"></span>
-              <span class="desp">
-                 
-                <a href="/tags/CTF">CTF</a>
-                  
-                <a href="/tags/WRITEUP">WRITEUP</a>
-                 
-              </span>
-            </div>
-            
-            <div class="warp">
-              <div class="share" data-url="/2020/07/14/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-witeup/">
-                <span class="iconfont icon-share"></span>
-              </div>
-              <div class="desp share" data-url="/2020/07/14/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-witeup/">
-                <a href="#">分享</a>
-              </div>
-            </div>
-          </div>
-          <div class="r">
-            <a href="/2020/07/14/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-witeup/">Read More</a>
           </div>
         </div>
       </div>

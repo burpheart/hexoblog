@@ -186,6 +186,66 @@ var _hmt = _hmt || [];
       
       <div class="describe">
         <div class="title">
+          <a href="/2023/07/28/Metabase-CVE-2023-38646/">Metabase 远程代码执行漏洞分析  &amp; 一种补丁绕过方法  CVE-2023-38646</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>23/07/28</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><h6 id="作者-橙子酱"><a href="#作者-橙子酱" class="headerlink" title="作者:橙子酱"></a>作者:<a href="https://rce.moe/">橙子酱</a></h6><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>  一开始，我按照平时在仓库中查找历史commit的方式进行查找，但是没有发现修复漏洞的地方。<br>我猜测代码仓库内没有对漏洞进行修复。<br> 此外，官方在已修复漏洞的版本中删除了发布出的fatjar内的clj源码, 历史版本的源码是存在的。<br>Metabase这个项目使用了Lisp语言Clojure进行开发，因此编译出的二进制文件很难进行diff, 看来只能从历史源码找了。</p></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                 
+                <a href="/categories/web">web</a>
+                 
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                 
+                <a href="/tags/WEB">WEB</a>
+                  
+                <a href="/tags/bypass">bypass</a>
+                 
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2023/07/28/Metabase-CVE-2023-38646/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2023/07/28/Metabase-CVE-2023-38646/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2023/07/28/Metabase-CVE-2023-38646/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
           <a href="/2023/05/25/Gitlab-CVE-2023-2825/">Gitlab CVE-2023-2825 一个罕见的目录穿越漏洞</a>
         </div>
         <div class="date">
@@ -696,71 +756,6 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
           </div>
           <div class="r">
             <a href="/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/">Read More</a>
-          </div>
-        </div>
-      </div>
-    </li>
-     
-
-    
-
-  <li class="item">
-
-      
-
-      
-      <div class="describe">
-        <div class="title">
-          <a href="/2022/06/24/php-upload-bypass-waf/">php在流量层面绕waf的一些姿势-php文件上传处理流程简单分析</a>
-        </div>
-        <div class="date">
-          <span class="iconfont icon-time-circle"></span>
-          <span>22/06/24</span>
-        </div>
-        
-        <div class="excerpt post-wrap"><p>测试环境 PHP 7.1.9</p>
-<p>php文件上传处理在 main/rfc1867.c 中的 rfc1867_post_handler函数</p></div>
-        
-        <div class="meta">
-          <div class="l">
-            <div class="warp">
-              
-              <span class="iconfont icon-folder"></span>
-              <span class="desp">
-                 
-                <a href="/categories/PHP">PHP</a>
-                  
-                <a href="/categories/WAF">WAF</a>
-                 
-              </span>
-              
-            </div>
-
-            
-            <div class="warp">
-              <span class="iconfont icon-tag1"></span>
-              <span class="desp">
-                 
-                <a href="/tags/PHP">PHP</a>
-                  
-                <a href="/tags/WAF">WAF</a>
-                  
-                <a href="/tags/bypass">bypass</a>
-                 
-              </span>
-            </div>
-            
-            <div class="warp">
-              <div class="share" data-url="/2022/06/24/php-upload-bypass-waf/">
-                <span class="iconfont icon-share"></span>
-              </div>
-              <div class="desp share" data-url="/2022/06/24/php-upload-bypass-waf/">
-                <a href="#">分享</a>
-              </div>
-            </div>
-          </div>
-          <div class="r">
-            <a href="/2022/06/24/php-upload-bypass-waf/">Read More</a>
           </div>
         </div>
       </div>
