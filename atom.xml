@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2023-07-28T09:49:19.469Z</updated>
+  <updated>2023-08-19T14:08:25.306Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一种在高版本JDK下 的新型嵌入式Jetty Customizer内存马实现</title>
+    <link href="https://rce.moe/2023/08/19/Jetty-Customize-memory-webshell/"/>
+    <id>https://rce.moe/2023/08/19/Jetty-Customize-memory-webshell/</id>
+    <published>2023-08-19T14:01:57.000Z</published>
+    <updated>2023-08-19T14:08:25.306Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;之前在Metabase 漏洞中实现了任意js脚本的执行,但是这并不优雅 每次都要发送完整的请求包.&lt;br&gt;Metabase 的部署方法比较特殊 它打包成了一个独立jar来运行. 这意味着不能通过简单的写文件的方法来获得较为持久化的webshell.&lt;br&gt;那么在这种情况下如何实现一个内存马呢?&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="WEB" scheme="https://rce.moe/categories/WEB/"/>
+    
+    
+    <category term="WEB" scheme="https://rce.moe/tags/WEB/"/>
+    
+    <category term="CVE" scheme="https://rce.moe/tags/CVE/"/>
+    
+  </entry>
   
   <entry>
     <title>Metabase 远程代码执行漏洞分析  &amp; 一种补丁绕过方法  CVE-2023-38646</title>
@@ -394,29 +415,6 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
     
     
     <category term="web" scheme="https://rce.moe/categories/web/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>浅谈PHP源代码保护方案&amp;受保护PHP代码の解密还原</title>
-    <link href="https://rce.moe/2021/12/28/phpydmbh/"/>
-    <id>https://rce.moe/2021/12/28/phpydmbh/</id>
-    <published>2021-12-28T09:05:57.000Z</published>
-    <updated>2022-07-11T03:22:29.851Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;php是一种解释型脚本语言.&lt;br&gt;与编译型语言不同,php源代码不是直接翻译成机器语言.而是翻译成中间代码(OPCODE) ,再由解释器(ZEND引擎)对中间代码进行解释运行 .&lt;/p&gt;
-&lt;p&gt;在php源代码的保护在原理可以分为3大类.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;源代码混淆(编码)&lt;/li&gt;
-&lt;li&gt;OPCODE混淆(编码)&lt;/li&gt;
-&lt;li&gt;修改解释引擎(虚拟机)&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    
-    
-    
-    <category term="PHP" scheme="https://rce.moe/categories/PHP/"/>
     
     
   </entry>

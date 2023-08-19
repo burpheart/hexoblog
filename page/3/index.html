@@ -186,6 +186,68 @@ var _hmt = _hmt || [];
       
       <div class="describe">
         <div class="title">
+          <a href="/2021/12/28/phpydmbh/">浅谈PHP源代码保护方案&amp;受保护PHP代码の解密还原</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>21/12/28</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>php是一种解释型脚本语言.<br>与编译型语言不同,php源代码不是直接翻译成机器语言.而是翻译成中间代码(OPCODE) ,再由解释器(ZEND引擎)对中间代码进行解释运行 .</p>
+<p>在php源代码的保护在原理可以分为3大类.</p>
+<ul>
+<li>源代码混淆(编码)</li>
+<li>OPCODE混淆(编码)</li>
+<li>修改解释引擎(虚拟机)</li>
+</ul></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                 
+                <a href="/categories/PHP">PHP</a>
+                 
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2021/12/28/phpydmbh/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2021/12/28/phpydmbh/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2021/12/28/phpydmbh/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
           <a href="/2021/12/28/jycjmfqjm/">记一次审计时遇到的加密分区解密</a>
         </div>
         <div class="date">
@@ -712,62 +774,6 @@ var _hmt = _hmt || [];
           </div>
           <div class="r">
             <a href="/2020/08/25/GeekPwn-2020-%E4%BA%91%E4%B8%8A%E6%8C%91%E6%88%98%E8%B5%9B-cosplay-writeup/">Read More</a>
-          </div>
-        </div>
-      </div>
-    </li>
-     
-
-    
-
-  <li class="item">
-
-      
-
-      
-      <div class="describe">
-        <div class="title">
-          <a href="/2020/08/15/%E8%AE%B0%E4%B8%80%E6%AC%A1mysql%E7%9B%B2%E6%B3%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">记一次mysql盲注遇到的问题</a>
-        </div>
-        <div class="date">
-          <span class="iconfont icon-time-circle"></span>
-          <span>20/08/15</span>
-        </div>
-        
-        <div class="excerpt post-wrap"><p>前几天我把一个CVE写成EXP的时候遇到了一个问题<br>目标使用了直接拼接SQL语句的方法进行sql查询<br>而且使用的是UPDATE方法<br><code>sql_query(&quot;UPDATE users SET status = &#39;confirmed&#39;, editsecret = &#39;&#39; WHERE id IN (&quot; . implode(&quot;, &quot;, $_POST[conusr]) . &quot;) AND status=&#39;pending&#39;&quot;);</code><br>根据拼接的语句 我写出了这样的playload 准备读取数据库中用户表的密码hash</p></div>
-        
-        <div class="meta">
-          <div class="l">
-            <div class="warp">
-              
-              <span class="iconfont icon-folder"></span>
-              <span class="desp">
-                
-              </span>
-              
-            </div>
-
-            
-            <div class="warp">
-              <span class="iconfont icon-tag1"></span>
-              <span class="desp">
-                 
-                <a href="/tags/笔记">笔记</a>
-                 
-              </span>
-            </div>
-            
-            <div class="warp">
-              <div class="share" data-url="/2020/08/15/%E8%AE%B0%E4%B8%80%E6%AC%A1mysql%E7%9B%B2%E6%B3%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">
-                <span class="iconfont icon-share"></span>
-              </div>
-              <div class="desp share" data-url="/2020/08/15/%E8%AE%B0%E4%B8%80%E6%AC%A1mysql%E7%9B%B2%E6%B3%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">
-                <a href="#">分享</a>
-              </div>
-            </div>
-          </div>
-          <div class="r">
-            <a href="/2020/08/15/%E8%AE%B0%E4%B8%80%E6%AC%A1mysql%E7%9B%B2%E6%B3%A8%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">Read More</a>
           </div>
         </div>
       </div>
