@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2023-08-19T14:08:25.306Z</updated>
+  <updated>2023-10-03T09:45:24.813Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>图片验证码引起的惨案 一个开源验证码库导致的 jumpserver 账户接管漏洞</title>
+    <link href="https://rce.moe/2023/10/03/jumpserver-CVE-2023-42820/"/>
+    <id>https://rce.moe/2023/10/03/jumpserver-CVE-2023-42820/</id>
+    <published>2023-10-03T09:42:22.000Z</published>
+    <updated>2023-10-03T09:45:24.813Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;jumpserver 前不久出了一个密码重置漏洞   &lt;a href=&quot;https://github.com/jumpserver/jumpserver/security/advisories/GHSA-7prv-g565-82qp&quot;&gt;CVE-2023-42820&lt;/a&gt;&lt;br&gt;在当天我就复现了这个漏洞 这个随机数的案例非常有趣 这个漏洞出现在了一个很难想到的位置 是一个由第三方依赖库引起的问题&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="漏洞分析" scheme="https://rce.moe/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"/>
+    
+    <category term="web" scheme="https://rce.moe/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/web/"/>
+    
+    <category term="EXP" scheme="https://rce.moe/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/web/EXP/"/>
+    
+    
+    <category term="CVE-2023-42820" scheme="https://rce.moe/tags/CVE-2023-42820/"/>
+    
+    <category term="django-simple-captcha" scheme="https://rce.moe/tags/django-simple-captcha/"/>
+    
+    <category term="django-simple-captcha vulnerability" scheme="https://rce.moe/tags/django-simple-captcha-vulnerability/"/>
+    
+  </entry>
   
   <entry>
     <title>一种在高版本JDK下 的新型嵌入式Jetty Customizer内存马实现</title>
@@ -399,23 +426,6 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
     
     
     <category term="password" scheme="https://rce.moe/tags/password/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>记一次src测试中的ldap注入深入利用</title>
-    <link href="https://rce.moe/2022/01/25/ldap-inject-1/"/>
-    <id>https://rce.moe/2022/01/25/ldap-inject-1/</id>
-    <published>2022-01-25T03:14:55.000Z</published>
-    <updated>2022-07-11T03:22:03.371Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;在最近的一次的src测试中遇到了ldap注入漏洞,目标是一个管理平台的单点登陆入口,漏洞存在于用户名存在判断处.&lt;br&gt;之前渗透测试的时候我也遇到过几个生产环境中ldap注入的漏洞,但是都只能获取到有限的敏感信息(用户名 手机号 邮箱) 危害程度与ldap匿名绑定相同.&lt;br&gt;在研究ldap查询语法时,我找到了一种可以外带ldap储存的用户密码的方法,实现了对ldap注入的进一步利用.&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="web" scheme="https://rce.moe/categories/web/"/>
-    
     
   </entry>
   
