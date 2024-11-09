@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      Java 代码解密：使用 Frida 还原 JVMTI Agent 加密保护的java类 &amp; Linux 环境下的Frida 使用 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E4%B8%80%E4%B8%AA%E5%A5%87%E6%80%AAjar%E5%BC%80%E5%A7%8B%E3%81%AE%E5%A5%87%E5%A6%99%E5%88%86%E6%9E%90"><span class="toc-text">从一个奇怪jar开始の奇妙分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E3%81%AE%E4%BB%A3%E7%A0%81%E8%BF%98%E5%8E%9F"><span class="toc-text">从零开始の代码还原</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SO%E5%88%86%E6%9E%90"><span class="toc-text">SO分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JVMTI"><span class="toc-text">JVMTI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JVM"><span class="toc-text">JVM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Frida"><span class="toc-text">Frida</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Linux%E5%B9%B3%E5%8F%B0%E4%B8%8B%E7%9A%84%E8%BF%9C%E7%A8%8B-Frida-HOOK"><span class="toc-text">Linux平台下的远程 Frida HOOK</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#HOOK%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">HOOK环境搭建</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#HOOK-JVM"><span class="toc-text">HOOK JVM</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#HOOK-dlopen"><span class="toc-text">HOOK dlopen</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#HOOK-JVMTI"><span class="toc-text">HOOK JVMTI</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9D%9F"><span class="toc-text">结束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">Java 代码解密：使用 Frida 还原 JVMTI Agent 加密保护的java类 & Linux 环境下的Frida 使用</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2024/11/09</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/web">web</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/WEB">WEB</a>
+                  
+                
+                  
+                    <a href="/tags/Frida">Frida</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><p>Java 代码解密：使用 Frida 还原 JVMTI Agent 加密保护的java类 &amp; Linux 环境下的Frida 使用</p>
+<blockquote>
+<p>2024/11/08 auth: 橙子酱 <a href="mailto:i@rce.moe">i@rce.moe</a> </p>
+</blockquote>
+<h1 id="从一个奇怪jar开始の奇妙分析">从一个奇怪jar开始の奇妙分析<a class="post-anchor" href="#从一个奇怪jar开始の奇妙分析"></a></h1><p>在一次平常的代码审计中，我在尝试反编译一个 JAR 文件，发现大部分的CLASS反编译失败了，返回的结果一片空白</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119534471-01498aa8-6985-45c2-928d-46364ddf9378.png" data-caption="image-20241107174837584" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119534471-01498aa8-6985-45c2-928d-46364ddf9378.png" alt="image-20241107174837584"></a></p>
+<p>这一定是被什么东西加密了，平常也经常遇到java agent的加密，先检查一下JVM启动参数</p>
+<span id="more"></span>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><code class="hljs shell">/bin/java -- -Dsun.misc.URLClassPath.disableJarChecking=true -agentpath:./xxxagent.so<br></code></pre></td></tr></tbody></table></figure>
+
+<p>但是这次好像不太一样，agentpath 参数对应的不是JAR 而是一个so库，这里只能先试着逆着看看了</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119534611-42856ce2-306a-430e-adb5-780d6c2f0871.png" data-caption="image-20241107180744294" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119534611-42856ce2-306a-430e-adb5-780d6c2f0871.png" alt="image-20241107180744294"></a></p>
+<h2 id="从零开始の代码还原">从零开始の代码还原<a class="post-anchor" href="#从零开始の代码还原"></a></h2><h3 id="SO分析">SO分析<a class="post-anchor" href="#SO分析"></a></h3><p>接下来就开始使用ida分析这个so了</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119534767-5c247ba3-5eaf-4c5c-b94e-d2ef763bf6f7.png" data-caption="image-20241107180141745" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119534767-5c247ba3-5eaf-4c5c-b94e-d2ef763bf6f7.png" alt="image-20241107180141745"></a></p>
+<p>这看起来不太妙</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119534953-343a4b0d-8cf7-45a9-9709-48641b4bcf13.png" data-caption="image-20241107180410546" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119534953-343a4b0d-8cf7-45a9-9709-48641b4bcf13.png" alt="image-20241107180410546"></a></p>
+<p>IDA仅识别出了一部分函数，并且大多数函数体无法正确反编译。我不太擅长逆向，这里节约时间只能使用其他方法了。</p>
+<h3 id="JVMTI">JVMTI<a class="post-anchor" href="#JVMTI"></a></h3><p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/jpeg/25577536/1731119535230-920069c7-7af1-499d-aec8-c9171101b16f.jpeg" data-caption="1731038300260" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2024/jpeg/25577536/1731119535230-920069c7-7af1-499d-aec8-c9171101b16f.jpeg" alt="1731038300260"></a></p>
+<p>不同于常见的Java Agent ，目标项目使用了一种更底层的Agent类型 JVM Tool Interface (JVM TI) Agent。它是通过JVM导出的C++ API 对JVM 进行操作，来实现某些特定功能。</p>
+<p>通过阅读JVMTI的相关文档发现 JVMTI Agent 可以通过注册 <code>ClassFileLoadHook</code> 来拦截 JVM 加载的类文件，从而实现在类加载时对其进行解密。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">//场景的伪代码示例</span><br><span class="hljs-function"><span class="hljs-keyword">void</span> JNICALL <span class="hljs-title">ClassFileLoadHook</span><span class="hljs-params">(jvmtiEnv *jvmti_env, JNIEnv *jni_env, jclass class_being_loaded,</span></span><br><span class="hljs-function"><span class="hljs-params">                               <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name, jobject protection_domain, jint class_data_len,</span></span><br><span class="hljs-function"><span class="hljs-params">                               <span class="hljs-keyword">const</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *class_data, jint *new_class_data_len,</span></span><br><span class="hljs-function"><span class="hljs-params">                               <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> **new_class_data)</span> </span>{<br>    <span class="hljs-comment">// 在这里可以插入解密代码, 它会加载class文件之前进行解密操作</span><br><br>    std::cout &lt;&lt; <span class="hljs-string">"Class file loaded: "</span> &lt;&lt; name &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 例如，解密后的字节码存放到new_class_data中</span><br>    *new_class_data_len = class_data_len;  <span class="hljs-comment">// 设置新的字节码长度</span><br>    *new_class_data = <span class="hljs-keyword">const_cast</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *&gt;(class_data);  <span class="hljs-comment">// 这里假设没有改变数据</span><br><br>    <span class="hljs-comment">// 继续加载原始或解密后的class数据</span><br>}<br>jvmtiEnv *jvmti = <span class="hljs-literal">nullptr</span>;<br>JavaVM *jvm = <span class="hljs-literal">nullptr</span>;<br><span class="hljs-function">JNIEXPORT jint JNICALL <span class="hljs-title">Agent_OnLoad</span><span class="hljs-params">(JavaVM *vm, <span class="hljs-keyword">char</span> *options, <span class="hljs-keyword">void</span> *reserved)</span> </span>{<br>    <span class="hljs-comment">// 获取jvmti环境</span><br>    jint res = vm-&gt;<span class="hljs-built_in">GetEnv</span>(<span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">void</span> **&gt;(&amp;jvmti), JVMTI_VERSION);<br>    <span class="hljs-keyword">if</span> (res != JNI_OK || jvmti == <span class="hljs-literal">nullptr</span>) {<br>        std::cerr &lt;&lt; <span class="hljs-string">"Error: Unable to access JVMTI version."</span> &lt;&lt; std::endl;<br>        <span class="hljs-keyword">return</span> res;<br>    }<br><br>    <span class="hljs-comment">// 注册ClassFileLoadHook回调</span><br>    jvmtiEventCallbacks callbacks = {<span class="hljs-number">0</span>};<br>    callbacks.ClassFileLoadHook = &amp;ClassFileLoadHook;<br><br>    res = jvmti-&gt;<span class="hljs-built_in">SetEventCallbacks</span>(&amp;callbacks, <span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(callbacks));<br>    <span class="hljs-keyword">if</span> (res != JVMTI_ERROR_NONE) {<br>        std::cerr &lt;&lt; <span class="hljs-string">"Error: Unable to set event callbacks."</span> &lt;&lt; std::endl;<br>        <span class="hljs-keyword">return</span> res;<br>    }<br><br>    <span class="hljs-comment">// 启动ClassFileLoadHook事件</span><br>    res = jvmti-&gt;<span class="hljs-built_in">SetEventNotificationMode</span>(JVMTI_EVENT_CLASS_FILE_LOAD, JVMTI_ENABLE, <span class="hljs-literal">nullptr</span>);<br>    <span class="hljs-keyword">if</span> (res != JVMTI_ERROR_NONE) {<br>        std::cerr &lt;&lt; <span class="hljs-string">"Error: Unable to enable class file load event."</span> &lt;&lt; std::endl;<br>        <span class="hljs-keyword">return</span> res;<br>    }<br><br>    <span class="hljs-keyword">return</span> JNI_OK;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>显然，我们只要 HOOK Agent中定义的 ClassFileLoadHook函数就可以拿到解密后的class字节码。</p>
+<p>但是加壳后Agent 的解密函数难以定位，这里我们只能转到JVM的代码中分析了。</p>
+<h3 id="JVM">JVM<a class="post-anchor" href="#JVM"></a></h3><p>目标使用了Open JDK，到官网就可以下到历史版本的源码（Oracle JDK 并没有提供JVM部分的源码）。</p>
+<p>简单的搜索了下JVM的源码，通过API关键字定位到了一个函数<code>hotspot\src\share\vm\prims\jvmtiExport.cpp:post_to_env</code>。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><code class="hljs c++">  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">post_to_env</span><span class="hljs-params">(JvmtiEnv* env, <span class="hljs-keyword">bool</span> caching_needed)</span> </span>{<br>    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *new_data = <span class="hljs-literal">NULL</span>;<br>    jint new_len = <span class="hljs-number">0</span>;<br>  <span class="hljs-comment">/*......*/</span><br>    <span class="hljs-function">JvmtiClassFileLoadEventMark <span class="hljs-title">jem</span><span class="hljs-params">(_thread, _h_name, _class_loader,</span></span><br><span class="hljs-function"><span class="hljs-params">                                    _h_protection_domain,</span></span><br><span class="hljs-function"><span class="hljs-params">                                    _h_class_being_redefined)</span></span>;<br>    <span class="hljs-function">JvmtiJavaThreadEventTransition <span class="hljs-title">jet</span><span class="hljs-params">(_thread)</span></span>;<br>    JNIEnv* jni_env =  (JvmtiEnv::<span class="hljs-built_in">get_phase</span>() == JVMTI_PHASE_PRIMORDIAL)?<br>                                                        <span class="hljs-literal">NULL</span> : jem.<span class="hljs-built_in">jni_env</span>();<br>    jvmtiEventClassFileLoadHook callback = env-&gt;<span class="hljs-built_in">callbacks</span>()-&gt;ClassFileLoadHook;<br>    <span class="hljs-keyword">if</span> (callback != <span class="hljs-literal">NULL</span>) {<br>      (*callback)(env-&gt;<span class="hljs-built_in">jvmti_external</span>(), jni_env,<br>                  jem.<span class="hljs-built_in">class_being_redefined</span>(),<br>                  jem.<span class="hljs-built_in">jloader</span>(), jem.<span class="hljs-built_in">class_name</span>(),<br>                  jem.<span class="hljs-built_in">protection_domain</span>(),<br>                  _curr_len, _curr_data,<br>                  &amp;new_len, &amp;new_data);<br>    }<br>    <span class="hljs-keyword">if</span> (new_data != <span class="hljs-literal">NULL</span>) {<br>      <span class="hljs-comment">// this agent has modified class data.</span><br>      <span class="hljs-keyword">if</span> (caching_needed &amp;&amp; *_cached_class_file_ptr == <span class="hljs-literal">NULL</span>) {<br>        <span class="hljs-comment">// data has been changed by the new retransformable agent</span><br>        <span class="hljs-comment">// and it hasn't already been cached, cache it</span><br>        JvmtiCachedClassFileData *p;<br>        p = (JvmtiCachedClassFileData *)os::<span class="hljs-built_in">malloc</span>(<br>          <span class="hljs-built_in">offset_of</span>(JvmtiCachedClassFileData, data) + _curr_len, mtInternal);<br>        <span class="hljs-keyword">if</span> (p == <span class="hljs-literal">NULL</span>) {<br>          <span class="hljs-built_in">vm_exit_out_of_memory</span>(<span class="hljs-built_in">offset_of</span>(JvmtiCachedClassFileData, data) + _curr_len,<br>            OOM_MALLOC_ERROR,<br>            <span class="hljs-string">"unable to allocate cached copy of original class bytes"</span>);<br>        }<br>        p-&gt;length = _curr_len;<br>        <span class="hljs-built_in">memcpy</span>(p-&gt;data, _curr_data, _curr_len);<br>        *_cached_class_file_ptr = p;<br>      }<br><br>      <span class="hljs-keyword">if</span> (_curr_data != *_data_ptr) {<br>        <span class="hljs-comment">// curr_data is previous agent modified class data.</span><br>        <span class="hljs-comment">// And this has been changed by the new agent so</span><br>        <span class="hljs-comment">// we can delete it now.</span><br>        _curr_env-&gt;<span class="hljs-built_in">Deallocate</span>(_curr_data);<br>      }<br><br>      <span class="hljs-comment">// Class file data has changed by the current agent.</span><br>      _curr_data = new_data;<br>      _curr_len = new_len;<br>      <span class="hljs-comment">// Save the current agent env we need this to deallocate the</span><br>      <span class="hljs-comment">// memory allocated by this agent.</span><br>      _curr_env = env;<br>    }<br>  }<br>  <span class="hljs-comment">/*......*/</span><br>};<br></code></pre></td></tr></tbody></table></figure>
+
+<p>在JVM加载class字节码的时候，JVM会判断当前是否存在jvmtiEventClassFileLoadHook。如果存在就先执行hook，如果执行后字节码被修改则使用修改后的字节码。</p>
+<p>一路跟随，我找到了这个函数，这个函数看起来非常适合HOOK，这里就决定使用它了。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// this entry is for class file load hook on class load, redefine and retransform</span><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">JvmtiExport::post_class_file_load_hook</span><span class="hljs-params">(Symbol* h_name,</span></span><br><span class="hljs-function"><span class="hljs-params">                                            Handle class_loader,</span></span><br><span class="hljs-function"><span class="hljs-params">                                            Handle h_protection_domain,</span></span><br><span class="hljs-function"><span class="hljs-params">                                            <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> **data_ptr,</span></span><br><span class="hljs-function"><span class="hljs-params">                                            <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> **end_ptr,</span></span><br><span class="hljs-function"><span class="hljs-params">                                            JvmtiCachedClassFileData **cache_ptr)</span> </span>{<br>  <span class="hljs-function">JvmtiClassFileLoadHookPoster <span class="hljs-title">poster</span><span class="hljs-params">(h_name, class_loader,</span></span><br><span class="hljs-function"><span class="hljs-params">                                      h_protection_domain,</span></span><br><span class="hljs-function"><span class="hljs-params">                                      data_ptr, end_ptr,</span></span><br><span class="hljs-function"><span class="hljs-params">                                      cache_ptr)</span></span>;<br>  poster.<span class="hljs-built_in">post</span>();<br>}<br><br></code></pre></td></tr></tbody></table></figure>
+
+<p>JVM 的模块名是libjava.so，找到目标的JDK位置，寻找模块并保存下来。用IDA 反编译，找到对应函数的地址偏移以备后续使用。注意这里必须和目标环境上的完全一致。</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119535616-5cfb7c24-d095-4bc2-b2b9-acb70ab47412.png" data-caption="1731034755178" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119535616-5cfb7c24-d095-4bc2-b2b9-acb70ab47412.png" alt="1731034755178"></a></p>
+<p>现在HOOK所需的条件已经齐全了，下面需要找到一个合适的HOOK框架来HOOK这个函数。</p>
+<h3 id="Frida">Frida<a class="post-anchor" href="#Frida"></a></h3><p>Frida 是一个易用的HOOK框架，它可以大大的简化HOOK的流程。它只要编写简单的JS代码就可以在不同的平台完成一些复杂的HOOK操作。</p>
+<p>网上大部分的文章都写的是Frida在安卓平台下的HOOK教程，但是该工具其实是跨平台的，其中Frida也支持linux和windows平台。</p>
+<h5 id="Linux平台下的远程-Frida-HOOK">Linux平台下的远程 Frida HOOK<a class="post-anchor" href="#Linux平台下的远程-Frida-HOOK"></a></h5><h6 id="HOOK环境搭建">HOOK环境搭建<a class="post-anchor" href="#HOOK环境搭建"></a></h6><p>被调试机配置很简单，不需要安装python环境，这里只需要将frida-server的二进制文件上传到目标服务器就可以了。</p>
+<p>（吐槽一下 虽然它的体积有十几MB，但并不是静态编译的，如果遇到特殊环境，可能需要自行进行静态编译）</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119535841-e031ed44-94ac-456e-9e41-1c8e346597a2.png" data-caption="image-20241107185754278" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119535841-e031ed44-94ac-456e-9e41-1c8e346597a2.png" alt="image-20241107185754278"></a></p>
+<p>在目标环境上启动Frida服务器  0.0.0.0 使用默认端口27042</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><code class="hljs shell">frida-server -l 0.0.0.0:27042<br></code></pre></td></tr></tbody></table></figure>
+
+<p>在本地安装完整的frida命令行工具集 frida-tools</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><code class="hljs shell">pip install frida-tools<br></code></pre></td></tr></tbody></table></figure>
+
+<p>连接目标测试下</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><code class="hljs shell">frida-ps -H 192.168.12.1<br></code></pre></td></tr></tbody></table></figure>
+
+<p>如果连接成功，它会列出服务器上的进程列表</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119536017-1059532f-5445-4094-a258-bf426142ae30.png" data-caption="image-20241108102731737" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119536017-1059532f-5445-4094-a258-bf426142ae30.png" alt="image-20241108102731737"></a></p>
+<p>现在就可以开始远程HOOK了。frida -f 指定执行的文件路径，后面可以跟上命令行参数</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><code class="hljs shell">frida -H 192.168.12.1 -f /bin/java -- -agentpath:./xxxxx.so  -jar /xxxxxx.jar<br></code></pre></td></tr></tbody></table></figure>
+
+<p>如果连接成功，会启动一个控制台。和常见的调试工具一样，启动HOOK后进程是暂停状态，这是可以预先写一些脚本指令。除了几个基本的指令外，都是使用js语法的语句执行一些操作，具体参考官方文档</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">[Remote::java ]-&gt; %help<br>Available commands:<br>  %resume(0) - resume execution of the spawned process<br>  %load(1) - Load an additional script and reload the current REPL state<br>  %reload(0) - reload (i.e. rerun) the script that was given as an argument to the REPL<br>  %unload(0) - no description<br>  %autoperform(1) - receive on/off as first and only argument, when switched on will wrap any REPL code with Java.performNow()<br>  %autoreload(1) - disable or enable auto reloading of script files<br>  %exec(1) - execute the given file path in the context of the currently loaded scripts<br>  %time(1+) - measure the execution time of the given expression and print it to the screen<br>  %help(0) - print a list of available REPL commands<br></code></pre></td></tr></tbody></table></figure>
+
+<h6 id="HOOK-JVM">HOOK JVM<a class="post-anchor" href="#HOOK-JVM"></a></h6><p>为了HOOK JVM的目标函数，我们需要找到libjava.so模块的基址</p>
+<figure class="highlight js"><table><tbody><tr><td class="code"><pre><code class="hljs js">Module.enumerateExports(<span class="hljs-string">"libjava.so"</span>, {<br>    onMatch: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">exp</span>) </span>{<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Exported function: "</span> + exp.name + <span class="hljs-string">" | Address: "</span> + exp.address);<br>    },<br>    onComplete: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Finished enumerating exports."</span>);<br>    }<br>});<br><br></code></pre></td></tr></tbody></table></figure>
+
+<p>frida 需要输入%resume指令来继续进程的执行。不出意外的话，你可能会发现获取不到你要找的模块。</p>
+<p>那是因为脚本执行时，目标模块可能还没有被加载。为了解决这种情况，可以先让程序执行一段时间加载模块后，再执行脚本。</p>
+<p>但是这里其实还有一种更优雅的方法，我们可以HOOK C标准库的<code>dlopen</code> 函数，拦截进程内动态库的动态加载过程。在检测到我们需要的模块加载后，我们再去获取模块基址。</p>
+<h6 id="HOOK-dlopen">HOOK dlopen<a class="post-anchor" href="#HOOK-dlopen"></a></h6><p>先查看下dlopen的函数声明</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> *<span class="hljs-title">dlopen</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *filename, <span class="hljs-keyword">int</span> flags)</span></span>;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>第一个参数filename就是我们需要的参数，我们可以根据加载的模块名来判断出合适的HOOK时机。</p>
+<p> *filename是一个指向字符串的指针，这里可以直接使用Frida预先定义好的方法<code>readCString</code> 一键读取指针对应的C字符串。</p>
+<figure class="highlight js"><table><tbody><tr><td class="code"><pre><code class="hljs js">args[<span class="hljs-number">0</span>].readCString();<br></code></pre></td></tr></tbody></table></figure>
+
+<p>Interceptor.attach 是最基础的hook 语法，它可以HOOK一个函数的调用。</p>
+<p>onEnter会在函数被调用前被触发，onLeave会在函数调用完成被触发</p>
+<figure class="highlight js"><table><tbody><tr><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// HOOK模块加载</span><br><span class="hljs-keyword">const</span> moduleName = <span class="hljs-string">"libjvm.so"</span>; <span class="hljs-comment">// JVM模块</span><br><span class="hljs-keyword">var</span> dlopen = Module.findExportByName(<span class="hljs-literal">null</span>, <span class="hljs-string">"dlopen"</span>); <span class="hljs-comment">//查找dlopen函数的地址</span><br><span class="hljs-keyword">if</span>(dlopen != <span class="hljs-literal">null</span>){<br>    <span class="hljs-comment">// 使用Interceptor来对dlopen函数进行拦截</span><br>    Interceptor.attach(dlopen,{<br>        <span class="hljs-comment">// 当dlopen函数被调用时触发 这时模块还没有被加载</span><br>        onEnter: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">args</span>)</span>{<br>            <span class="hljs-comment">// 读取第一个参数，即加载的模块名称 *filename</span><br>            <span class="hljs-keyword">var</span> soName = args[<span class="hljs-number">0</span>].readCString();<br>            <span class="hljs-built_in">console</span>.log(soName);<br>            <span class="hljs-comment">// 检查模块名称是否包含目标模块名</span><br>            <span class="hljs-keyword">if</span>(soName.indexOf(moduleName) != -<span class="hljs-number">1</span>){<br>                <span class="hljs-built_in">this</span>.hook = <span class="hljs-literal">true</span>;<span class="hljs-comment">// 标记已找到目标模块</span><br>            }<br>        },<br>        <span class="hljs-comment">// 当dlopen函数执行完返回时触发 也就是模块加载完成后</span><br>        onLeave: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">retval</span>)</span>{<br>            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.hook){<br>                hookFunction();<span class="hljs-comment">// 执行我们的HOOK函数</span><br>            }<br>        }<br>    });<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>这下应该就可以获取到libjvm模块的基址了。</p>
+<p>拿到的基址加上我们之前用IDA寻找的地址偏移，我们就可以得到目标函数实际上在目标机器的函数地址。</p>
+<figure class="highlight js"><table><tbody><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> moduleName = <span class="hljs-string">"libjvm.so"</span>;<br><span class="hljs-keyword">const</span> functionOffset = <span class="hljs-number">0x7A5C60</span>; <span class="hljs-comment">// 函数的实际偏移量</span><br>    <span class="hljs-keyword">const</span> baseAddress = Module.findBaseAddress(moduleName);<br>    <span class="hljs-keyword">if</span> (baseAddress === <span class="hljs-literal">null</span>) {<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Module not found: "</span> + moduleName);<br>        <span class="hljs-keyword">return</span>;<br>    }<br><span class="hljs-keyword">const</span> targetAddress = baseAddress.add(functionOffset);<br></code></pre></td></tr></tbody></table></figure>
+
+<h6 id="HOOK-JVMTI">HOOK JVMTI<a class="post-anchor" href="#HOOK-JVMTI"></a></h6><p>接下来开始HOOK目标函数，下面是目标函数的声明。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">post_class_file_load_hook</span><span class="hljs-params">(Symbol* h_name, Handle class_loader,</span></span><br><span class="hljs-function"><span class="hljs-params">                                      Handle h_protection_domain,</span></span><br><span class="hljs-function"><span class="hljs-params">                                      <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> **data_ptr, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> **end_ptr,</span></span><br><span class="hljs-function"><span class="hljs-params">                                      JvmtiCachedClassFileData **cache_ptr)</span> NOT_JVMTI_RETURN</span>;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>h_name 是加载的类名，我们需要利用这个参数还原class文件名（虽然也可以全部dump完用框架读字节码的类名），但它不是一个标准的C字符串类型。而是一个 Symbol 对象，它是JVM 内部用来表示字符串的结构。</p>
+<p>稍微看一下这个结构体</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SymbolBase</span> :</span> <span class="hljs-keyword">public</span> MetaspaceObj {<br> <span class="hljs-keyword">public</span>:<br>  <span class="hljs-built_in">ATOMIC_SHORT_PAIR</span>(<br>    <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">short</span> _refcount,  <span class="hljs-comment">// needs atomic operation</span><br>    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">short</span> _length     <span class="hljs-comment">// number of UTF8 characters in the symbol (does not need atomic op)</span><br>  );<br>  <span class="hljs-keyword">int</span>            _identity_hash;<br>};<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Symbol</span> :</span> <span class="hljs-keyword">private</span> SymbolBase {<br>  <span class="hljs-keyword">friend</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VMStructs</span>;</span><br>  <span class="hljs-keyword">friend</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SymbolTable</span>;</span><br>  <span class="hljs-keyword">friend</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MoveSymbols</span>;</span><br> <span class="hljs-keyword">private</span>:<br>  jbyte _body[<span class="hljs-number">1</span>];<br>  .....<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>在内存中的布局</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">| _refcount (2 bytes) | _length (2 bytes) | _identity_hash (4 bytes) | _body[1] (variable length) |<br></code></pre></td></tr></tbody></table></figure>
+
+<p>_refcount 是引用计数，用于内存管理。<code>_length</code>是 <code>_body</code>(字符串)的长度。</p>
+<p>根据这些信息，我们就可以通过简单的偏移计算来读出Java字符串了。</p>
+<figure class="highlight js"><table><tbody><tr><td class="code"><pre><code class="hljs JS"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSymbolString</span>(<span class="hljs-params">symbolAddr</span>) </span>{<br>    <span class="hljs-comment">// 读取 Symbol 的 _length 字段，它是一个 unsigned short 类型（2 字节）</span><br>    <span class="hljs-keyword">const</span> length = ptr(symbolAddr).add(<span class="hljs-number">2</span>).readU16();<br>    <span class="hljs-comment">// 读取 _body 数组的首地址，从它开始读取 _length 长度的字节数据</span><br>    <span class="hljs-keyword">const</span> symbolBodyAddr = ptr(symbolAddr).add(<span class="hljs-number">8</span>); <span class="hljs-comment">// _body 的起始偏移是 8 字节</span><br>    <span class="hljs-comment">// 使用 readByteArray 读取字节，再将其转换为 UTF-8 字符串</span><br>    <span class="hljs-keyword">const</span> byteArray = symbolBodyAddr.readByteArray(length);<br>    <span class="hljs-keyword">const</span> str = Memory.readUtf8String(byteArray, length);<br>    <span class="hljs-keyword">return</span> str;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>之后就可以开始实现dump class了</p>
+<p>为了获取解密的结果，我们需要先在进入函数时拿到解密class 的两个偏移存放地址的地址，以备后续函数执行完成使用。</p>
+<figure class="highlight js"><table><tbody><tr><td class="code"><pre><code class="hljs js"><span class="hljs-built_in">this</span>.ptrAddress = args[<span class="hljs-number">3</span>];<br><span class="hljs-built_in">this</span>.endPtrAddress = args[<span class="hljs-number">4</span>];<br></code></pre></td></tr></tbody></table></figure>
+
+<p>在函数执行完成后，这两个地址对应的内容会变成我们需要的数据位置</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">const ptr = this.ptrAddress.readPointer();<br>const endPtr = this.endPtrAddress.readPointer();<br></code></pre></td></tr></tbody></table></figure>
+
+<p>最后使用拿到的内存位置来读取数据，并写入到以class名命名的文件</p>
+<figure class="highlight js"><table><tbody><tr><td class="code"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hookFunction</span>(<span class="hljs-params"></span>) </span>{<br>    <span class="hljs-keyword">const</span> baseAddress = Module.findBaseAddress(moduleName);<br>    <span class="hljs-keyword">if</span> (baseAddress === <span class="hljs-literal">null</span>) {<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Module not found: "</span> + moduleName);<br>        <span class="hljs-keyword">return</span>;<br>    }<br>    <span class="hljs-keyword">const</span> targetAddress = baseAddress.add(functionOffset);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hooking function at: "</span> + targetAddress);<br>    <span class="hljs-comment">//JvmtiExport::post_class_file_load_hook(name, class_loader(), protection_domain, &amp;ptr, &amp;end_ptr, &amp;cached_class_file);</span><br>    Interceptor.attach(targetAddress, {<br>        onEnter: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">args</span>) </span><br><span class="hljs-function">            <span class="hljs-title">this</span>.<span class="hljs-title">ptrAddress</span> = <span class="hljs-title">args</span>[3]</span>;<br>            <span class="hljs-built_in">this</span>.endPtrAddress = args[<span class="hljs-number">4</span>];<br>            <span class="hljs-built_in">this</span>.name = getSymbolString(args[<span class="hljs-number">0</span>]);  <span class="hljs-comment">//偏移量8处存储字符串内容</span><br>        },<br>        onLeave: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">retval</span>) </span>{<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Entering JvmtiExport::post_class_file_load_hook"</span>);<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"name: "</span> + <span class="hljs-built_in">this</span>.name  );<br>            <span class="hljs-comment">//读取ptr和end_ptr的值</span><br>            <span class="hljs-keyword">const</span> ptr = <span class="hljs-built_in">this</span>.ptrAddress.readPointer();<br>            <span class="hljs-keyword">const</span> endPtr = <span class="hljs-built_in">this</span>.endPtrAddress.readPointer();<br>            <span class="hljs-comment">// 计算读取范围</span><br>            <span class="hljs-keyword">const</span> length = endPtr.sub(ptr).toInt32();<br>            <span class="hljs-comment">//&gt;0</span><br>            <span class="hljs-keyword">if</span> (length &gt; <span class="hljs-number">0</span>) {<br>                <span class="hljs-comment">// 读取 ptr 到 end_ptr 范围内的数据</span><br>                <span class="hljs-keyword">const</span> data = ptr.readByteArray(length);<br>                <span class="hljs-keyword">const</span> dumpPath = <span class="hljs-string">"/tmp/"</span>+<span class="hljs-built_in">this</span>.name.replaceAll(<span class="hljs-string">"/"</span>,<span class="hljs-string">"."</span>) +<span class="hljs-string">".class"</span>;<br>                <span class="hljs-keyword">const</span> file = <span class="hljs-keyword">new</span> File(dumpPath, <span class="hljs-string">"wb"</span>);<br>                file.write(data);<br>                <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Dump file saved to: "</span> + dumpPath);<br>                file.flush();<br>                file.close();<br>            } <span class="hljs-keyword">else</span> {<br>                <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Invalid memory range to dump.'</span>);<br>            }<br>    <br>        }<br>    });<br></code></pre></td></tr></tbody></table></figure>
+
+<p>使用 -l 参数加上刚刚写的脚本，执行脚本</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><code class="hljs shell">frida -H 192.168.12.1 -l hook.js -f /bin/java -- -agentpath:./xxxxx.so  -jar /xxxxxx.jar <br></code></pre></td></tr></tbody></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119536203-816ca140-21bb-45ca-8b16-e275edc3944a.png" data-caption="image-20241108114849836" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119536203-816ca140-21bb-45ca-8b16-e275edc3944a.png" alt="image-20241108114849836"></a></p>
+<p>成功解密class类</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119536501-5096fbb6-1f4d-4902-a4b9-2407194f55b6.png" data-caption="image-20241108115107111" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2024/png/25577536/1731119536501-5096fbb6-1f4d-4902-a4b9-2407194f55b6.png" alt="image-20241108115107111"></a></p>
+<h3 id="结束">结束<a class="post-anchor" href="#结束"></a></h3><p>接下来就可以写一个简单的classloder 来触发所有的class类加载，加载后的class同时会被解密。这样就可以实现完整的jar解密，而不是只能解密已经加载的class。</p>
+<p>这种方法是在JVM解析class字节码前拦截的，所以即使class加载出错（少依赖 字节码问题），也可以正常dump。</p>
+<h2 id="参考">参考<a class="post-anchor" href="#参考"></a></h2><p>【JVM】Java agent超详细知识梳理 <a target="_blank" rel="noopener" href="https://juejin.cn/post/7157684112122183693">https://juejin.cn/post/7157684112122183693</a></p>
+<p>JVM(TM) Tool Interface 1.2.3 <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html">https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html</a></p>
+<p>Frida JavaScript  <a target="_blank" rel="noopener" href="https://frida.re/docs/examples/javascript/">https://frida.re/docs/examples/javascript/</a></p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2023/10/03/jumpserver-CVE-2023-42820/">图片验证码引起的惨案 一个开源验证码库导致的 jumpserver 账户接管漏洞</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2024/11/09/Java-Code-Decryption-Using-Frida-Restoring-JVMTI-Agent-Encrypted-Classes-Using-Frida-in-Linux/">https://rce.moe/2024/11/09/Java-Code-Decryption-Using-Frida-Restoring-JVMTI-Agent-Encrypted-Classes-Using-Frida-in-Linux/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true,
+        proxy: 'https://servelesscors.rce.moe/api/cors?url=https://github.com/login/oauth/access_token'
+    }).render('gitalk-container')
+</script>
+        <footer>
+          <div class="copyright">
+            ©2024
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
