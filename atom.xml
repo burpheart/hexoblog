@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2024-11-09T02:50:24.478Z</updated>
+  <updated>2025-01-07T09:06:35.127Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>V8 字节码反编译 还原bytenode保护的js代码</title>
+    <link href="https://rce.moe/2025/01/07/v8-bytecode-decompiler/"/>
+    <id>https://rce.moe/2025/01/07/v8-bytecode-decompiler/</id>
+    <published>2025-01-07T09:01:45.000Z</published>
+    <updated>2025-01-07T09:06:35.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;某年某日的一天，我看到某IM应用发布了一个全新的桌面客户端开始了公测&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240283342-e54b138c-52fe-4f87-a233-9c6d006bf89d.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;我马上就下载来试用了一番，发现它使用了&lt;code&gt;electron&lt;/code&gt;重构了PC客户端。用&lt;code&gt;electron&lt;/code&gt;重写？逆起来应该很容易吧&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="笔记" scheme="https://rce.moe/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="二进制" scheme="https://rce.moe/categories/%E7%AC%94%E8%AE%B0/%E4%BA%8C%E8%BF%9B%E5%88%B6/"/>
+    
+    
+    <category term="v8" scheme="https://rce.moe/tags/v8/"/>
+    
+    <category term="反编译" scheme="https://rce.moe/tags/%E5%8F%8D%E7%BC%96%E8%AF%91/"/>
+    
+    <category term="逆向" scheme="https://rce.moe/tags/%E9%80%86%E5%90%91/"/>
+    
+    <category term="V8字节码" scheme="https://rce.moe/tags/V8%E5%AD%97%E8%8A%82%E7%A0%81/"/>
+    
+    <category term="bytecode" scheme="https://rce.moe/tags/bytecode/"/>
+    
+  </entry>
   
   <entry>
     <title>Java 代码解密：使用 Frida 还原 JVMTI Agent 加密保护的java类 &amp; Linux 环境下的Frida 使用</title>
@@ -417,23 +448,6 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
     
     <category term="笔记" scheme="https://rce.moe/categories/%E7%AC%94%E8%AE%B0/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>如何打造一个网络空间资产测绘系统--网络框架测绘の开发笔记</title>
-    <link href="https://rce.moe/2022/03/27/wlch/"/>
-    <id>https://rce.moe/2022/03/27/wlch/</id>
-    <published>2022-03-27T13:36:56.000Z</published>
-    <updated>2022-03-27T13:40:47.179Z</updated>
-    
-    
-    <summary type="html">这篇文章需要密码才能浏览的说 ~☆</summary>
-    
-    
-    
-    
-    <category term="password" scheme="https://rce.moe/tags/password/"/>
     
   </entry>
   

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      V8 字节码反编译 还原bytenode保护的js代码 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%A5%87%E6%80%AA%E7%9A%84electron%E5%BA%94%E7%94%A8"><span class="toc-text">一个奇怪的electron应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#V8%E5%AD%97%E8%8A%82%E7%A0%81"><span class="toc-text">V8字节码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#V8%E5%AD%97%E8%8A%82%E7%A0%81%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7"><span class="toc-text">V8字节码长什么样?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%AD%94%E6%95%B0"><span class="toc-text">魔数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%93%88%E5%B8%8C"><span class="toc-text">版本哈希</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#V8%E5%AD%97%E8%8A%82%E7%A0%81%E2%80%9D%E5%8F%8D%E7%BC%96%E8%AF%91%E2%80%9D"><span class="toc-text">V8字节码”反编译”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#V8%E5%AD%97%E8%8A%82%E7%A0%81%E2%80%9D%E5%8F%8D%E6%B1%87%E7%BC%96%E2%80%9D"><span class="toc-text">V8字节码”反汇编”</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8B%89%E5%8F%96V8%E4%BB%A3%E7%A0%81"><span class="toc-text">拉取V8代码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%AD%94%E6%94%B9V8%E5%BC%95%E6%93%8E"><span class="toc-text">魔改V8引擎</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%96%E8%AF%91V8%E5%BC%95%E6%93%8E"><span class="toc-text">编译V8引擎</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%8F%8D%E6%B1%87%E7%BC%96%E5%B7%A5%E5%85%B7"><span class="toc-text">编译反汇编工具</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#V8%E5%AD%97%E8%8A%82%E7%A0%81%E5%8F%8D%E7%BC%96%E8%AF%91"><span class="toc-text">V8字节码反编译</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">V8 字节码反编译 还原bytenode保护的js代码</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2025/01/07</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/笔记">笔记</a>
+                
+              
+                
+                  <a href="/categories/二进制">二进制</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/v8">v8</a>
+                  
+                
+                  
+                    <a href="/tags/反编译">反编译</a>
+                  
+                
+                  
+                    <a href="/tags/逆向">逆向</a>
+                  
+                
+                  
+                    <a href="/tags/V8字节码">V8字节码</a>
+                  
+                
+                  
+                    <a href="/tags/bytecode">bytecode</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="前言">前言<a class="post-anchor" href="#前言"></a></h1><p>某年某日的一天，我看到某IM应用发布了一个全新的桌面客户端开始了公测</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240283342-e54b138c-52fe-4f87-a233-9c6d006bf89d.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240283342-e54b138c-52fe-4f87-a233-9c6d006bf89d.png" alt=""></a></p>
+<p>我马上就下载来试用了一番，发现它使用了<code>electron</code>重构了PC客户端。用<code>electron</code>重写？逆起来应该很容易吧</p>
+<span id="more"></span>
+<p><u>注意：新版本使用的V8 12.*版本并没有反编译成功</u></p>
+<h1 id="一个奇怪的electron应用">一个奇怪的electron应用<a class="post-anchor" href="#一个奇怪的electron应用"></a></h1><p>分析<code>electron</code>引用第一步就是寻找资源文件。</p>
+<p>所以，我就想在安装目录下寻找<code>app.asar</code>，来看看它的js代码是怎么写的。<del>能不能整出点花活</del></p>
+<p>进行一番寻找之后，我并没有在安装目录下找到任何的ASAR文件。</p>
+<p>但是通过文件大小来看，安装目录下几个奇怪的<code>.node</code>文件看起来比较可疑。</p>
+<p><code>wrapper.node</code> <code>major.node </code>两个数十M的文件是PE文件</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240289847-502493ba-ff09-4044-9146-69fd32ebc039.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240289847-502493ba-ff09-4044-9146-69fd32ebc039.png" alt=""></a><br><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240297812-f8b33eb7-9cd0-4f26-b37d-7312fb495d4d.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240297812-f8b33eb7-9cd0-4f26-b37d-7312fb495d4d.png" alt=""></a></p>
+<p>简单查看了一下字符串发现，这个PE文件内出现了少量明文的js代码，和有规律的js文件名储存结构，猜测js代码解密可能在这里?</p>
+<p>通过JS文件名字符串，很容易定位一个函数体非常大的函数</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240309705-6c543cc8-dcfe-44ff-aa87-22ebf361b684.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240309705-6c543cc8-dcfe-44ff-aa87-22ebf361b684.png" alt=""></a></p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240315372-1fda97b4-696b-42fe-94ee-124435615b85.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240315372-1fda97b4-696b-42fe-94ee-124435615b85.png" alt=""></a></p>
+<p>这个函数内组装了数百个<code>ByteCodeInfo</code> 结构体，最终生成了生成一个结构体数组 <code>[]ByteCodeInfo</code>。</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240321006-6ed4a56f-1212-45d2-ae99-6bba98a11808.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240321006-6ed4a56f-1212-45d2-ae99-6bba98a11808.png" alt=""></a></p>
+<p>通过结构体名可以猜测出，它可能储存的是V8字节码和js文件名与函数名的映射关系。</p>
+<p>导出的字节码印证了这一点：熟悉nodejs分析的应该很容易看出来，他的头出现了 V8字节码的魔数部分<code>?? ?? DE C0</code></p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240330731-db14065e-4dd9-41fe-aefa-1948b61c0f59.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240330731-db14065e-4dd9-41fe-aefa-1948b61c0f59.png" alt=""></a></p>
+<p>这个程序和开源的<code>bytenode</code>保护使用了相同的方法。都是把缓存的V8字节码保存下来，然后在运行时直接加载字节码缓存来避免源代码打包入代码，以达成源代码保护或是压缩代码提升性能的目的。</p>
+<p>既然找到了字节码，我们就把它全部提取出来吧</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240337850-18424b23-af94-46a4-ab83-0391bb94948d.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240337850-18424b23-af94-46a4-ab83-0391bb94948d.png" alt=""></a></p>
+<p>这里我写了一个IDA python脚本，把这个奇怪的<code>node</code>文件里面的所有储存的字节码和对应的文件信息全部提取了</p>
+<h2 id="V8字节码">V8字节码<a class="post-anchor" href="#V8字节码"></a></h2><h3 id="V8字节码长什么样">V8字节码长什么样?<a class="post-anchor" href="#V8字节码长什么样"></a></h3><p>V8 字节码的生成是在<code>SerializedCodeData::SerializedCodeData</code> 中进行的</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp">SerializedCodeData::<span class="hljs-built_in">SerializedCodeData</span>(<span class="hljs-keyword">const</span> std::vector&lt;<span class="hljs-keyword">uint8_t</span>&gt;* payload,<br>                                       <span class="hljs-keyword">const</span> CodeSerializer* cs) {<br>  DisallowGarbageCollection no_gc;<br><br>  <span class="hljs-comment">// Calculate sizes.</span><br>  <span class="hljs-keyword">uint32_t</span> size = kHeaderSize + <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">uint32_t</span>&gt;(payload-&gt;<span class="hljs-built_in">size</span>());<br>  <span class="hljs-built_in">DCHECK</span>(<span class="hljs-built_in">IsAligned</span>(size, kPointerAlignment));<br><br>  <span class="hljs-comment">// Allocate backing store and create result data.</span><br>  <span class="hljs-built_in">AllocateData</span>(size);<br><br>  <span class="hljs-comment">// Zero out pre-payload data. Part of that is only used for padding.</span><br>  <span class="hljs-built_in">memset</span>(data_, <span class="hljs-number">0</span>, kHeaderSize);<br><br>  <span class="hljs-comment">// Set header values.</span><br>  <span class="hljs-built_in">SetMagicNumber</span>();<br>  <span class="hljs-built_in">SetHeaderValue</span>(kVersionHashOffset, Version::<span class="hljs-built_in">Hash</span>());<br>  <span class="hljs-built_in">SetHeaderValue</span>(kSourceHashOffset, cs-&gt;<span class="hljs-built_in">source_hash</span>());<br>  <span class="hljs-built_in">SetHeaderValue</span>(kFlagHashOffset, FlagList::<span class="hljs-built_in">Hash</span>());<br>  <span class="hljs-built_in">SetHeaderValue</span>(kReadOnlySnapshotChecksumOffset,<br>                 Snapshot::<span class="hljs-built_in">ExtractReadOnlySnapshotChecksum</span>(<br>                     cs-&gt;<span class="hljs-built_in">isolate</span>()-&gt;<span class="hljs-built_in">snapshot_blob</span>()));<br>  <span class="hljs-built_in">SetHeaderValue</span>(kPayloadLengthOffset, <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">uint32_t</span>&gt;(payload-&gt;<span class="hljs-built_in">size</span>()));<br><br>  <span class="hljs-comment">// Zero out any padding in the header.</span><br>  <span class="hljs-built_in">memset</span>(data_ + kUnalignedHeaderSize, <span class="hljs-number">0</span>, kHeaderSize - kUnalignedHeaderSize);<br><br>  <span class="hljs-comment">// Copy serialized data.</span><br>  <span class="hljs-built_in">CopyBytes</span>(data_ + kHeaderSize, payload-&gt;<span class="hljs-built_in">data</span>(),<br>            <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">size_t</span>&gt;(payload-&gt;<span class="hljs-built_in">size</span>()));<br>  <span class="hljs-keyword">uint32_t</span> checksum =<br>      v8_flags.verify_snapshot_checksum ? <span class="hljs-built_in">Checksum</span>(<span class="hljs-built_in">ChecksummedContent</span>()) : <span class="hljs-number">0</span>;<br>  <span class="hljs-built_in">SetHeaderValue</span>(kChecksumOffset, checksum);<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>V8 的字节码并没有固定的<code>C/C++</code>结构体定义，而是通过字节流的形式动态组织的。V8 中的某些类和辅助结构，像 <code>BytecodeArray</code>、<code>SerializedData</code> 或 <code>SnapshotData</code>，提供了一种逻辑上的结构化视图，使开发者能够以类和方法的形式操作字节码。</p>
+<p>V8 字节码是一个字节流，类似于汇编语言中的指令序列，每条指令由 <strong>操作码 (Opcode)</strong> 和 <strong>可选的操作数 (Operands)</strong> 组成。每个操作码和操作数的组合可能具有不同的长度和参数布局。因此，字节码整体上并没有一个固定的内存对齐或结构体。</p>
+<h4 id="魔数">魔数<a class="post-anchor" href="#魔数"></a></h4><p>首先，我们先看魔数(<code>MagicNumber</code>)部分。魔数在可以帮助我们快速在二进制文件中定位字节码可能出现的位置。</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">uint32_t</span> kMagicNumberOffset = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">uint32_t</span> kMagicNumber = <span class="hljs-number">0xC0DE0000</span> ^ ExternalReferenceTable::kSize;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetMagicNumber</span><span class="hljs-params">()</span> </span>{ <br>    <span class="hljs-built_in">SetHeaderValue</span>(kMagicNumberOffset, kMagicNumber); <br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>魔数的值是通过固定值 <code>0xC0DE0000</code> 和 <code>ExternalReferenceTable::kSize</code> 的异或 (<code>^</code>) 操作得出的</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">int</span> kSize =<br>    kSizeIsolateIndependent + kExternalReferenceCountIsolateDependent +<br>    kIsolateAddressReferenceCount + kStubCacheReferenceCount +<br>    kStatsCountersReferenceCount;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>魔数间接编码了与 <code>ExternalReferenceTable::kSize</code> 相关的信息</p>
+<p>魔数位于序列化数据或快照数据的头部，作为识别该数据是否合法的标志。通过魔数，V8 可以快速判断数据是否符合特定版本和格式，如果加载了错误版本的字节码，V8引擎会直接抛出异常。</p>
+<h4 id="版本哈希">版本哈希<a class="post-anchor" href="#版本哈希"></a></h4><p>版本哈希是 V8 代码中对当前版本的唯一标识。</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">uint32_t</span> <span class="hljs-title">Hash</span><span class="hljs-params">()</span> </span>{<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">uint32_t</span>&gt;(<br>        base::<span class="hljs-built_in">hash_combine</span>(major_, minor_, build_, patch_));<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>它并没有直接明文记录当前版本的版本号，而是将版本号通过hash函数计算后写入头部.。</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">V8_INLINE <span class="hljs-keyword">size_t</span> <span class="hljs-title">hash_combine</span><span class="hljs-params">(Ts <span class="hljs-keyword">const</span>&amp;... vs)</span> </span>{<br>  <span class="hljs-keyword">return</span> Hasher{}.<span class="hljs-built_in">Combine</span>(vs...);<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// Combine two hash values together. This code was taken from MurmurHash.</span><br><span class="hljs-function">V8_INLINE <span class="hljs-keyword">size_t</span> <span class="hljs-title">hash_combine</span><span class="hljs-params">(<span class="hljs-keyword">size_t</span> seed, <span class="hljs-keyword">size_t</span> hash)</span> </span>{<br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> V8_HOST_ARCH_32_BIT</span><br>  <span class="hljs-keyword">const</span> <span class="hljs-keyword">uint32_t</span> c1 = <span class="hljs-number">0xCC9E2D51</span>;<br>  <span class="hljs-keyword">const</span> <span class="hljs-keyword">uint32_t</span> c2 = <span class="hljs-number">0x1B873593</span>;<br><br>  hash *= c1;<br>  hash = bits::<span class="hljs-built_in">RotateRight32</span>(hash, <span class="hljs-number">15</span>);<br>  hash *= c2;<br><br>  seed ^= hash;<br>  seed = bits::<span class="hljs-built_in">RotateRight32</span>(seed, <span class="hljs-number">13</span>);<br>  seed = seed * <span class="hljs-number">5</span> + <span class="hljs-number">0xE6546B64</span>;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span><br>  <span class="hljs-keyword">const</span> <span class="hljs-keyword">uint64_t</span> m = <span class="hljs-keyword">uint64_t</span>{<span class="hljs-number">0xC6A4A7935BD1E995</span>};<br>  <span class="hljs-keyword">const</span> <span class="hljs-keyword">uint32_t</span> r = <span class="hljs-number">47</span>;<br><br>  hash *= m;<br>  hash ^= hash &gt;&gt; r;<br>  hash *= m;<br><br>  seed ^= hash;<br>  seed *= m;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span>  <span class="hljs-comment">// V8_HOST_ARCH_32_BIT</span></span><br>  <span class="hljs-keyword">return</span> seed;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>HASH 算法使用的是<code>MururHash</code></p>
+<p>最终写了一个Go版本的 <code>V8</code> 字节码<code>版本Hash</code>的计算函数</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hashValueUnsigned</span><span class="hljs-params">(v <span class="hljs-keyword">uint64</span>)</span> <span class="hljs-title">uint64</span></span> {<br>    v = ((v &lt;&lt; <span class="hljs-number">15</span>) - v - <span class="hljs-number">1</span>) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    v = (v ^ (v &gt;&gt; <span class="hljs-number">12</span>)) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    v = (v + (v &lt;&lt; <span class="hljs-number">2</span>)) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    v = (v ^ (v &gt;&gt; <span class="hljs-number">4</span>)) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    v = (v * <span class="hljs-number">2057</span>) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    v = (v ^ (v &gt;&gt; <span class="hljs-number">16</span>)) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    <span class="hljs-keyword">return</span> v<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hashCombine</span><span class="hljs-params">(seed, value <span class="hljs-keyword">int64</span>)</span> <span class="hljs-title">int64</span></span> {<br>    value = (value * <span class="hljs-number">0xCC9E2D51</span>) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    value = ((value &gt;&gt; <span class="hljs-number">15</span>) | (value &lt;&lt; (<span class="hljs-number">32</span> - <span class="hljs-number">15</span>))) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    value = (value * <span class="hljs-number">0x1b873593</span>) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    seed ^= value<br>    seed = ((seed &gt;&gt; <span class="hljs-number">13</span>) | (seed &lt;&lt; (<span class="hljs-number">32</span> - <span class="hljs-number">13</span>))) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    seed = (seed*<span class="hljs-number">5</span> + <span class="hljs-number">0xE6546B64</span>) &amp; <span class="hljs-number">0xFFFFFFFF</span><br>    <span class="hljs-keyword">return</span> seed<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hashCombine64</span><span class="hljs-params">(seed, value <span class="hljs-keyword">uint64</span>)</span> <span class="hljs-title">uint64</span></span> {<br>    <span class="hljs-keyword">const</span> m = <span class="hljs-keyword">uint64</span>(<span class="hljs-number">0xC6A4A7935BD1E995</span>)<br>    value = (value * m) &amp; <span class="hljs-number">0xFFFFFFFFFFFFFFFF</span><br>    value = (value ^ (value &gt;&gt; <span class="hljs-number">47</span>)) &amp; <span class="hljs-number">0xFFFFFFFFFFFFFFFF</span><br>    value = (value * m) &amp; <span class="hljs-number">0xFFFFFFFFFFFFFFFF</span><br>    seed = (seed ^ value) &amp; <span class="hljs-number">0xFFFFFFFFFFFFFFFF</span><br>    seed = (seed * m) &amp; <span class="hljs-number">0xFFFFFFFFFFFFFFFF</span><br>    <span class="hljs-keyword">return</span> seed<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">versionHash</span><span class="hljs-params">(major, minor, build, patch <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">uint64</span></span> {<br>    seed := <span class="hljs-keyword">uint64</span>(<span class="hljs-number">0</span>)<br>    v := hashValueUnsigned(<span class="hljs-keyword">uint64</span>(patch))<br>    seed = hashCombine64(seed, v)<br>    v = hashValueUnsigned(<span class="hljs-keyword">uint64</span>(build))<br>    seed = hashCombine64(seed, v)<br>    v = hashValueUnsigned(<span class="hljs-keyword">uint64</span>(minor))<br>    seed = hashCombine64(seed, v)<br>    v = hashValueUnsigned(<span class="hljs-keyword">uint64</span>(major))<br>    seed = hashCombine64(seed, v)<br>    <span class="hljs-keyword">return</span> seed &amp; <span class="hljs-number">0xFFFFFFFF</span><br>}<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">versionHash64</span><span class="hljs-params">(major, minor, build, patch <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">uint32</span></span> {<br>    seed := <span class="hljs-keyword">uint64</span>(<span class="hljs-number">0</span>)<br>    v := hashValueUnsigned(<span class="hljs-keyword">uint64</span>(patch))<br>    seed = hashCombine64(seed, v)<br>    v = hashValueUnsigned(<span class="hljs-keyword">uint64</span>(build))<br>    seed = hashCombine64(seed, v)<br>    v = hashValueUnsigned(<span class="hljs-keyword">uint64</span>(minor))<br>    seed = hashCombine64(seed, v)<br>    v = hashValueUnsigned(<span class="hljs-keyword">uint64</span>(major))<br>    seed = hashCombine64(seed, v)<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">uint32</span>(seed &amp; <span class="hljs-number">0xFFFFFFFF</span>)<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>到了这里我们就可以实现通过hash爆破版本号 (如果是electron CEF 应用 也可以通过字符串判断版本号 这里只是给出一个通用的方法)</p>
+<p>V8 的版本号通常采用以下格式：</p>
+<p><code>&lt;major&gt;.&lt;minor&gt;.&lt;build&gt;.&lt;patch&gt;</code></p>
+<ul>
+<li><p>**主版本号 (major)**：</p>
+<ul>
+<li><p>代表重大版本更新。</p>
+</li>
+<li><p>可能引入不向后兼容的特性或架构变更。</p>
+</li>
+<li><p>例如，从 V8 9.x 升级到 V8 10.x。</p>
+</li>
+</ul>
+</li>
+<li><p>**次版本号 (minor)**：</p>
+<ul>
+<li><p>表示功能性更新。</p>
+</li>
+<li><p>新增特性，但通常保持向后兼容性。</p>
+</li>
+<li><p>例如，V8 10.2 表示在主版本 10.x 上新增了功能。</p>
+</li>
+</ul>
+</li>
+<li><p>**构建号 (build)**：</p>
+<ul>
+<li><p>表示内部改进、Bug 修复或特定的构建变化。</p>
+</li>
+<li><p>一般不会影响外部 API。</p>
+</li>
+</ul>
+</li>
+<li><p>**补丁号 (patch)**：</p>
+<ul>
+<li>表示小范围的修复或调整。</li>
+</ul>
+</li>
+</ul>
+<p>这里直接暴力搜索</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++ {<br>    <span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">20</span>; j++ {<br><br>        <span class="hljs-keyword">for</span> k := <span class="hljs-number">0</span>; k &lt; <span class="hljs-number">500</span>; k++ {<br>            <span class="hljs-keyword">for</span> l := <span class="hljs-number">0</span>; l &lt; <span class="hljs-number">100</span>; l++ {<br><br>                result := versionHash64(i, j, k, l)<br>                <span class="hljs-keyword">if</span> result == myUint32 {<br>                    fmt.Println(i, j, k, l)<br>                    <span class="hljs-keyword">return</span><br>                }<br>            }<br>        }<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>很快，我们就定位到了目标字节码对应V8引擎的准确版本号 10.4.132.24。</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240358780-76b0c767-2800-45b6-8b3a-14b5a7e65c39.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240358780-76b0c767-2800-45b6-8b3a-14b5a7e65c39.png" alt=""></a></p>
+<h2 id="V8字节码”反编译”">V8字节码”反编译”<a class="post-anchor" href="#V8字节码”反编译”"></a></h2><h3 id="V8字节码”反汇编”">V8字节码”反汇编”<a class="post-anchor" href="#V8字节码”反汇编”"></a></h3><p><a target="_blank" rel="noopener" href="https://github.com/noelex/v8dasm">v8dasm</a> 项目已经给出了一个解决方案</p>
+<p>虽然是几年前的老项目，但是它的思路在新版本的V8引擎也可以正常工作。</p>
+<h5 id="拉取V8代码">拉取V8代码<a class="post-anchor" href="#拉取V8代码"></a></h5><p><strong>第一步 安装依赖</strong></p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">apt-get install ninja-build clang pkg-config<br></code></pre></td></tr></tbody></table></figure>
+
+<p><strong>第二步 安装</strong><code>depot_tools</code></p>
+<p>depot_tools 是谷歌官方给出的<code>Chromium</code>项目相关小工具 完成一些代码仓库检出等操作</p>
+<p>将depot_tools clone到你要安装的位置</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">mkdir  ~/v8tools/<br><span class="hljs-built_in">cd</span> ~/v8tools/<br>git <span class="hljs-built_in">clone</span> https://chromium.googlesource.com/chromium/tools/depot_tools.git<br></code></pre></td></tr></tbody></table></figure>
+
+<p>之后将工具添加到path</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> PATH=~/v8tools/depot_tools/:<span class="hljs-variable">$PATH</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p><strong>第四步 准备一个保存目录 拉取v8代码</strong></p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">mkdir ~/v8<br><span class="hljs-built_in">cd</span> ~/v8<br>fetch v8<br><span class="hljs-built_in">cd</span> v8<br></code></pre></td></tr></tbody></table></figure>
+
+<p><code>fetch</code> 为刚刚<code>depot_tools</code>中安装的工具之一</p>
+<p><strong>第五步 切换到对应版本分支</strong></p>
+<p>这里必须和目标字节码版本号对上</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">git checkout refs/tags/10.4.132.24<br></code></pre></td></tr></tbody></table></figure>
+
+<p><strong>第六步 同步依赖</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">gclient sync -D <br></code></pre></td></tr></tbody></table></figure>
+
+<p>现在，我们在本地上就有了一套完整的V8源代码</p>
+<h5 id="魔改V8引擎">魔改V8引擎<a class="post-anchor" href="#魔改V8引擎"></a></h5><p>正常V8内置了字节码的”反汇编”操作，用于从JS源代码编译的调试。为了脱离源代码来调用他的原生字节码分析操作，我们需要修改V8引擎。在解析字节码的过程中调用几个内部方法，来实现打印字节码内的指令和常量池。</p>
+<p>下面的是V11之前的修改方法?</p>
+<p>V12 函数位置有所差异 编译时也要额外添加启用沙箱参数 来启用压缩指针特性</p>
+<p><strong>修改 <strong><code>src/snapshot/code-serializer.cc</code></strong> 文件：</strong></p>
+<ul>
+<li>在 <code>CodeSerializer::Deserialize</code> 方法中插入打印代码，找到判断是否已经成功反序列化代码块后</li>
+</ul>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (FLAG_profile_deserialization) <span class="hljs-built_in">PrintF</span>(<span class="hljs-string">"[Deserializing failed]\n"</span>);<br><span class="hljs-keyword">return</span> MaybeHandle&lt;SharedFunctionInfo&gt;();<br></code></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>在此处后插入以下代码：</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">std::cout &lt;&lt; "\nStart SharedFunctionInfo\n";<br>result-&gt;SharedFunctionInfoPrint(std::cout);<br>std::cout &lt;&lt; "\nEnd SharedFunctionInfo\n";<br>std::cout &lt;&lt; std::flush;<br><br></code></pre></td></tr></tbody></table></figure>
+
+<p><strong>注意：这里的</strong><code>Start SharedFunctionInfo</code>** 和后续修改中的打印 都是后续使用的的**<code>View8</code><strong>工具的识别标记，不要修改。</strong></p>
+<ul>
+<li>然后修改<code>SerializedCodeData::SanityCheck</code> 方法  让它直接返回成功 绕过检查</li>
+</ul>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">SerializedCodeSanityCheckResult <span class="hljs-title">SerializedCodeData::SanityCheck</span><span class="hljs-params">(</span></span><br><span class="hljs-function"><span class="hljs-params">    <span class="hljs-keyword">uint32_t</span> expected_source_hash)</span> <span class="hljs-keyword">const</span> </span>{<br> <span class="hljs-keyword">return</span> SerializedCodeSanityCheckResult::kSuccess;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+
+
+<p><strong>修改 <strong><code>src/diagnostics/objects-printer.cc</code></strong> 文件：</strong></p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp">SharedFunctionInfo::<span class="hljs-built_in">SharedFunctionInfoPrint</span>(std::ostream&amp; os) {<br><span class="hljs-comment">//......</span><br>     os &lt;&lt; <span class="hljs-string">"&lt;none&gt;"</span>;<br>   }<br>   os &lt;&lt; <span class="hljs-string">"\n"</span>;<br><span class="hljs-comment">//插入位置</span><br><span class="hljs-comment">//......</span><br></code></pre></td></tr></tbody></table></figure>
+
+<pre><code>1. 在 `SharedFunctionInfo::SharedFunctionInfoPrint` 方法内寻找`PrintSourceCode(os);` 代码行 **注释它**。
+2. 寻找以下代码
+</code></pre>
+<ul>
+<li>在此处插入以下代码：</li>
+</ul>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp">os &lt;&lt; <span class="hljs-string">"\nStart BytecodeArray\n"</span>;<br><span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">GetActiveBytecodeArray</span>().<span class="hljs-built_in">Disassemble</span>(os);<br>os &lt;&lt; <span class="hljs-string">"\nEnd BytecodeArray\n"</span>;<br>os &lt;&lt; std::flush;<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+
+
+<p><strong>修改 <strong><code>src/objects/objects.cc</code></strong> 文件：</strong></p>
+<p>搜索函数 <code>HeapObject::HeapObjectShortPrint</code>：</p>
+<p>找到以下片段：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp">os &lt;&lt; accumulator.<span class="hljs-built_in">ToCString</span>().<span class="hljs-built_in">get</span>();<br>  <span class="hljs-keyword">return</span>;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p><strong>插入代码</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">if (map(cage_base).instance_type() == ASM_WASM_DATA_TYPE) {<br>    os &lt;&lt; "&lt;ArrayBoilerplateDescription&gt; ";<br>    ArrayBoilerplateDescription::cast(*this)<br>        .constant_elements()<br>        .HeapObjectShortPrint(os);<br>    return;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>在函数 <code>HeapObject::HeapObjectShortPrint</code> 内找到 <code>FIXED_ARRAY_TYPE</code> 的分支：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">case</span> FIXED_ARRAY_TYPE:<br>    os &lt;&lt; <span class="hljs-string">"&lt;FixedArray["</span> &lt;&lt; FixedArray::<span class="hljs-built_in">cast</span>(*<span class="hljs-keyword">this</span>).<span class="hljs-built_in">length</span>() &lt;&lt; <span class="hljs-string">"]&gt;"</span>;<br>    <span class="hljs-comment">//插入位置</span><br>    <span class="hljs-keyword">break</span>;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>在分支内插入代码</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp">os &lt;&lt; <span class="hljs-string">"\nStart FixedArray\n"</span>;<br>FixedArray::<span class="hljs-built_in">cast</span>(*<span class="hljs-keyword">this</span>).<span class="hljs-built_in">FixedArrayPrint</span>(os);<br>os &lt;&lt; <span class="hljs-string">"\nEnd FixedArray\n"</span>;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>找到 <code>OBJECT_BOILERPLATE_DESCRIPTION_TYPE</code> 的分支：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"> <span class="hljs-keyword">case</span> OBJECT_BOILERPLATE_DESCRIPTION_TYPE:<br>   os &lt;&lt; <span class="hljs-string">"&lt;ObjectBoilerplateDescription["</span> &lt;&lt; FixedArray::<span class="hljs-built_in">cast</span>(*<span class="hljs-keyword">this</span>).<span class="hljs-built_in">length</span>()<br>      &lt;&lt; <span class="hljs-string">"]&gt;"</span>;<br><span class="hljs-comment">//插入位置</span><br>   <span class="hljs-keyword">break</span>;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>在分支内插入代码</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp">os &lt;&lt; <span class="hljs-string">"\nStart ObjectBoilerplateDescription\n"</span>;<br>ObjectBoilerplateDescription::<span class="hljs-built_in">cast</span>(*<span class="hljs-keyword">this</span>)<br>    .<span class="hljs-built_in">ObjectBoilerplateDescriptionPrint</span>(os);<br>os &lt;&lt; <span class="hljs-string">"\nEnd ObjectBoilerplateDescription\n"</span>;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>找到 <code>FIXED_DOUBLE_ARRAY_TYPE</code> 的分支：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"> <span class="hljs-keyword">case</span> FIXED_DOUBLE_ARRAY_TYPE:<br>   os &lt;&lt; <span class="hljs-string">"&lt;FixedDoubleArray["</span> &lt;&lt; FixedDoubleArray::<span class="hljs-built_in">cast</span>(*<span class="hljs-keyword">this</span>).<span class="hljs-built_in">length</span>()<br>      &lt;&lt; <span class="hljs-string">"]&gt;"</span>;<br><span class="hljs-comment">//插入位置</span><br>   <span class="hljs-keyword">break</span>;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>在分支内插入代码</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp">os &lt;&lt; <span class="hljs-string">"\nStart FixedDoubleArray\n"</span>;<br>FixedDoubleArray::<span class="hljs-built_in">cast</span>(*<span class="hljs-keyword">this</span>).<span class="hljs-built_in">FixedDoubleArrayPrint</span>(os);<br>os &lt;&lt; <span class="hljs-string">"\nEnd FixedDoubleArray\n"</span>;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>找到 <code>SHARED_FUNCTION_INFO_TYPE</code> 分支</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"> <span class="hljs-keyword">case</span> SHARED_FUNCTION_INFO_TYPE: {<br> <span class="hljs-comment">//.....</span><br>       <span class="hljs-keyword">if</span> (debug_name[<span class="hljs-number">0</span>] != <span class="hljs-string">'\0'</span>) {<br><span class="hljs-comment">//.....</span><br> } <span class="hljs-keyword">else</span> {<br>        os &lt;&lt; <span class="hljs-string">"&lt;SharedFunctionInfo&gt;"</span>;<br>      }<br> <span class="hljs-comment">//插入</span><br> }<br></code></pre></td></tr></tbody></table></figure>
+
+<p> 在分支内的最后插入 </p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp">os &lt;&lt; <span class="hljs-string">"\nStart SharedFunctionInfo\n"</span>;<br>shared.<span class="hljs-built_in">SharedFunctionInfoPrint</span>(os);<br>os &lt;&lt; <span class="hljs-string">"\nEnd SharedFunctionInfo\n"</span>;<br></code></pre></td></tr></tbody></table></figure>
+
+<p><strong>修改 <strong><code>src/objects/string.cc</code></strong> 文件：</strong></p>
+<p>在<code>String::StringShortPrint</code> 方法内</p>
+<p>找到以下代码行</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (len &gt; kMaxShortPrintLength) {<br>  accumulator-&gt;<span class="hljs-built_in">Add</span>(<span class="hljs-string">"...&lt;truncated&gt;&gt;"</span>);<br>  accumulator-&gt;<span class="hljs-built_in">Add</span>(<span class="hljs-built_in">SuffixForDebugPrint</span>());<br>  accumulator-&gt;<span class="hljs-built_in">Put</span>(<span class="hljs-string">'&gt;'</span>);<br>  <span class="hljs-keyword">return</span>;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>全部注释掉</p>
+<p>最后，如果需要尝试反编译魔数匹配不上当前版本的字节码</p>
+<p>可以修改 <code>src/snapshot/deserializer.cc</code> 文件中的<code>Deserializer&lt;IsolateT&gt;::Deserializer</code>方法</p>
+<p>注释掉<code>CHECK_EQ(magic_number_, SerializedData::kMagicNumber);</code> 绕过魔数检查</p>
+<p>现在我们已经完成了对V8引擎代码的修改</p>
+<p>接下来 使用v8dsm的代码 <code>v8dasm.cpp</code> 把它编译出反汇编工具</p>
+<p><strong>注意 V12 反编译需要添加初始化沙箱上下文的代码</strong></p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;fstream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"libplatform/libplatform.h"</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"v8.h"</span></span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"v8_libbase.lib"</span>)</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"v8_libplatform.lib"</span>)</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"wee8.lib"</span>)</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"secur32.lib"</span>)</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"winmm.lib"</span>)</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"dmoguids.lib"</span>)</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"wmcodecdspuuid.lib"</span>)</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"msdmo.lib"</span>)</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"Strmiids.lib"</span>)</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"DbgHelp.lib"</span>)</span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> v8;<br><br><span class="hljs-keyword">static</span> Isolate* isolate = <span class="hljs-literal">nullptr</span>;<br><br><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">loadBytecode</span><span class="hljs-params">(<span class="hljs-keyword">uint8_t</span>* bytecodeBuffer, <span class="hljs-keyword">int</span> length)</span> </span>{<br>  <span class="hljs-comment">// Load code into code cache.</span><br>  ScriptCompiler::CachedData* cached_data =<br>      <span class="hljs-keyword">new</span> ScriptCompiler::<span class="hljs-built_in">CachedData</span>(bytecodeBuffer, length);<br><br>  <span class="hljs-comment">// Create dummy source.</span><br>  <span class="hljs-function">ScriptOrigin <span class="hljs-title">origin</span><span class="hljs-params">(isolate, String::NewFromUtf8Literal(isolate, <span class="hljs-string">"code.jsc"</span>))</span></span>;<br>  <span class="hljs-function">ScriptCompiler::Source <span class="hljs-title">source</span><span class="hljs-params">(String::NewFromUtf8Literal(isolate, <span class="hljs-string">"\"ಠ_ಠ\""</span>),</span></span><br><span class="hljs-function"><span class="hljs-params">                                origin, cached_data)</span></span>;<br><br>  <span class="hljs-comment">// Compile code from code cache to print disassembly.</span><br>  MaybeLocal&lt;UnboundScript&gt; script = ScriptCompiler::<span class="hljs-built_in">CompileUnboundScript</span>(<br>      isolate, &amp;source, ScriptCompiler::kConsumeCodeCache);<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">readAllBytes</span><span class="hljs-params">(<span class="hljs-keyword">const</span> std::string&amp; file, std::vector&lt;<span class="hljs-keyword">char</span>&gt;&amp; buffer)</span> </span>{<br>  <span class="hljs-function">std::ifstream <span class="hljs-title">infile</span><span class="hljs-params">(file, std::ios::binary)</span></span>;<br><br>  infile.<span class="hljs-built_in">seekg</span>(<span class="hljs-number">0</span>, infile.end);<br>  <span class="hljs-keyword">size_t</span> length = infile.<span class="hljs-built_in">tellg</span>();<br>  infile.<span class="hljs-built_in">seekg</span>(<span class="hljs-number">0</span>, infile.beg);<br><br>  <span class="hljs-keyword">if</span> (length &gt; <span class="hljs-number">0</span>) {<br>    buffer.<span class="hljs-built_in">resize</span>(length);<br>    infile.<span class="hljs-built_in">read</span>(&amp;buffer[<span class="hljs-number">0</span>], length);<br>  }<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span>* argv[])</span> </span>{<br>  V8::<span class="hljs-built_in">SetFlagsFromString</span>(<span class="hljs-string">"--no-lazy --no-flush-bytecode"</span>);<br><br>  V8::<span class="hljs-built_in">InitializeICU</span>();<br>  std::unique_ptr&lt;Platform&gt; platform = platform::<span class="hljs-built_in">NewDefaultPlatform</span>();<br>  V8::<span class="hljs-built_in">InitializePlatform</span>(platform.<span class="hljs-built_in">get</span>());<br>  V8::<span class="hljs-built_in">Initialize</span>();<br><br>  Isolate::CreateParams create_params;<br>  create_params.array_buffer_allocator =<br>      ArrayBuffer::Allocator::<span class="hljs-built_in">NewDefaultAllocator</span>();<br><br>  isolate = Isolate::<span class="hljs-built_in">New</span>(create_params);<br>  <span class="hljs-function">Isolate::Scope <span class="hljs-title">isolate_scope</span><span class="hljs-params">(isolate)</span></span>;<br>  <span class="hljs-function">HandleScope <span class="hljs-title">scope</span><span class="hljs-params">(isolate)</span></span>;<br><br>  std::vector&lt;<span class="hljs-keyword">char</span>&gt; data;<br>  <span class="hljs-built_in">readAllBytes</span>(argv[<span class="hljs-number">1</span>], data);<br>  <span class="hljs-built_in">loadBytecode</span>((<span class="hljs-keyword">uint8_t</span>*)data.<span class="hljs-built_in">data</span>(), data.<span class="hljs-built_in">size</span>());<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<h5 id="编译V8引擎">编译V8引擎<a class="post-anchor" href="#编译V8引擎"></a></h5><p>生成编译脚本</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">./tools/dev/v8gen.py x64.release<br></code></pre></td></tr></tbody></table></figure>
+
+<p>生成的位置在  <code>out.gn</code> 目录</p>
+<p>修改编译参数</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">vim out.gn/x64.release/args.gn<br></code></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight toml"><table><tbody><tr><td class="code"><pre><code class="hljs toml"><span class="hljs-attr">dcheck_always_on</span> = <span class="hljs-literal">false</span><br><span class="hljs-attr">is_component_build</span> = <span class="hljs-literal">false</span><br><span class="hljs-attr">is_debug</span> = <span class="hljs-literal">false</span><br><span class="hljs-attr">target_cpu</span> = <span class="hljs-string">"x64"</span><br><span class="hljs-attr">use_custom_libcxx</span> = <span class="hljs-literal">false</span><br><span class="hljs-attr">v8_monolithic</span> = <span class="hljs-literal">true</span><br><span class="hljs-attr">v8_use_external_startup_data</span> = <span class="hljs-literal">false</span><br><span class="hljs-attr">v8_static_library</span> = <span class="hljs-literal">true</span><br><span class="hljs-attr">v8_enable_disassembler</span> = <span class="hljs-literal">true</span><br><span class="hljs-attr">v8_enable_object_print</span> = <span class="hljs-literal">true</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p>注: 如果是 <strong>Node</strong> app 可能需要禁用压缩指针   <code>v8_enable_pointer_compression = false</code></p>
+<p><strong>另外正式反编译不要开启调试模式 可能会导致反汇编报错</strong></p>
+<p>使用<code>ninja</code>编译共享库  </p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">ninja -C out.gn/x64.release v8_monolith<br></code></pre></td></tr></tbody></table></figure>
+
+<p>等待编译30分钟-1小时  看机器怎么样了 编译非常慢  建议使用固态硬盘 16G内存 16C</p>
+<h5 id="编译反汇编工具">编译反汇编工具<a class="post-anchor" href="#编译反汇编工具"></a></h5><p>共享库编译完成 编译我们的反汇编工具</p>
+<p>electron</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">clang++ v8dasm.cpp -g -std=c++17 -Iinclude -Lout.gn/x64.release/obj -lv8_libbase -lv8_libplatform -lv8_monolith -o v8dasm -DV8_COMPRESS_POINTERS -ldl -pthread<br></code></pre></td></tr></tbody></table></figure>
+
+<p>Node  不使用压缩指针的情况</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">clang++ v8dasm.cpp -g -std=c++17 -Iinclude -Lout.gn/x64.release/obj -lv8_libbase -lv8_libplatform -lv8_monolith -o v8dasm<br></code></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">./v8dasm test.jsc<br></code></pre></td></tr></tbody></table></figure>
+
+<p>最终我们得到了一个可以”反汇编”特定版本字节码的”反汇编”器</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240392033-dd903a5e-473f-4f1d-b402-883dd3d50bcf.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240392033-dd903a5e-473f-4f1d-b402-883dd3d50bcf.png" alt=""></a></p>
+<h3 id="V8字节码反编译">V8字节码反编译<a class="post-anchor" href="#V8字节码反编译"></a></h3><p><a target="_blank" rel="noopener" href="https://github.com/j4k0xb/View8">View8</a> 这个开源项目对V8的伪汇编 做了解析</p>
+<p>直接 clone 安装</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/j4k0xb/View8<br><span class="hljs-built_in">cd</span> View8<br></code></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">pip insall -r requirements.txt<br></code></pre></td></tr></tbody></table></figure>
+
+<p>执行工具</p>
+<p>  –path 为我们自己编译出的反汇编工具的位置</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">python view8.py input_file output_file --path /path/to/disassembler<br></code></pre></td></tr></tbody></table></figure>
+
+<p>最后我们得到了”反编译”出的”代码”</p>
+<p><a href="C:\Users\cnc\AppData\Roaming\Typora\typora-user-images\image-20250107164455027.png" data-caption="" data-fancybox="images"><img src="C:\Users\cnc\AppData\Roaming\Typora\typora-user-images\image-20250107164455027.png" alt=""></a><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240400863-fee6df00-30e0-400b-b236-cb63ee8287af.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1736240400863-fee6df00-30e0-400b-b236-cb63ee8287af.png" alt=""></a>虽然还是有点难看，但是总比看机器码强）</p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2024/11/09/Java-Code-Decryption-Using-Frida-Restoring-JVMTI-Agent-Encrypted-Classes-Using-Frida-in-Linux/">Java 代码解密：使用 Frida 还原 JVMTI Agent 加密保护的java类 & Linux 环境下的Frida 使用</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2025/01/07/v8-bytecode-decompiler/">https://rce.moe/2025/01/07/v8-bytecode-decompiler/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true,
+        proxy: 'https://servelesscors.rce.moe/api/cors?url=https://github.com/login/oauth/access_token'
+    }).render('gitalk-container')
+</script>
+        <footer>
+          <div class="copyright">
+            ©2025
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
