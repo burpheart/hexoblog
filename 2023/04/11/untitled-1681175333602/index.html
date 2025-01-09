@@ -252,10 +252,11 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
   
   
 </article>
-<div id="gitalk-container"></div>
-<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">
-<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
-<script src="https://priesttomb.github.io/js/md5.min.js"></script>
+<!--<div id="gitalk-container"></div>-->
+<!--<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">-->
+<!--<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>-->
+<!--<script src="https://priesttomb.github.io/js/md5.min.js"></script>-->
+<!--
 <script type="text/javascript">
     new Gitalk({
         clientID: '1488ae49eda310270a91',
@@ -267,6 +268,18 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
         distractionFreeMode: true,
         proxy: 'https://servelesscors.rce.moe/api/cors?url=https://github.com/login/oauth/access_token'
     }).render('gitalk-container')
+-->
+<div id="tcomment"></div>
+<script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>
+<script>
+twikoo.init({
+  envId: 'https://twikoo.rce.moe', // 腾讯云环境填 envId；Vercel 环境填地址（https://xxx.vercel.app）
+  el: '#tcomment', // 容器元素
+  // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，腾讯云环境填 ap-shanghai 或 ap-guangzhou；Vercel 环境不填
+  // path: location.pathname, // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  // lang: 'zh-CN', // 用于手动设定评论区语言，支持的语言列表 https://github.com/twikoojs/twikoo/blob/main/src/client/utils/i18n/index.js
+})
+</script>
 </script>
         <footer>
           <div class="copyright">

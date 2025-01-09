@@ -2157,7 +2157,7 @@ a {
   font-size: 1.2rem;
 }
 #side .nav a:hover:before {
-  height: 30%;
+  height: 50%;
 }
 #side .nav a:before {
   content: '';
@@ -2165,7 +2165,9 @@ a {
   width: 4rem;
   height: 0;
   position: absolute;
-  right: 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   bottom: 0.3rem;
   z-index: -1;
   margin-right: 4rem;
