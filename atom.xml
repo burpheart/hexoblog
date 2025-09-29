@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2025-07-08T13:04:44.060Z</updated>
+  <updated>2025-09-29T11:34:40.306Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CVE-2025-41243  Spring Cloud Gateway SpEL 沙箱从任意属性访问到任意文件下载</title>
+    <link href="https://rce.moe/2025/09/29/CVE-2025-41243/"/>
+    <id>https://rce.moe/2025/09/29/CVE-2025-41243/</id>
+    <published>2025-09-29T11:32:42.000Z</published>
+    <updated>2025-09-29T11:34:40.306Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;最近，spring cloud getway 又出了一个10.0分的 SpEL漏洞&lt;/p&gt;
+&lt;p&gt;这个漏洞和之前的&lt;a href=&quot;https://spring.io/security/cve-2022-22947&quot;&gt;CVE-2022-22947&lt;/a&gt;漏洞一样 依然是在热更新路由时触发表达式执行&lt;/p&gt;
+&lt;p&gt;之前的漏洞不是已经修复的非常完美了吗，为什么还能继续利用呢？&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="WEB" scheme="https://rce.moe/categories/WEB/"/>
+    
+    
+    <category term="WEB" scheme="https://rce.moe/tags/WEB/"/>
+    
+  </entry>
   
   <entry>
     <title>从一个废弃AI工作流平台拿下生产网 记SRC中的一次 ComfyUI comfy_mtb 插件 RCE</title>
@@ -433,23 +454,6 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
     <category term="WEB" scheme="https://rce.moe/tags/WEB/"/>
     
     <category term="goahead" scheme="https://rce.moe/tags/goahead/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CTFd性能优化笔记-DNUICTF</title>
-    <link href="https://rce.moe/2022/05/08/untitled-1652012374403/"/>
-    <id>https://rce.moe/2022/05/08/untitled-1652012374403/</id>
-    <published>2022-05-08T12:19:34.000Z</published>
-    <updated>2022-05-08T12:37:58.787Z</updated>
-    
-    
-    <summary type="html">这篇文章需要密码才能浏览的说 ~☆</summary>
-    
-    
-    
-    
-    <category term="password" scheme="https://rce.moe/tags/password/"/>
     
   </entry>
   
