@@ -1,0 +1,56 @@
+#dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999999;
+  overflow: hidden;
+}
+#dialog .bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.2;
+  background-color: #444;
+}
+#dialog .wrap {
+  width: 13rem;
+  min-height: 5rem;
+  padding: 0.5rem 1rem;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 0.3rem;
+  background-color: #fff;
+  -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+#dialog .wrap .title {
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+#dialog .wrap .content {
+  text-align: center;
+}
+#dialog .wrap .button {
+  align-self: flex-end;
+  padding: 0.5rem;
+  text-align: right;
+}
+#dialog .wrap .button span {
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 0.2rem;
+  margin-left: 0.2rem;
+  background-color: #ecf0f1;
+}
+#dialog .wrap .button span:hover {
+  background-color: #fff0f9;
+}

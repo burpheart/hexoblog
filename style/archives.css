@@ -1,0 +1,39 @@
+#archives {
+  padding: 1rem;
+}
+#archives .title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+#archives .wrap {
+  margin-bottom: 1rem;
+}
+#archives .meta > a {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  background-color: #bbdefb;
+}
+#archives .meta > a:hover {
+  background-color: #e3f2fd;
+}
+#archives .year {
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+#archives .year .item {
+  padding: 0.2rem 0.3rem;
+}
+#archives .year .item a span:nth-child(1) {
+  color: #898989;
+  font-size: 0.8rem;
+  margin-right: 2rem;
+}
+#archives .year .item a span:nth-child(2) {
+  font-size: 1rem;
+  padding: 0.2rem 0.3rem;
+  border-radius: 0.3rem;
+}
+#archives .year .item a span:nth-child(2):hover {
+  background-color: #e3f2fd;
+}

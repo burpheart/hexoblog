@@ -1,0 +1,467 @@
+.post-entry {
+  width: 100%;
+  height: 100%;
+  padding: 0.675rem;
+}
+.post-entry a {
+  color: #1976d2;
+}
+.post-entry a:hover {
+  color: #42a5f5;
+}
+.post-entry .hidden {
+  display: none;
+}
+.top {
+  z-index: 1;
+  top: -1rem;
+  right: -3rem;
+  position: absolute;
+  transform: rotate(30deg);
+}
+.top .iconfont {
+  color: #f46267;
+  font-size: 4rem !important;
+}
+.post-entry,
+.post-wrap {
+  box-sizing: border-box;
+  position: relative;
+}
+.post-entry .header,
+.post-wrap .header {
+  position: relative;
+  margin-bottom: 1rem;
+}
+.post-entry .header .title,
+.post-wrap .header .title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.post-entry .header .meta,
+.post-wrap .header .meta {
+  font-size: 0.75rem;
+  color: #898989;
+}
+.post-entry .header .meta a,
+.post-wrap .header .meta a {
+  font-size: 0.75rem;
+  color: #898989;
+}
+.post-entry .header .meta a:hover,
+.post-wrap .header .meta a:hover {
+  color: #42a5f5;
+}
+.post-entry .header .meta .item,
+.post-wrap .header .meta .item {
+  width: 50%;
+  margin-bottom: 1rem;
+}
+.post-entry .header .meta .item a,
+.post-wrap .header .meta .item a {
+  padding-right: 0.3rem;
+}
+.post-entry .header .meta .icon,
+.post-wrap .header .meta .icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 0.2rem;
+}
+.post-entry .quote,
+.post-wrap .quote {
+  float: right;
+}
+.post-entry .post-copyright,
+.post-wrap .post-copyright {
+  font-size: 0.875rem;
+  color: #31708f;
+  border-radius: 0.2rem;
+  background-color: #c7e4f3;
+  text-align: left;
+  padding: 0.5rem 1rem;
+}
+.post-entry .post-copyright div,
+.post-wrap .post-copyright div {
+  padding: 0.3rem;
+}
+.post-entry .changyan,
+.post-wrap .changyan {
+  margin-top: 1rem;
+}
+.post-entry .post-guide,
+.post-wrap .post-guide {
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid #ddd;
+}
+.post-entry .post-guide .item,
+.post-wrap .post-guide .item {
+  width: 50%;
+}
+.post-entry .post-guide .item a,
+.post-wrap .post-guide .item a {
+  font-size: 0.875rem;
+}
+.post-entry .post-guide .left,
+.post-wrap .post-guide .left {
+  justify-content: flex-start;
+}
+.post-entry .post-guide .left a:before,
+.post-wrap .post-guide .left a:before {
+  content: '\e7ec';
+  font-weight: 600;
+  font-family: 'iconfont' !important;
+  font-size: 0.875rem;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.post-entry .post-guide .right,
+.post-wrap .post-guide .right {
+  justify-content: flex-end;
+}
+.post-entry .post-guide .right a:after,
+.post-wrap .post-guide .right a:after {
+  content: '\e7eb';
+  font-weight: 600;
+  font-family: 'iconfont' !important;
+  font-size: 0.875rem;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.post-entry .post-reward,
+.post-wrap .post-reward {
+  margin: 2rem;
+}
+.post-entry .post-reward #reward-button,
+.post-wrap .post-reward #reward-button {
+  cursor: pointer;
+  color: #333;
+  padding: 0.7rem;
+  font-size: 0.875rem;
+  border-radius: 0.7rem;
+  font-weight: 600;
+  transition: all 0.4s;
+  background-color: #fed336;
+}
+.post-entry .post-reward #reward-button:hover,
+.post-wrap .post-reward #reward-button:hover {
+  color: #fff;
+  transform: scale(1.1, 1.1);
+}
+.post-entry .post-reward #qr,
+.post-wrap .post-reward #qr {
+  margin: 1rem;
+  display: none;
+}
+.post-entry .post-reward #qr .wrap .bg-wrap,
+.post-wrap .post-reward #qr .wrap .bg-wrap {
+  text-align: center;
+  font-size: 0.875rem;
+}
+.post-entry .post-reward #qr .wrap .bg,
+.post-wrap .post-reward #qr .wrap .bg {
+  width: 10rem;
+  height: 10rem;
+  margin: 0.2rem 1rem;
+  display: block;
+  border-radius: 0.2rem;
+  background-size: cover;
+  background-position: center center;
+  background-color: #c9c6c1;
+}
+.post-entry .google-ads,
+.post-wrap .google-ads {
+  margin-bottom: 2rem;
+}
+.post-entry #comment,
+.post-wrap #comment {
+  margin-top: 3rem;
+}
+.post-entry #comment .info,
+.post-wrap #comment .info {
+  display: none;
+}
+.post-entry .hljs,
+.post-wrap .hljs {
+  padding: 0.75rem;
+  border-radius: 0.35rem;
+}
+.post-entry pre,
+.post-wrap pre,
+.post-entry code,
+.post-wrap code {
+  font-size: 0.75rem;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
+.post-entry code:not(.hljs),
+.post-wrap code:not(.hljs) {
+  color: #1565c0;
+  margin: 0 0.2rem;
+  background: #e3f2fd;
+  padding: 0.2rem;
+  border-radius: 0.3rem;
+  border: 1px solid #eee;
+}
+.post-entry p,
+.post-wrap p,
+.post-entry table,
+.post-wrap table {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+.post-entry p,
+.post-wrap p {
+  margin: 0.5rem 0;
+}
+.post-entry table,
+.post-wrap table {
+  width: 100%;
+  margin: 0.5rem 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.post-entry img,
+.post-wrap img,
+.post-entry video,
+.post-wrap video {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: auto;
+  margin: 0.5rem 0;
+  box-sizing: border-box;
+  border-radius: 0.3rem;
+  border: 1px solid #e6e6e6;
+}
+.post-entry iframe,
+.post-wrap iframe {
+  border: none;
+}
+.post-entry th,
+.post-wrap th {
+  font-weight: bold;
+  border-bottom: 3px solid #ddd;
+  padding-bottom: 0.5em;
+}
+.post-entry td,
+.post-wrap td {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+.post-entry blockquote,
+.post-wrap blockquote {
+  font-size: 0.9rem;
+  margin: 0.9rem 0;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  color: #4d4d4c;
+  border-radius: 0.2rem;
+  background-color: #e3f2fd;
+  border-left: 0.45rem solid #1e88e5;
+}
+.post-entry blockquote footer,
+.post-wrap blockquote footer {
+  font-size: 1rem;
+  margin: 1.5rem 0;
+}
+.post-entry blockquote footer cite:before,
+.post-wrap blockquote footer cite:before {
+  content: '—';
+  padding: 0 0.5em;
+}
+.post-entry h1,
+.post-wrap h1,
+.post-entry h2,
+.post-wrap h2,
+.post-entry h3,
+.post-wrap h3,
+.post-entry h4,
+.post-wrap h4,
+.post-entry h5,
+.post-wrap h5,
+.post-entry h6,
+.post-wrap h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-weight: bold;
+  position: relative;
+  border-bottom: 1px solid #ddd;
+}
+.post-entry h1 .post-anchor,
+.post-wrap h1 .post-anchor,
+.post-entry h2 .post-anchor,
+.post-wrap h2 .post-anchor,
+.post-entry h3 .post-anchor,
+.post-wrap h3 .post-anchor,
+.post-entry h4 .post-anchor,
+.post-wrap h4 .post-anchor,
+.post-entry h5 .post-anchor,
+.post-wrap h5 .post-anchor,
+.post-entry h6 .post-anchor,
+.post-wrap h6 .post-anchor {
+  font-weight: bolder;
+  font-size: 1.6rem;
+  margin-left: 0.3rem;
+}
+.post-entry h1,
+.post-wrap h1 {
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+}
+.post-entry h2,
+.post-wrap h2 {
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+}
+.post-entry h3,
+.post-wrap h3 {
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+}
+.post-entry h4,
+.post-wrap h4 {
+  font-size: 1rem;
+  line-height: 1rem;
+}
+.post-entry h5,
+.post-wrap h5 {
+  font-size: 0.875rem;
+  line-height: 0.875rem;
+}
+.post-entry h6,
+.post-wrap h6 {
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  color: #ddd;
+}
+.post-entry hr,
+.post-wrap hr {
+  border: 1px dashed #ddd;
+}
+.post-entry strong,
+.post-wrap strong {
+  font-weight: bold;
+}
+.post-entry em,
+.post-wrap em,
+.post-entry cite,
+.post-wrap cite {
+  font-style: italic;
+}
+.post-entry sup,
+.post-wrap sup,
+.post-entry sub,
+.post-wrap sub {
+  font-size: 0.75rem;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.post-entry sup,
+.post-wrap sup {
+  top: -0.5rem;
+}
+.post-entry sub,
+.post-wrap sub {
+  bottom: -0.2rem;
+}
+.post-entry small,
+.post-wrap small {
+  font-size: 0.85rem;
+}
+.post-entry acronym,
+.post-wrap acronym,
+.post-entry abbr,
+.post-wrap abbr {
+  border-bottom: 1px dotted;
+}
+.post-entry ul,
+.post-wrap ul,
+.post-entry ol,
+.post-wrap ol,
+.post-entry dl,
+.post-wrap dl {
+  font-size: 0.875rem;
+  margin: 0.5rem 1rem;
+  line-height: 1.5rem;
+}
+.post-entry ul ul,
+.post-wrap ul ul,
+.post-entry ol ul,
+.post-wrap ol ul,
+.post-entry ul ol,
+.post-wrap ul ol,
+.post-entry ol ol,
+.post-wrap ol ol {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.post-entry ul,
+.post-wrap ul {
+  list-style: disc;
+}
+.post-entry ol,
+.post-wrap ol {
+  list-style: decimal;
+}
+.post-entry dt,
+.post-wrap dt {
+  font-weight: bold;
+}
+.post-entry #myChart,
+.post-wrap #myChart,
+.post-entry #doughnut-chart,
+.post-wrap #doughnut-chart {
+  margin: 1.5rem 0;
+}
+#post-toc {
+  position: fixed;
+  top: 15%;
+  right: 0.5rem;
+  z-index: 999;
+  padding: 1rem;
+  width: 17rem;
+  height: 30rem;
+  overflow: auto;
+  font-size: 0.875rem;
+  list-style-type: none;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  background-color: #f7f7f7;
+}
+#post-toc .title {
+  font-weight: bold;
+  font-size: 1.875rem;
+}
+#post-toc .toc-number {
+  font-size: 0.8125rem;
+}
+#post-toc .toc > li {
+  margin-bottom: 0.4rem;
+}
+#post-toc .toc > li > a {
+  width: 100%;
+}
+#post-toc .toc > li > ol,
+#post-toc .toc > li ul > a {
+  margin-top: 0.3rem;
+}
+#post-toc a:hover {
+  color: #42a5f5;
+}
+#post-toc ul,
+#post-toc ol,
+#post-toc dl {
+  margin: 0.4rem 1rem;
+  list-style-type: none;
+}
+#post-toc ul ul,
+#post-toc ol ul,
+#post-toc ul ol,
+#post-toc ol ol {
+  margin-top: 0;
+  margin-bottom: 0;
+}

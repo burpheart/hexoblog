@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /scripts/
+Disallow: /style/
+Disallow: /font/
+Disallow: /images/
+Sitemap: https://rce.moe/sitemap.xml
+Sitemap: https://rce.moe/baidusitemap.xml

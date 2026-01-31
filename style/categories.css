@@ -1,0 +1,78 @@
+#categories,
+#tags {
+  padding: 1rem;
+}
+#categories .title,
+#tags .title {
+  font-size: 2rem;
+}
+#categories li,
+#tags li {
+  list-style-type: none;
+}
+#categories .list,
+#tags .list {
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+}
+#categories .list li,
+#tags .list li {
+  cursor: pointer;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  margin: 0.2rem;
+  background-color: #e3f2fd;
+}
+#categories .list li:hover,
+#tags .list li:hover {
+  background-color: #bbdefb;
+}
+#categories .list li sup,
+#tags .list li sup {
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+  margin-left: 0.3rem;
+  font-size: 0.625rem;
+}
+#categories .list .active,
+#tags .list .active {
+  background-color: #bbdefb;
+}
+#categories .post-wrap,
+#tags .post-wrap {
+  padding: 1rem 0.5rem;
+}
+#categories .post-wrap .post,
+#tags .post-wrap .post {
+  display: none;
+  margin-top: 2rem;
+}
+#categories .post-wrap .active,
+#tags .post-wrap .active {
+  display: block;
+}
+#categories .post-wrap li,
+#tags .post-wrap li {
+  margin-bottom: 0.5rem;
+}
+#categories .post-wrap a,
+#tags .post-wrap a {
+  align-items: center;
+}
+#categories .post-wrap a span:nth-child(1),
+#tags .post-wrap a span:nth-child(1) {
+  color: #898989;
+  font-size: 0.8rem;
+  margin-right: 2rem;
+}
+#categories .post-wrap a span:nth-child(2),
+#tags .post-wrap a span:nth-child(2) {
+  font-size: 1rem;
+  padding: 0.2rem 0.3rem;
+  border-radius: 0.3rem;
+}
+#categories .post-wrap a span:nth-child(2):hover,
+#tags .post-wrap a span:nth-child(2):hover {
+  background-color: #e3f2fd;
+}

@@ -1,0 +1,60 @@
+#friends {
+  padding: 1rem;
+}
+#friends .title {
+  font-size: 2rem;
+  margin-bottom: 3rem;
+}
+#friends ul {
+  list-style-type: none;
+}
+#friends ul a:hover > .photo {
+  transform: rotate(360deg);
+}
+#friends ul li {
+  width: 50%;
+  margin-bottom: 1rem;
+}
+#friends .photo {
+  display: inline-block;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 100%;
+  background-size: cover;
+  background-position: center center;
+  background-color: #c9c6c1;
+  margin-right: 1rem;
+  transition: all 0.5s;
+}
+#friends .list {
+  min-height: 15rem;
+  margin-bottom: 2rem;
+}
+#friends .name,
+#friends .time {
+  margin-bottom: 0.2rem;
+  transition: all 0.3s;
+}
+#friends .name:hover,
+#friends .time:hover {
+  color: #1976db;
+}
+#friends .name {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+#friends .time {
+  font-size: 0.75rem;
+  color: #898989;
+}
+#friends blockquote {
+  font-size: 0.875rem;
+  margin: 0.9rem 0;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  color: #4d4d4c;
+  border-radius: 0.2rem;
+  background-color: #e3f2fd;
+  line-height: 1.5rem;
+  border-left: 0.45rem solid #1e88e5;
+}

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+          白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        
+<div class="posts">
+  <ul>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
+          <a href="/2023/03/25/CVE-2022-29804/">一个隐藏在Go语言标准库中的目录穿越漏洞 CVE-2022-29804</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>23/03/25</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><h6 id="作者-橙子酱"><a href="#作者-橙子酱" class="headerlink" title="作者:橙子酱"></a>作者:<a href="https://rce.moe/">橙子酱</a></h6><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是半年前我在 Go 语言中发现的一个目录穿越漏洞（虽然被人抢先发现了）。<br>Go 语言支持非常方便的交叉编译，但是在不同平台下，操作系统对某些功能的实现有所差异。这些差异可能会导致一些安全问题。</p></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                 
+                <a href="/categories/漏洞分析">漏洞分析</a>
+                 
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                 
+                <a href="/tags/WEB">WEB</a>
+                  
+                <a href="/tags/CVE">CVE</a>
+                  
+                <a href="/tags/0DAY">0DAY</a>
+                 
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2023/03/25/CVE-2022-29804/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2023/03/25/CVE-2022-29804/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2023/03/25/CVE-2022-29804/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
+          <a href="/2023/03/23/koko-moni/">koko-moni 一个网络空间搜索引擎监控平台</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>23/03/23</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><p>这个项目其实是我自己写的一个测绘平台的其中的一个小模块 先开放出来给大家试用一下 <del>前端太难写了</del></p>
+<h1 id="KOKO-MONI"><a href="#KOKO-MONI" class="headerlink" title="KOKO-MONI"></a>KOKO-MONI</h1><p><a target="_blank" rel="noopener" href="https://github.com/burpheart/koko-moni/">https://github.com/burpheart/koko-moni/</a></p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本项目是一个网络空间搜索引擎监控平台，本项目聚合了 Fofa、Hunter、Quake、Zoomeye 和 Threatbook 的数据源，并对获取到的数据进行去重与清洗。</p></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2023/03/23/koko-moni/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2023/03/23/koko-moni/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2023/03/23/koko-moni/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
+          <a href="/2023/03/23/Cacti-RCE-CVE-2022-46169/">Cacti的命令注入(CVE-2022-46169) 回显poc构造</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>23/03/23</span>
+        </div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                 
+                <a href="/categories/漏洞分析">漏洞分析</a>
+                  
+                <a href="/categories/WEB">WEB</a>
+                 
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                 
+                <a href="/tags/CVE">CVE</a>
+                 
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2023/03/23/Cacti-RCE-CVE-2022-46169/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2023/03/23/Cacti-RCE-CVE-2022-46169/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2023/03/23/Cacti-RCE-CVE-2022-46169/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
+          <a href="/2022/11/06/portscantoolsanalyse/">常见安全工具的扫描流量特征分析与检测</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>22/11/06</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>端口扫描在红队渗透中是非常重要的一个环,日常使用的很多工具都具有端口扫描功能.<br>这篇文章会横向比较不同工具在端口扫描时的流量包特征和扫描器的扫描探活方法.从中提取出IDS和防火墙规则,达到拦截或检测网络中的扫描流量的目的.<br>*本文不讨论高频发包和异常连接等行为上的检测.</p></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2022/11/06/portscantoolsanalyse/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2022/11/06/portscantoolsanalyse/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2022/11/06/portscantoolsanalyse/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
+          <a href="/2022/10/18/PWN-BASIC-1/">PWN 入门 (一)</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>22/10/18</span>
+        </div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                 
+                <a href="/categories/PWN">PWN</a>
+                 
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                 
+                <a href="/tags/PWN">PWN</a>
+                 
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2022/10/18/PWN-BASIC-1/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2022/10/18/PWN-BASIC-1/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2022/10/18/PWN-BASIC-1/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
+          <a href="/2022/08/23/WMCTF-2022-WRITEUP/">WMCTF 2022 部分 WRITEUP</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>22/08/23</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这次WMCTF拿了3个一血<br>题目设计非常有趣  其中还有几个0day  很多实际渗透遇到的问题也考虑到了</p></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                 
+                <a href="/categories/writeup">writeup</a>
+                 
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                 
+                <a href="/tags/writeup">writeup</a>
+                 
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2022/08/23/WMCTF-2022-WRITEUP/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2022/08/23/WMCTF-2022-WRITEUP/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2022/08/23/WMCTF-2022-WRITEUP/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
+          <a href="/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/">LUKS 全盘加密的一个通用解密方法--从内存中提取LUKS MASTER KEY</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>22/08/17</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><p>作者:橙子酱</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前的文章中提到了一种有启动分区的情况<br>磁盘主引导-&gt;引导分区-&gt;引导内核-&gt;系统启动-&gt;解密挂载分区 (一个引导分区 +一个主分区)<br>遇到这种情况就可以通过简单的提取文件系统中的秘钥解决.<br>但是运气不好还会遇到两种更变态的情况</p></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                 
+                <a href="/tags/LUKS">LUKS</a>
+                 
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2022/08/17/DUMP-LUKS-KEY-FROM-MEMORY/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
+          <a href="/2022/06/24/php-upload-bypass-waf/">php在流量层面绕waf的一些姿势-php文件上传处理流程简单分析</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>22/06/24</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><p>测试环境 PHP 7.1.9</p>
+<p>php文件上传处理在 main/rfc1867.c 中的 rfc1867_post_handler函数</p></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                 
+                <a href="/categories/PHP">PHP</a>
+                  
+                <a href="/categories/WAF">WAF</a>
+                 
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                 
+                <a href="/tags/PHP">PHP</a>
+                  
+                <a href="/tags/WAF">WAF</a>
+                  
+                <a href="/tags/bypass">bypass</a>
+                 
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2022/06/24/php-upload-bypass-waf/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2022/06/24/php-upload-bypass-waf/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2022/06/24/php-upload-bypass-waf/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
+          <a href="/2022/06/05/cdnlookup/">cdnlookup 一个使用 ECS 遍历智能DNS节点IP地址的工具</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>22/06/05</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前不久我遇到了一个关于获取CDN节点ip列表的问题:<br>如何快速获取一家CDN节点在全国的范围内的节点ip？</p>
+<p>为了解决这个问题，我分析了智能DNS的工作原理。根据原理，我写出了一个使用 Edns-Client-Subnet(ECS)  伪造客户端ip用于遍历cdn节点ip的小工具。</p></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2022/06/05/cdnlookup/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2022/06/05/cdnlookup/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2022/06/05/cdnlookup/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+     
+
+    
+
+  <li class="item">
+
+      
+
+      
+      <div class="describe">
+        <div class="title">
+          <a href="/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/">第15届全国大学生信息安全竞赛 online_crt writeup    c_rehash(CVE-2022-1292)   ciscn 2022</a>
+        </div>
+        <div class="date">
+          <span class="iconfont icon-time-circle"></span>
+          <span>22/05/30</span>
+        </div>
+        
+        <div class="excerpt post-wrap"><p>author:白帽酱<br>题目给了后端源码  一道题利用了前不久出现的一个鸡肋洞 openssl c_rehash(CVE-2022-1292)  题目还是比较有意思的</p></div>
+        
+        <div class="meta">
+          <div class="l">
+            <div class="warp">
+              
+              <span class="iconfont icon-folder"></span>
+              <span class="desp">
+                 
+                <a href="/categories/CTF">CTF</a>
+                 
+              </span>
+              
+            </div>
+
+            
+            <div class="warp">
+              <span class="iconfont icon-tag1"></span>
+              <span class="desp">
+                 
+                <a href="/tags/CTF">CTF</a>
+                  
+                <a href="/tags/CVE">CVE</a>
+                 
+              </span>
+            </div>
+            
+            <div class="warp">
+              <div class="share" data-url="/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/">
+                <span class="iconfont icon-share"></span>
+              </div>
+              <div class="desp share" data-url="/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/">
+                <a href="#">分享</a>
+              </div>
+            </div>
+          </div>
+          <div class="r">
+            <a href="/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/">Read More</a>
+          </div>
+        </div>
+      </div>
+    </li>
+    
+  </ul>
+</div>
+
+<div class="paginator">
+  <a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a>
+</div>
+
+        <footer>
+          <div class="copyright">
+            ©2026
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
