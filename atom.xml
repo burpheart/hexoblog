@@ -6,7 +6,7 @@
   <link href="https://rce.moe/atom.xml" rel="self"/>
   
   <link href="https://rce.moe/"/>
-  <updated>2026-01-31T12:50:21.900Z</updated>
+  <updated>2026-03-25T07:46:49.658Z</updated>
   <id>https://rce.moe/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Apifox 供应链投毒攻击 — 完整技术分析</title>
+    <link href="https://rce.moe/2026/03/25/apifox-supply-chain-attack-analysis/"/>
+    <id>https://rce.moe/2026/03/25/apifox-supply-chain-attack-analysis/</id>
+    <published>2026-03-25T07:43:36.000Z</published>
+    <updated>2026-03-25T07:46:49.658Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;一、概述&quot;&gt;&lt;a href=&quot;#一、概述&quot; class=&quot;headerlink&quot; title=&quot;一、概述&quot;&gt;&lt;/a&gt;一、概述&lt;/h2&gt;&lt;p&gt;近日，工作中监测到 Apifox 文件存在被投毒情况。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://apifox.com/&quot;&gt;Apifox&lt;/a&gt; 是一款 API 一体化协作平台，其桌面端应用基于 &lt;strong&gt;Electron&lt;/strong&gt; 框架开发，提供 &lt;strong&gt;Windows、macOS、Linux&lt;/strong&gt; 三平台客户端。因未严格启用 &lt;code&gt;sandbox&lt;/code&gt; 参数，并暴露了 Node.js 的 API 接口，导致攻击者可通过 JS 控制 Apifox 的终端——&lt;strong&gt;三个平台均受影响&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;Apifox 在启动过程中会加载：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs plain&quot;&gt;hxxps:&amp;#x2F;&amp;#x2F;cdn[.]apifox[.]com&amp;#x2F;www&amp;#x2F;assets&amp;#x2F;js&amp;#x2F;apifox-app-event-tracking.min.js&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;该文件正常大小为 &lt;strong&gt;34KB&lt;/strong&gt;，但在 &lt;strong&gt;3 月 4 日之后&lt;/strong&gt;可能会请求到被投毒的版本（&lt;strong&gt;77KB&lt;/strong&gt;）。被投毒的 JS 文件会动态加载 &lt;code&gt;hxxps://apifox[.]it[.]com/public/apifox-event.js&lt;/code&gt;（该域名非官方域名），在满足特定条件下加载攻击载荷，采集主机系统环境和敏感信息（SSH 密钥、Git 凭证、命令行历史、进程列表），上报到 &lt;code&gt;hxxps://apifox[.]it[.]com/event/0/log&lt;/code&gt;。后续攻击者会控制主机拉取执行后门程序，并尝试发起横向攻击，控制更多有价值目标。&lt;/p&gt;
+&lt;p&gt;目前入口文件已被还原，仅在 &lt;a href=&quot;https://web.archive.org/web/20260305160602/https://cdn.apifox.com/www/assets/js/user-tracking.min.js&quot;&gt;Wayback Machine 存档&lt;/a&gt;中可见投毒版本。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="WEB" scheme="https://rce.moe/categories/WEB/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Cursor 逆向笔记 1 —— 我是如何拦截解析 Cursor 的 gRPC 通信流量的</title>
@@ -442,27 +465,6 @@ LLM的一个重要特点是它可以通过预训练和微调来适应不同的�
     
     
     
-    
-  </entry>
-  
-  <entry>
-    <title>第15届全国大学生信息安全竞赛 online_crt writeup    c_rehash(CVE-2022-1292)   ciscn 2022</title>
-    <link href="https://rce.moe/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/"/>
-    <id>https://rce.moe/2022/05/30/c-rehash-CVE-2022-1292-ciscn-2022-online-crt/</id>
-    <published>2022-05-30T03:23:02.000Z</published>
-    <updated>2022-07-11T03:21:05.751Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;author:白帽酱&lt;br&gt;题目给了后端源码  一道题利用了前不久出现的一个鸡肋洞 openssl c_rehash(CVE-2022-1292)  题目还是比较有意思的&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CTF" scheme="https://rce.moe/categories/CTF/"/>
-    
-    
-    <category term="CTF" scheme="https://rce.moe/tags/CTF/"/>
-    
-    <category term="CVE" scheme="https://rce.moe/tags/CVE/"/>
     
   </entry>
   

